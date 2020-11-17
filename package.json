@@ -1,0 +1,23 @@
+{
+  "name": "Electron-Sistema-Stock",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdrianMarin07/sistema-stock-electron.js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AdrianMarin07/sistema-stock-electron.js/issues"
+  },
+  "homepage": "https://github.com/AdrianMarin07/sistema-stock-electron.js#readme",
+  "devDependencies": {
+    "electron": "^11.0.1"
+  }
+}
