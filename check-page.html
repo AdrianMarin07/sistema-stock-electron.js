@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <title>Consulta de Stock</title>
+</head>
+
+<body>
+
+    <header>
+        <button id='goToMain' onclick="javascript:location.href = './main-page.html';">Volver</button>
+    </header>
+
+    <h1>Consulta de Stock</h1>
+
+<button id="show-record" onclick="showRecord()">Ver Historial</button>
+
+<div id="record-modal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Historial del producto: </h2>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer">
+            <button id="close-record" onclick="closeRecord()">Cerrar</button>
+        </div>
+    </div>
+</div>
+<script src="src/functions.js"></script>
+<script src="styles/js/bootstrap.min.js"></script>
+</body>
+
+</html>
