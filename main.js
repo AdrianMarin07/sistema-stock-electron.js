@@ -1,7 +1,9 @@
 const { app, BrowserWindow } = require('electron');
 const url = require('url');
 const path = require('path');
+const {createDB} = require('./src/database/createDB');
 
+createDB();
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -15,7 +17,7 @@ function createWindow () {
   win.loadFile(path.join(__dirname + '/src/main-page.html'))
 }
 
-app.whenReady().then(createWindow)
+app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

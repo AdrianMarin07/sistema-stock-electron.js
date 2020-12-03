@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start" : "electron ."
+    "start": "electron ."
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,10 @@
   },
   "homepage": "https://github.com/AdrianMarin07/sistema-stock-electron.js#readme",
   "devDependencies": {
-    "electron": "^11.0.1"
+    "electron": "^11.0.1",
+    "electron-rebuild": "^2.3.4"
+  },
+  "dependencies": {
+    "sqlite3": "^5.0.0"
   }
 }
