@@ -8,7 +8,7 @@ createDB();
 function createWindow () {
   const win = new BrowserWindow({
     width: 800,
-    altura: 600,
+    height: 600,
     webPreferences: {
       nodeIntegration: true
     }
