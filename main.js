@@ -4,6 +4,12 @@ const path = require('path');
 const {createDB} = require('./src/database/createDB');
 
 createDB();
+let db;
+try{
+  db = require('./src/database/DBAcces')();
+}catch(err) {
+  console.log(err);
+}
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -20,6 +26,7 @@ function createWindow () {
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
+  if(db) db.syncClose(db);
   if (process.platform !== 'darwin') {
     app.quit()
   }
