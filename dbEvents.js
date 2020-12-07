@@ -23,6 +23,8 @@ function addEvents (ipcMain, db) {
       })
       
       ipcMain.on('db-select-one', (event,args)=> {
+        const classObj = require('./src/models/'+ firstToUpperCase(args.table))
+        const obj = new classObj(args.data)
         require('./src/controllers/'+ args.table).selectOne(db,obj)
         .then((data) => {
           console.log(data);
@@ -48,8 +50,6 @@ function addEvents (ipcMain, db) {
           console.log(err);
         });
       })
-
-      console.log("hola");
 }
 
 module.exports = addEvents;
