@@ -1,9 +1,11 @@
+const Product = require('./Product');
+
 class Record {
 
 
     constructor( data ) {
         if(data.id) this.id = data.id;
-        this.product = data.product;
+        this.product = new Product(data.product);
         this.date = data.date;
         this.transaction = data.transaction;
         this.quantity = data.quantity;

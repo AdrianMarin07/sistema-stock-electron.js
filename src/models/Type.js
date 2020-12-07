@@ -1,7 +1,9 @@
+const Brand = require('./Brand');
+
 class Type {
     constructor( data ) {
         if(data.id) this.id = data.id;
-        this.brand = data.brand;
+        this.brand = new Brand(data.brand);
         this.name = data.name;
     }
 

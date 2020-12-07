@@ -1,7 +1,9 @@
+const Type = require('./Type');
+
 class Product {
     constructor( data) {
         if(data.id) this.id = data.id;
-        this.type = data.type;
+        this.type = new Type(data.type);
         this.detail = data.detail;
         this.quantity = data.quantity;
     }

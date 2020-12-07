@@ -1,8 +1,8 @@
 const { app, BrowserWindow, ipcMain} = require('electron');
 const url = require('url');
-const { firstToUpperCase } = require('./src/utilities/utilities');
 const path = require('path');
 const {createDB} = require('./src/database/createDB');
+const addEvents = require('./dbEvents');
 
 createDB();
 let db;
@@ -12,25 +12,7 @@ try{
   console.log(err);
 }
 
-ipcMain.on('db-insert', (event,args)=> {
-  const classObj = require('./src/models/'+ firstToUpperCase(args.table))
-  const obj = new classObj(args.data)
-  require('./src/controllers/'+ args.table).insert(db, obj)
-  .then((data) => {
-    console.log(data);
-  }).catch((err) => {
-    console.log(err);
-  });
-})
-
-ipcMain.on('db-select', (event,args)=> {
-  require('./src/controllers/'+ args.table).select(db)
-  .then((data) => {
-    console.log(data);
-  }).catch((err) => {
-    console.log(err);
-  });
-})
+addEvents(ipcMain, db);
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -43,6 +25,10 @@ function createWindow () {
 
   win.loadFile(path.join(__dirname + '/src/main-page.html'))
   win.webContents.openDevTools();
+
+  win.on('close', () => {
+    win = null;
+  })
 }
 
 app.allowRendererProcessReuse = false;
