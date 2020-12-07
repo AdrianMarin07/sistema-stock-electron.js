@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+const { app, BrowserWindow, ipcMain} = require('electron');
 const url = require('url');
 const path = require('path');
 const {createDB} = require('./src/database/createDB');
@@ -11,6 +11,10 @@ try{
   console.log(err);
 }
 
+ipcMain.on('db-insert', (event,args)=> {
+  console.log(args);
+})
+
 function createWindow () {
   const win = new BrowserWindow({
     width: 800,
@@ -21,14 +25,24 @@ function createWindow () {
   })
 
   win.loadFile(path.join(__dirname + '/src/main-page.html'))
+  win.webContents.openDevTools();
 }
+
+app.allowRendererProcessReuse = false;
 
 app.whenReady().then(createWindow);
 
 app.on('window-all-closed', () => {
-  if(db) db.syncClose(db);
-  if (process.platform !== 'darwin') {
-    app.quit()
+  if(db) {
+    db.close(() => {
+      if (process.platform !== 'darwin') {
+        app.quit()
+      }
+    });
+  }else {
+    if (process.platform !== 'darwin') {
+      app.quit()
+    }
   }
 })
 

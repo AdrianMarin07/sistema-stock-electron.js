@@ -1,3 +1,5 @@
+require('bootstrap');
+
 function showRecord(){
     document.getElementById("record-modal").style.display = "block";
 }
@@ -16,4 +18,10 @@ function closeConfirmation() {
 
 function saveProduct(){
     document.getElementById("confirmation-modal").style.display = "none";
+}
+
+const { ipcRenderer } = require('electron');
+
+function insert() {
+    ipcRenderer.send('db-insert', {table: 'brand', })
 }
