@@ -1,5 +1,6 @@
 const { app, BrowserWindow, ipcMain} = require('electron');
 const url = require('url');
+const { firstToUpperCase } = require('./src/utilities/utilities');
 const path = require('path');
 const {createDB} = require('./src/database/createDB');
 
@@ -12,7 +13,23 @@ try{
 }
 
 ipcMain.on('db-insert', (event,args)=> {
-  console.log(args);
+  const classObj = require('./src/models/'+ firstToUpperCase(args.table))
+  const obj = new classObj(args.data)
+  require('./src/controllers/'+ args.table).insert(db, obj)
+  .then((data) => {
+    console.log(data);
+  }).catch((err) => {
+    console.log(err);
+  });
+})
+
+ipcMain.on('db-select', (event,args)=> {
+  require('./src/controllers/'+ args.table).select(db)
+  .then((data) => {
+    console.log(data);
+  }).catch((err) => {
+    console.log(err);
+  });
 })
 
 function createWindow () {

@@ -1,9 +1,9 @@
 class Product {
-    constructor( type, detail, quantity, id) {
-        if(id) this.id = id;
-        this.type = type;
-        this.detail = detail;
-        this.quantity = quantity;
+    constructor( data) {
+        if(data.id) this.id = data.id;
+        this.type = data.type;
+        this.detail = data.detail;
+        this.quantity = data.quantity;
     }
 
     get _id() {

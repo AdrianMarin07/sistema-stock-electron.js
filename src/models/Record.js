@@ -1,12 +1,12 @@
 class Record {
 
 
-    constructor( product, date, transaction, quantity, id ) {
-        if(id) this.id = id;
-        this.product = product;
-        this.date = date;
-        this.transaction = transaction;
-        this.quantity = quantity;
+    constructor( data ) {
+        if(data.id) this.id = data.id;
+        this.product = data.product;
+        this.date = data.date;
+        this.transaction = data.transaction;
+        this.quantity = data.quantity;
     }
 
     get _id () {

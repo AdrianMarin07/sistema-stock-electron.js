@@ -1,8 +1,8 @@
 class Type {
-    constructor( brand, name, id) {
-        if(id) this.id = id;
-        this.brand = brand;
-        this.name = name;
+    constructor( data ) {
+        if(data.id) this.id = data.id;
+        this.brand = data.brand;
+        this.name = data.name;
     }
 
     get _id() {

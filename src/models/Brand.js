@@ -1,8 +1,8 @@
 class Brand {
 
-    constructor ( name , id) {
-        if(id) this.id = id;
-        this.name = name;
+    constructor ( data) {
+        if(data.id) this.id = data.id;
+        this.name = data.name;
     };
 
     get _id() {

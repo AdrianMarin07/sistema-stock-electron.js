@@ -10,6 +10,14 @@ exports.select = (tableName, keys, innerJoinns) => {
     return `SELECT (${keys.join(", ")}) FROM ${tableName} ${innerJoinns.map((item) => {`INNER JOIN on ${item.t1}.${item.key1} = ${item.t2}.${item.key2}`}).join(" ")}`;
 };
 
+exports.selectOne = (tableName, keys, innerJoinns) => {
+    if (!innerJoinns) {
+        return `SELECT (${keys.join(", ")}) FROM ${tableName} WHERE id=?`;
+    }
+    
+    return `SELECT (${keys.join(", ")}) FROM ${tableName} ${innerJoinns.map((item) => {`INNER JOIN on ${item.t1}.${item.key1} = ${item.t2}.${item.key2}`}).join(" ")}`;
+};
+
 exports.delete = (tableName) => {
     return `DELETE FROM ${tableName} WHERE id=?`;
 };

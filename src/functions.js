@@ -1,4 +1,5 @@
 require('bootstrap');
+const { ipcRenderer } = require('electron');
 
 function showRecord(){
     document.getElementById("record-modal").style.display = "block";
@@ -20,8 +21,9 @@ function saveProduct(){
     document.getElementById("confirmation-modal").style.display = "none";
 }
 
-const { ipcRenderer } = require('electron');
-
 function insert() {
-    ipcRenderer.send('db-insert', {table: 'brand', })
+    ipcRenderer.send('db-insert', {table: 'brand', data: {name: "Nivea"}});
+}
+function select() {
+    ipcRenderer.send('db-select', {table: 'brand'});
 }
