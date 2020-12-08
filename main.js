@@ -26,9 +26,6 @@ function createWindow () {
   win.loadFile(path.join(__dirname + '/src/main-page.html'))
   win.webContents.openDevTools();
 
-  win.on('close', () => {
-    win = null;
-  })
 }
 
 app.allowRendererProcessReuse = false;
