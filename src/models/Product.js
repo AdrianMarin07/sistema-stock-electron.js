@@ -5,7 +5,6 @@ class Product {
         if(data.id) this.id = data.id;
         this.type = new Type(data.type);
         this.detail = data.detail;
-        this.quantity = data.quantity;
     }
 
     get _id() {
@@ -20,9 +19,6 @@ class Product {
         return this.detail;
     }
 
-    get _quantity() {
-        return this.quantity;
-    }
 }
 
 module.exports = Product;

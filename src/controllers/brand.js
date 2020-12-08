@@ -1,13 +1,23 @@
 const querys = require("./querys");
 
 const TABLE = "brand";
-const KEYS = [{key:'name', table: 'brand'}];
+const KEYS = 
+[
+    {key:'id', table: 'brand', alias: 'brand_name'},
+    {key:'name', table: 'brand', alias: 'brand_name'}
+];
 
 exports.insert = (db, brand) => {
   return new Promise((resolve, reject) => {
-    db.run(querys.insert(TABLE, KEYS), [brand._name], (err, row) => {
-      if (err) reject("Error in Database: " + err.message);
-      resolve(row);
+    db.serialize(() => {
+        db.run(querys.insert(TABLE, KEYS), [brand._name], (err) => {
+            if (err) reject("Error in Database: " + err.message);
+        });
+
+        db.get(querys.selectLastAdded(TABLE,KEYS), [], (err, row) => {
+            if ( err ) reject("Error in Database: " + err.message);
+            resolve(row)
+        })
     });
   });
 };
