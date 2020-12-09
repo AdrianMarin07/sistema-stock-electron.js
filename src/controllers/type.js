@@ -41,7 +41,7 @@ exports.select = (db) => {
 
 exports.selectOne = (db, type) => {
     return new Promise((resolve, reject) => {
-        db.get(querys.selectOne(TABLE, KEYS, INNER_JOINS), [type._id], (err, rows) => {
+        db.get(querys.selectOne(TABLE, KEYS, INNER_JOINS), [type._id], (err, row) => {
             if(err) reject(err.message)
             resolve(row)
         })

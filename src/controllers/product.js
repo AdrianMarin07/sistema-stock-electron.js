@@ -3,6 +3,7 @@ const TABLE = 'product';
 
 const KEYS = 
 [
+    {table: 'product', key: 'id', allias: 'product_id'},
     {table: 'product', key: 'details'},
     {table: 'product', key: 'fk_type'},
     {table: 'type', key: 'name', alias: 'type_name'},
@@ -44,7 +45,7 @@ exports.select = (db) => {
 
 exports.selectOne = (db, product) => {
     return new Promise((resolve, reject) => {
-        db.get(querys.selectOne(TABLE, KEYS), [product._id], (err, rows) => {
+        db.get(querys.selectOne(TABLE, KEYS), [product._id], (err, row) => {
             if(err) reject(err.message)
             resolve(row)
         })
@@ -53,7 +54,7 @@ exports.selectOne = (db, product) => {
 
 exports.update = (db, product) => {
     return new Promise((resolve, reject) => {
-        db.get(querys.update(TABLE, KEYS), [product._detail, product._id], (err, row) => {
+        db.get(querys.update(TABLE, KEYS), [product._detail, product._type._id, product._id], (err, row) => {
             if(err) reject(err.message)
             resolve(row)
         })

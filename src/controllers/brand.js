@@ -35,7 +35,7 @@ exports.select = (db) => {
 
 exports.selectOne = (db, brand) => {
     return new Promise((resolve, reject) => {
-        db.get(querys.selectOne(TABLE, KEYS), [brand._id], (err, rows) => {
+        db.get(querys.selectOne(TABLE, KEYS), [brand._id], (err, row) => {
             if(err) reject(err.message)
             resolve(row)
         })
