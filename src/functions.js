@@ -21,9 +21,30 @@ function saveProduct(){
     document.getElementById("confirmation-modal").style.display = "none";
 }
 
-function insert() {
-    ipcRenderer.send('db-insert', {table: 'brand', data: {name: "Nivea"}});
-}
-function select() {
-    ipcRenderer.send('db-select', {table: 'brand'});
-}
+/*function insert() {
+    const brand = {
+        id: 1, 
+        name: 'tecno'
+    };
+
+    ipcRenderer.send('db-insert', {table: 'brand', data: brand});
+    const type = {
+        name: 'Pintura', 
+        id: 1, 
+        brand 
+    }
+    ipcRenderer.send('db-insert', {table: 'type', data: type});
+    const product = {
+        detail: "blanca 3L", 
+        id: 1, 
+        type
+    }
+    ipcRenderer.send('db-insert', {table: 'product', data: product});
+    const record = {
+        transaction: 1, 
+        date: '9-12-20 17:22:30', 
+        quantity: 20, 
+        product
+    };
+    ipcRenderer.send('db-insert', {table: 'record', data: record});
+}*/

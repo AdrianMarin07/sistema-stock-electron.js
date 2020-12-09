@@ -1,3 +1,5 @@
+const querys = require("./querys");
+
 const TABLE = 'type';
 const KEYS = 
 [
@@ -20,7 +22,7 @@ exports.insert = (db, type) => {
             if (err) reject("Error in Database: " + err.message);
           });
 
-        db.get(querys.selectLastAdded(TABLE,KEYS), [], (err, row) => {
+        db.get(querys.selectLastAdded(TABLE, KEYS, INNER_JOINS), [], (err, row) => {
             if ( err ) reject("Error in Database: " + err.message);
             resolve(row)
         })
