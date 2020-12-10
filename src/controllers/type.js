@@ -60,10 +60,18 @@ exports.update = (db, type) => {
 };
 
 exports.delete = (db, type) => {
-    return new Promise((resolve, reject) => {
-        db.get(querys.delete(TABLE), [type._id], (err, row) => {
-            if(err) reject(err.message)
-            resolve(row)
-        })
-    })
+    return new Promise((resolve, reject) => {    db.serialize(() => {
+        db.serialize(() => {
+            db.get(querys.select('product', [{key: 'fk_type', table: 'product'}]), [type._id], (err, row) => {
+                if (err) reject(err.message);
+                if (row) reject('There are products with this type as a foreign key');
+              });
+        
+              db.get(querys.delete(TABLE), [type._id], (err, row) => {
+                if (err) reject(err.message);
+                resolve(row);
+              });
+        });
+      });
+    });
 };
