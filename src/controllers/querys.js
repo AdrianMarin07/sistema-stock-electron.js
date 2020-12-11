@@ -27,8 +27,12 @@ exports.selectOne = (tableName, keys, innerJoinns) => {
     return `SELECT ${keys.map((key)=> `${key.table}.${key.key} ${key.alias ? "AS " + key.alias : ""}`).join(", ")} FROM ${tableName} ${innerJoinns.map((item) => `INNER JOIN ${item.t2} on ${item.t1}.${item.k1} = ${item.t2}.${item.k2}`).join(" ")} WHERE ${tableName}.id=?`;
 };
 
+exports.verifyExistence = (tableName, key) => {
+    return `SELECT ${key} FROM ${tableName} WHERE ${key} = ?`;
+}
+
 exports.delete = (tableName) => {
-    return `DELETE FROM ${tableName} WHERE id=?`;
+    return `DELETE FROM ${tableName} WHERE id = ?`;
 };
 
 exports.update = (tableName, keys) => {

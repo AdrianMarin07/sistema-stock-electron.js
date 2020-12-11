@@ -21,7 +21,7 @@ function saveProduct(){
     document.getElementById("confirmation-modal").style.display = "none";
 }
 
-/*function insert() {
+function insert() {
     const brand = {
         id: 1, 
         name: 'tecno'
@@ -47,4 +47,19 @@ function saveProduct(){
         product
     };
     ipcRenderer.send('db-insert', {table: 'record', data: record});
-}*/
+}
+
+function select () {
+    ipcRenderer.send('db-select', {table: 'brand'});
+    ipcRenderer.send('db-select', {table: 'type'});
+    ipcRenderer.send('db-select', {table: 'product'});
+    ipcRenderer.send('db-select', {table: 'record'});
+}
+
+function remove() {
+    const brand = {
+        id: 1, 
+        name: 'tecno'
+    };
+    ipcRenderer.send('db-delete', {table: 'brand', data: brand});
+}

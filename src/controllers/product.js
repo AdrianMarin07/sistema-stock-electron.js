@@ -60,7 +60,7 @@ exports.update = (db, product) => {
       querys.update(TABLE, KEYS),
       [product._detail, product._type._id, product._id],
       (err, row) => {
-        if (err) reject(err.message);
+        if (err) reject(err.message+ "pr");
         resolve(row);
       }
     );
@@ -69,16 +69,13 @@ exports.update = (db, product) => {
 
 exports.delete = (db, product) => {
   return new Promise((resolve, reject) => {
-    db.serialize(() => {
-      db.get(querys.select('record', [{key: 'fk_product', table: 'record'}]), [product._id], (err, row) => {
-          if (err) reject(err.message);
-          if (row) reject('There are records with this product as a foreign key');
-        });
-  
-        db.get(querys.delete(TABLE), [product._id], (err, row) => {
-          if (err) reject(err.message);
-          resolve(row);
-        });
-  });
+    db.get(querys.verifyExistence('record', 'fk_product'), [product._id], (err, row) => {
+      if (err)return reject(err.message);
+      if(row) return reject('There are records with this product as a foreign key');
+      db.get(querys.delete(TABLE), [product._id], (err, row) => {
+        if (err) reject(err.message);
+        resolve(row);
+      });
+    }); 
   });
 };

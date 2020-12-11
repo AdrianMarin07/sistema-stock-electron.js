@@ -34,6 +34,8 @@ function addEvents (ipcMain, db) {
       })
       
       ipcMain.on('db-update', (event,args)=> {
+        const classObj = require('./src/models/'+ firstToUpperCase(args.table))
+        const obj = new classObj(args.data);
         require('./src/controllers/'+ args.table).update(db, obj)
         .then((data) => {
           console.log(data);
@@ -43,6 +45,8 @@ function addEvents (ipcMain, db) {
       })
       
       ipcMain.on('db-delete', (event,args)=> {
+        const classObj = require('./src/models/'+ firstToUpperCase(args.table));
+        const obj = new classObj(args.data);
         require('./src/controllers/'+ args.table).delete(db, obj)
         .then((data) => {
           console.log(data);

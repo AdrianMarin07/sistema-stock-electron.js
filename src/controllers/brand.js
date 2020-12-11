@@ -51,16 +51,13 @@ exports.update = (db, brand) => {
 
 exports.delete = (db, brand) => {
   return new Promise((resolve, reject) => {
-    db.serialize(() => {
-      db.get(querys.select('type', [{key: 'fk_brand', table: 'type'}]), [brand._id], (err, row) => {
-        if (err) reject(err.message);
-        if(row) reject('There are types with this brand as a foreign key');
-      });
-
+    db.get(querys.verifyExistence('type', 'fk_brand'), [brand._id], (err, row) => {
+      if (err)return reject(err.message);
+      if(row) return reject('There are types with this brand as a foreign key');
       db.get(querys.delete(TABLE), [brand._id], (err, row) => {
         if (err) reject(err.message);
         resolve(row);
       });
-    }) 
+    }); 
   });
 };

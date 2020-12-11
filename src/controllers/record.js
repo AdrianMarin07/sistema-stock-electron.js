@@ -51,7 +51,7 @@ exports.insert = (db, record) => {
 
 exports.select = (db) => {
   return new Promise((resolve, reject) => {
-    db.all(querys.select(TABLE, KEYS), [], (err, rows) => {
+    db.all(querys.select(TABLE, KEYS, INNER_JOINS), [], (err, rows) => {
       if (err) reject(err.message);
 
       resolve(rows);
@@ -61,7 +61,7 @@ exports.select = (db) => {
 
 exports.selectOne = (db, record) => {
   return new Promise((resolve, reject) => {
-    db.get(querys.selectOne(TABLE, KEYS), [record._id], (err, row) => {
+    db.get(querys.selectOne(TABLE, KEYS, INNER_JOINS), [record._id], (err, row) => {
       if (err) reject(err.message);
       resolve(row);
     });
