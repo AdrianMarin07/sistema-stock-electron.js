@@ -9,6 +9,7 @@ const KEYS = [
   { table: "record", key: "quantity" },
   { table: "record", key: "fk_product" },
   { table: "product", key: "details" },
+  { table: "product", key: "quantity", alias: "total"},
   { table: "product", key: "fk_type" },
   { table: "type", key: "name", alias: "type_name" },
   { table: "type", key: "fk_brand" },

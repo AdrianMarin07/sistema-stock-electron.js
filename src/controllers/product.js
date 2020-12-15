@@ -5,6 +5,7 @@ const TABLE = "product";
 const KEYS = [
   { table: "product", key: "id", alias: "product_id" },
   { table: "product", key: "details" },
+  { table: "product", key: "quantity", alias: "total"},
   { table: "product", key: "fk_type" },
   { table: "type", key: "name", alias: "type_name" },
   { table: "type", key: "fk_brand" },
@@ -21,7 +22,7 @@ exports.insert = (db, product) => {
     db.serialize(() => {
       db.run(
         querys.insert(TABLE, KEYS),
-        [product._detail, product._type._id],
+        [product._detail, product._quantity,product._type._id],
         (err) => {
           if (err) reject("Error in Database: " + err.message);
         }

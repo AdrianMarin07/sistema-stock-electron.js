@@ -13,6 +13,7 @@ module.exports =
   CREATE TABLE product (
     id INTEGER PRIMARY KEY,
     details varchar(500) NOT NULL,
+    quantity INTEGER DEFAULT 0,
     fk_type int(11) NOT NULL
   );
   

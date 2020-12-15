@@ -38,3 +38,11 @@ exports.delete = (tableName) => {
 exports.update = (tableName, keys) => {
     return `UPDATE ${tableName} SET ${keys.map((key) => {if(key.table === tableName && key.key != 'id') return`${key.key} = ?`}).join(" ")} WHERE id = ?`;
 };
+
+exports.selectForSearch = (tableName, keys, searchPatterns, innerJoinns) => {
+    if (!innerJoinns) {
+        return `SELECT ${keys.map((key)=> `${key.table}.${key.key} ${key.alias ? "AS " + key.alias : ""}`).join(", ")} FROM ${tableName} WHERE ${searchPatterns.map((obj) => `${obj.column} = %${obj.pattern}%` ).join(', ')}`;
+    }
+    
+    return `SELECT ${keys.map((key)=> `${key.table}.${key.key} ${key.alias ? "AS " + key.alias : ""}`).join(", ")} FROM ${tableName} ${innerJoinns.map((item) => `INNER JOIN ${item.t2} on ${item.t1}.${item.k1} = ${item.t2}.${item.k2}`).join(" ")} WHERE ${searchPatterns.map((obj) => `${obj.table}.${obj.column} = %${obj.pattern}%` ).join(', ')}`;
+};

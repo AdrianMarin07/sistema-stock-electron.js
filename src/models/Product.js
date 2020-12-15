@@ -4,6 +4,7 @@ class Product {
     constructor( data) {
         if(data.id) this.id = data.id;
         this.type = new Type(data.type);
+        this.quantity = data.quantity;
         this.detail = data.detail;
     }
 
@@ -17,6 +18,10 @@ class Product {
 
     get _detail() {
         return this.detail;
+    }
+
+    get _quantity() {
+        return this.quantity;
     }
 
 }
