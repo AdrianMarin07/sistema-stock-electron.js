@@ -30,33 +30,37 @@ function insert() {
         name: 'tecno'
     };
 
-    ipcRenderer.send('db-insert', { table: 'brand', data: brand });
+    ipcRenderer.send('db-insert', { table: 'brand', data: brand , purpose: "none"});
     const type = {
         name: 'Pintura',
         id: 1,
         brand
     }
-    ipcRenderer.send('db-insert', { table: 'type', data: type });
+    ipcRenderer.send('db-insert', { table: 'type', data: type ,purpose: "none"});
     const product = {
         detail: "blanca 3L",
         id: 1,
         type
     }
-    ipcRenderer.send('db-insert', { table: 'product', data: product });
+    ipcRenderer.send('db-insert', { table: 'product', data: product ,purpose: "none"});
     const record = {
         transaction: 1,
         date: '9-12-20 17:22:30',
         quantity: 20,
         product
     };
-    ipcRenderer.send('db-insert', { table: 'record', data: record });
+    ipcRenderer.send('db-insert', { table: 'record', data: record ,purpose: "none"});
 }
 
 function select() {
-    ipcRenderer.send('db-select', { table: 'brand' });
-    ipcRenderer.send('db-select', { table: 'type' });
-    ipcRenderer.send('db-select', { table: 'product' });
-    ipcRenderer.send('db-select', { table: 'record' });
+    ipcRenderer.send('db-select', { table: 'brand' , purpose: "select"});
+    ipcRenderer.send('db-select', { table: 'type' ,purpose: "select"});
+    ipcRenderer.send('db-select', { table: 'product' ,purpose: "select"});
+    ipcRenderer.send('db-select', { table: 'record' ,purpose: "select"});
+
+    ipcRenderer.on('select', (event, status)=>{
+        status.success && console.log(status.data);
+    })
 }
 
 function remove() {
@@ -64,7 +68,7 @@ function remove() {
         id: 1,
         name: 'tecno'
     };
-    ipcRenderer.send('db-delete', { table: 'brand', data: brand });
+    ipcRenderer.send('db-delete', { table: 'brand', data: brand ,purpose: "none"});
 }
 
 
@@ -91,9 +95,8 @@ ipcRenderer.on('fill-transaction-table', (event, status) => {
 ipcRenderer.on('fill-modal-header', (event, status) => {
     const { data } = status;
     if (status.success) {
-        document.getElementById("id-modal-header").append(data.brand_name);
-        document.getElementById("id-modal-header").append(data.type_name);
-        document.getElementById("id-modal-header").append(data.details);
+        const productHeader = "Historial del Producto: " + firstLetterToUpperCase(data[0].type_name) + " " + firstLetterToUpperCase(data[0].brand_name) + " " + firstLetterToUpperCase(data[0].details);
+        document.getElementById("id-modal-header").innerHTML = productHeader;
         document.getElementById("record-modal").style.display = "block";
     }
     console.log(status)
@@ -141,7 +144,7 @@ function printTransactionTable(data) {
                     <td>" + data[i].quantity + "</td>\n\
                     <td>" + transaction + "</td>\n\
                     <td>\n\
-                        <a class='btn btn-sm btn-info pull-left check' id='show-record' onclick='showRecord(" + data[i] + ")'><span class='glyphicon glyphicon-eye-open'></span>Consultar</a>\n\
+                        <a class='btn btn-sm btn-info pull-left check' id='show-record' onclick='showRecord(" + data[i].record_id + ")'><span class='glyphicon glyphicon-eye-open'></span>Consultar</a>\n\
                     </td>\n\
                 </tr>";
     }
