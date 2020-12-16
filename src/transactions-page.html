@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="styles/style.css">
+    <title>Administrador del Stock</title>
+</head>
+<body onload="requestStock('fill-transaction-table')">
+
+    <header>
+        <button id='goToMain' onclick="javascript:location.href = './main-page.html';">Volver</button>
+    </header>
+    
+    <h1>Administrador del Stock</h1>
+
+    <table class="table table-bordered table-hover table-condensed" id="transactions-table">
+        <thead>
+            <tr>
+                <th>Marca</th>
+                <th>Tipo</th>
+                <th>Detalle</th>
+                <th>Cantidad Actual</th>
+                <th>Movimiento</th>
+                <th>Historial</th>
+            </tr>  
+        </thead>
+
+        <tbody id="transactions-table-boddy">
+        </tbody>                                       
+    </table>
+
+    <div id="record-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="id-modal-header">Historial del producto: </h2>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button id="close-record" onclick="closeRecord()">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <!--<script src="styles/bootstrap/js/bootstrap.min.js"></script>-->
+    <script src="functions.js"></script>
+</body>
+</html>
