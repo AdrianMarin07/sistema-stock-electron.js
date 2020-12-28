@@ -41,12 +41,6 @@ body {
 text-align: center;
 }
 
-
-.group {
-/*height: 700px;*/
-}
-
-
 .menu{
   display: block;
   background-color: #303030;
@@ -66,8 +60,8 @@ text-align: center;
   /*height: 700px;*/
 }
 
-.menu, .display { 
-  
+.content { 
+  display: none;
 }
 
 figure {
