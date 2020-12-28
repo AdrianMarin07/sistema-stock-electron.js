@@ -1,11 +1,38 @@
 const $ = require('jquery');
-require('bootstrap');
 const { ipcRenderer } = require('electron');
+
 
 function showRecord(data) {
 
     ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-modal-header'});
 
+}
+
+function displayContent(content_name) {
+    const names = [...document.querySelectorAll(".content")].map((node) => {
+        return node.id;
+    });
+    names.forEach((content) => {
+        if(content == content_name) {
+            $("#" + content).fadeIn();
+        }else {
+            $("#" + content).hide();
+        }
+    })
+    fillContent(content_name);
+}
+
+function fillContent(content_name) {
+    switch(content_name) {
+        case "request-stock-container": 
+            ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-stock-table'});
+            break;
+        case "manage-stock-container":
+            ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-transaction-table'});
+            break;
+        default: 
+            break;
+    }
 }
 
 function closeRecord() {
@@ -160,3 +187,4 @@ function firstLetterToUpperCase(string) {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
 }
+
