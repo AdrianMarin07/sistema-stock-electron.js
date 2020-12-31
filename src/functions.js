@@ -116,7 +116,6 @@ ipcRenderer.on('fill-transaction-table', (event, status) => {
     if (status.success) {
         printTransactionTable(status.data);
     }
-    console.log(status)
 });
 
 ipcRenderer.on('fill-modal-header', (event, status) => {
