@@ -52,7 +52,7 @@ exports.insert = (db, record) => {
 
 exports.select = (db, id_product) => {
   return new Promise((resolve, reject) => {
-    db.all(querys.select(TABLE, KEYS, INNER_JOINS) + "WHERE fk_product=?", [id_product], (err, rows) => {
+    db.all(querys.select(TABLE, KEYS, INNER_JOINS) + " WHERE fk_product=?", [id_product], (err, rows) => {
       if (err) reject(err.message);
 
       resolve(rows);
