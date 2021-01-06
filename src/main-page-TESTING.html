@@ -13,7 +13,7 @@
 
     <div class="group container-fluid min-vh-100">
         <div class="row min-vh-100">
-            <nav class="menu col-xs-5 col-md-2 col-lg-2 col-xl-2">
+            <nav class="menu col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
                 <figure><img class="img-fluid" src="./resources/images/logo.jpg"></figure>
                 <button class="menu-button" title="Revisa el stock de todos los productos" id="check"
                     onclick="displayContent('request-stock-container')"><img class="icon"
@@ -25,7 +25,7 @@
                     onclick="displayContent('new-product-container')"><img class="icon"
                         src="./resources/icons/130181.png">Añadir un Producto</button>
             </nav>
-            <main class="display col-xs-7 col-md-10 col-lg-10 col-xl-10">
+            <main class="display col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
                 <div class="content" id="request-stock-container">
                     <h1>Consulta de Stock</h1>
 
@@ -113,10 +113,9 @@
             </main>
         </div>
     </div>
-
-</body>
-<script src="../node_modules/jquery/dist/jquery.min.js"></script>
+<script>window.$ = window.jQuery = require('jquery');</script>
 <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="./functions.js"></script>
+</body>
 
 </html>
