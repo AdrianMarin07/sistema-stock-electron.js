@@ -122,7 +122,7 @@ ipcRenderer.on('fill-modal-header', (event, status) => {
     const { data } = status;
     if (status.success) {
         const productHeader = "Historial del Producto: " + firstLetterToUpperCase(data[0].type_name) + " " + firstLetterToUpperCase(data[0].brand_name) + " " + firstLetterToUpperCase(data[0].details);
-        document.getElementById("id-modal-header").innerHTML = productHeader;
+        document.getElementById("id-record-modal-header").innerHTML = productHeader;
         document.getElementById("record-modal").style.display = "block";
     }
     console.log(status)
