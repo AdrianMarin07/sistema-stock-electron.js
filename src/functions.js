@@ -4,7 +4,7 @@ const { ipcRenderer } = require('electron');
 
 function showRecord(data) {
 
-    ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-modal-header'});
+    ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-modal-header' });
 
 }
 
@@ -13,9 +13,9 @@ function displayContent(content_name) {
         return node.id;
     });
     names.forEach((content) => {
-        if(content == content_name) {
+        if (content == content_name) {
             $("#" + content).fadeIn();
-        }else {
+        } else {
             $("#" + content).hide();
         }
     })
@@ -23,14 +23,14 @@ function displayContent(content_name) {
 }
 
 function fillContent(content_name) {
-    switch(content_name) {
-        case "request-stock-container": 
-            ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-stock-table'});
+    switch (content_name) {
+        case "request-stock-container":
+            ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-stock-table' });
             break;
         case "manage-stock-container":
-            ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-transaction-table'});
+            ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-transaction-table' });
             break;
-        default: 
+        default:
             break;
     }
 }
@@ -57,35 +57,35 @@ function insert() {
         name: 'tecno'
     };
 
-    ipcRenderer.send('db-insert', { table: 'brand', data: brand , purpose: "none"});
+    ipcRenderer.send('db-insert', { table: 'brand', data: brand, purpose: "none" });
     const type = {
         name: 'Pintura',
         id: 1,
         brand
     }
-    ipcRenderer.send('db-insert', { table: 'type', data: type ,purpose: "none"});
+    ipcRenderer.send('db-insert', { table: 'type', data: type, purpose: "none" });
     const product = {
         detail: "blanca 3L",
         id: 1,
         type
     }
-    ipcRenderer.send('db-insert', { table: 'product', data: product ,purpose: "none"});
+    ipcRenderer.send('db-insert', { table: 'product', data: product, purpose: "none" });
     const record = {
         transaction: 1,
         date: '9-12-20 17:22:30',
         quantity: 20,
         product
     };
-    ipcRenderer.send('db-insert', { table: 'record', data: record ,purpose: "none"});
+    ipcRenderer.send('db-insert', { table: 'record', data: record, purpose: "none" });
 }
 
 function select() {
-    ipcRenderer.send('db-select', { table: 'brand' , purpose: "select"});
-    ipcRenderer.send('db-select', { table: 'type' ,purpose: "select"});
-    ipcRenderer.send('db-select', { table: 'product' ,purpose: "select"});
-    ipcRenderer.send('db-select', { table: 'record' ,purpose: "select"});
+    ipcRenderer.send('db-select', { table: 'brand', purpose: "select" });
+    ipcRenderer.send('db-select', { table: 'type', purpose: "select" });
+    ipcRenderer.send('db-select', { table: 'product', purpose: "select" });
+    ipcRenderer.send('db-select', { table: 'record', purpose: "select" });
 
-    ipcRenderer.on('select', (event, status)=>{
+    ipcRenderer.on('select', (event, status) => {
         status.success && console.log(status.data);
     })
 }
@@ -95,14 +95,14 @@ function remove() {
         id: 1,
         name: 'tecno'
     };
-    ipcRenderer.send('db-delete', { table: 'brand', data: brand ,purpose: "none"});
+    ipcRenderer.send('db-delete', { table: 'brand', data: brand, purpose: "none" });
 }
 
 
 function requestStock(purpose) {
-    
-    ipcRenderer.send('db-select', { table: 'stock', purpose: purpose});
-    
+
+    ipcRenderer.send('db-select', { table: 'stock', purpose: purpose });
+
 }
 
 ipcRenderer.on('fill-stock-table', (event, status) => {
@@ -132,23 +132,17 @@ function printStockTable(data) {
 
     for (let i = 0; i < data.length; i++) {
         var html = '';
-        let transaction;
-        if (data[i].transaction_type == 1) {
-            transaction = 'Entrada';
-        } else {
-            transaction = 'Salida';
-        }
-        html += "<tr>\n\
-                    <td>" + firstLetterToUpperCase(data[i].brand_name) + "</td>\n\
-                    <td>" + firstLetterToUpperCase(data[i].type_name) + "</td>\n\
-                    <td>" + firstLetterToUpperCase(data[i].details) + "</td>\n\
-                    <td>" + transaction + "</td>\n\
-                    <td>" + data[i].date + "</td>\n\
-                    <td>" + data[i].quantity + "</td>\n\
-                    <td>\n\
-                        <a class='btn btn-sm btn-info pull-left check' id='show-product' onclick='showRecord(" + data[i].record_id + ")'><span class='glyphicon glyphicon-eye-open'></span>Consultar</a>\n\
-                    </td>\n\
-                </tr>";
+        html += `<tr>\n\
+                    <td> ${firstLetterToUpperCase(data[i].brand_name)} </td>
+                    <td> ${firstLetterToUpperCase(data[i].type_name)} </td>
+                    <td> ${firstLetterToUpperCase(data[i].details)} </td>
+                    <td> ${data[i].transaction_type == 0 ? "Salida" : "Entrada"} </td>
+                    <td> ${data[i].date} </td>
+                    <td> ${data[i].quantity} </td>
+                    <td>
+                        <a class='btn btn-sm btn-info pull-left check' id='show-product' onclick='showRecord(${data[i].record_id})'>Consultar</a>
+                    </td>
+                </tr>`;
     }
     $("#stock-table-boddy").html(html);
 };
@@ -157,26 +151,32 @@ function printTransactionTable(data) {
 
     for (let i = 0; i < data.length; i++) {
         var html = '';
-        let transaction;
-        if (data[i].transaction_type == 1) {
-            transaction = 'Entrada';
-        } else {
-            transaction = 'Salida';
-        }
-        html += "<tr>\n\
-                    <td>" + firstLetterToUpperCase(data[i].brand_name) + "</td>\n\
-                    <td>" + firstLetterToUpperCase(data[i].type_name) + "</td>\n\
-                    <td>" + firstLetterToUpperCase(data[i].details) + "</td>\n\
-                    <td>" + data[i].quantity + "</td>\n\
-                    <td>" + transaction + "</td>\n\
-                    <td>\n\
-                        <a class='btn btn-sm btn-info pull-left check' id='show-record' onclick='showRecord(" + data[i].record_id + ")'><span class='glyphicon glyphicon-eye-open'></span>Consultar</a>\n\
-                    </td>\n\
-                </tr>";
+        html += `<tr>\n\
+                    <td> ${firstLetterToUpperCase(data[i].brand_name)} </td>
+                    <td> ${firstLetterToUpperCase(data[i].type_name)}</td>
+                    <td> ${firstLetterToUpperCase(data[i].details)} </td>
+                    <td>${data[i].quantity}</td>
+                    <td>
+                        <a class='btn btn-sm btn-info pull-left manage' id='show-add-modal' onclick='showAddModal(${data[i].record_id})'>Agregar</a>
+                        <a class='btn btn-sm btn-info pull-left manage' id='show-remove-modal' onclick='showRemoveModal(${data[i].record_id})'>Quitar</a> </td>
+                    <td>
+                        <a class='btn btn-sm btn-info pull-left check' id='show-record' onclick='showRecord(${data[i].record_id})'>Consultar</a>
+                    </td>
+                </tr>`;
     }
     $("#transactions-table-boddy").html(html);
 };
 
+function checkUser() {
+    const user = document.getElementById("user-name").value
+    const password = document.getElementById("user-password").value
+
+    if (user == "gaaleo" && password == "1234") {
+        displayContent('new-product-container')
+    } else {
+        alert("Usuario y/o contraseña incorrecta")
+    }
+}
 
 function firstLetterToUpperCase(string) {
 
