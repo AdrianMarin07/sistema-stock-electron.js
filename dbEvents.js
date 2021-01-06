@@ -21,6 +21,15 @@ function addEvents (ipcMain, db) {
           event.reply(args.purpose, {success: false, err});
         });
       })
+
+      ipcMain.on('db-select-record-by-product', (event,args)=> {
+        require('./src/controllers/record').select(db, args.product_id)
+        .then((data) => {
+          event.reply(args.purpose, {success: true, data});
+        }).catch((err) => {
+          event.reply(args.purpose, {success: false, err});
+        });
+      })
       
       ipcMain.on('db-select-one', (event,args)=> {
         const classObj = require('./src/models/'+ firstToUpperCase(args.table))
