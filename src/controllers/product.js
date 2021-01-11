@@ -1,4 +1,5 @@
 const querys = require("./querys");
+const recordControler = require("./record");
 
 const TABLE = "product";
 
@@ -48,7 +49,7 @@ exports.select = (db) => {
 
 exports.selectOne = (db, product) => {
   return new Promise((resolve, reject) => {
-    db.get(querys.selectOne(TABLE, KEYS), [product._id], (err, row) => {
+    db.get(querys.selectOne(TABLE, KEYS, INNER_JOINS), [product._id], (err, row) => {
       if (err) reject(err.message);
       resolve(row);
     });
@@ -61,7 +62,7 @@ exports.update = (db, product) => {
       querys.update(TABLE, KEYS),
       [product._detail, product._type._id, product._id],
       (err, row) => {
-        if (err) reject(err.message+ "pr");
+        if (err) reject(err.message);
         resolve(row);
       }
     );
@@ -80,3 +81,50 @@ exports.delete = (db, product) => {
     }); 
   });
 };
+
+exports.addToQuantity = (db, product, amount) => {
+  return new Promise((resolve, reject) => {
+    db.get(querys.selectOne(TABLE, KEYS, INNER_JOINS), [product._id], (err, product) => {
+      if (err) reject(err.message);
+      db.get(
+        querys.update(TABLE, [{table: "product", key: "quantity"}]),
+        [product.total + amount, product.product_id],
+        (err) => {
+          if (err) reject(err.message);
+          recordChangeOfQuantity(db, 0, resolve, reject, amount, product);
+        }
+      );
+    });
+  });
+}
+
+exports.substractFromQuantity = (db, product, amount) => {
+  return new Promise((resolve, reject) => {
+    db.get(querys.selectOne(TABLE, KEYS, INNER_JOINS), [product._id], (err, product) => {
+      if (err) reject(err.message);
+      if (product.total - amount < 0) reject("Error product quantity cannot be under zero");
+      db.get(
+        querys.update(TABLE, [{table: "product", key: "quantity"}]),
+        [product.total - amount, product.product_id],
+        (err, row) => {
+          if (err) reject(err.message);
+          recordChangeOfQuantity(db, 1, resolve, reject, amount, product);
+        }
+      );
+    });
+  });
+}
+
+
+function recordChangeOfQuantity(db,transaction, resolve, reject, amount, product) {
+  const now = new Date(Date.now());
+  const date = `${now.getDate()}-${now.getMonth() + 1}-${now.getFullYear()} ${now.getHours()}:${now.getMinutes()}:${now.getSeconds()}`;
+  const record = {_transaction: transaction, _date: date, _quantity: amount, _product: {_id: product.product_id}};
+  recordControler.insert(db, record)
+  .then((data)=> {
+    resolve({newAmount: product.total + amount});
+  })
+  .catch((err)=> {
+    reject(err);
+  })
+}
