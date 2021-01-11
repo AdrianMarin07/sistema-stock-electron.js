@@ -22,7 +22,7 @@
                     onclick="displayContent('manage-stock-container')"><img class="icon"
                         src="./resources/icons/130898.png">Administrar Stock</button>
                 <button class="menu-button" id="new" onclick="displayContent('user-validation-container')"><img
-                        class="icon" src="./resources/icons/130181.png">Añadir un Producto</button>
+                        class="icon" src="./resources/icons/plus-sign.png">Crear un Producto</button>
             </nav>
             <main class="display col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
                 <div class="content" id="request-stock-container">
@@ -70,27 +70,16 @@
                                 <h2 id="id-transaction-modal-header"></h2>
                             </div>
                             <div class="modal-body">
-                                
+                                <div class="alert" id="transaction-alert"></div>
+                                <input type="number" id="transaction-input">
                             </div>
                             <div class="modal-footer">
-                                <button id="submit-transaction" onclick="submitTransaction()"></button>
+                                <button id="submit-transaction" onclick="submitTransaction(0)"></button>
                                 <button id="close-transaction-modal" onclick="closeTransaction()">Cerrar</button>
                             </div>
                         </div>
                     </div>
 
-                    <div id="record-modal" class="modal">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h2 id="id-record-modal-header">Historial del producto: </h2>
-                            </div>
-                            <div class="modal-body">
-                            </div>
-                            <div class="modal-footer">
-                                <button id="close-record" onclick="closeRecord()">Cerrar</button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div class="content" id="user-validation-container">
                     <h2>Por favor, ingrese sus datos para acceder al formulario.</h2>
@@ -131,6 +120,18 @@
                                 <button id="save-product" onclick="saveProduct()">Guardar</button>
                                 <button id="close-confirmation" onclick="closeConfirmation()">Cerrar</button>
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="record-modal" class="modal">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h2 id="id-record-modal-header">Historial del producto: </h2>
+                        </div>
+                        <div class="modal-body">
+                        </div>
+                        <div class="modal-footer">
+                            <button id="close-record" onclick="closeRecord()">Cerrar</button>
                         </div>
                     </div>
                 </div>

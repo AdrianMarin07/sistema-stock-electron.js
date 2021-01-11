@@ -86,7 +86,7 @@ function select() {
     ipcRenderer.send('db-select', { table: 'record', purpose: "select" });
 
     ipcRenderer.on('select', (event, status) => {
-        status.success && console.log(status.data);
+        status.success;
     })
 }
 
@@ -109,7 +109,6 @@ ipcRenderer.on('fill-stock-table', (event, status) => {
     if (status.success) {
         printStockTable(status.data);
     }
-    console.log(status)
 });
 
 ipcRenderer.on('fill-transaction-table', (event, status) => {
@@ -125,7 +124,6 @@ ipcRenderer.on('fill-modal-header', (event, status) => {
         document.getElementById("id-record-modal-header").innerHTML = productHeader;
         document.getElementById("record-modal").style.display = "block";
     }
-    console.log(status)
 });
 
 function printStockTable(data) {
@@ -138,9 +136,9 @@ function printStockTable(data) {
                     <td> ${firstLetterToUpperCase(data[i].details)} </td>
                     <td> ${data[i].transaction_type == 0 ? "Salida" : "Entrada"} </td>
                     <td> ${data[i].date} </td>
-                    <td> ${data[i].quantity} </td>
+                    <td> ${data[i].total} </td>
                     <td>
-                        <a class='btn btn-sm btn-info pull-left check' id='show-product' onclick='showRecord(${data[i].record_id})'>Consultar</a>
+                        <a class='btn btn-sm btn-info pull-left check' id='show-product-${data[i].record_id}' onclick='showRecord(${data[i].record_id})'>Consultar</a>
                     </td>
                 </tr>`;
     }
@@ -155,17 +153,86 @@ function printTransactionTable(data) {
                     <td> ${firstLetterToUpperCase(data[i].brand_name)} </td>
                     <td> ${firstLetterToUpperCase(data[i].type_name)}</td>
                     <td> ${firstLetterToUpperCase(data[i].details)} </td>
-                    <td>${data[i].quantity}</td>
+                    <td> ${data[i].total}</td>
                     <td>
-                        <a class='btn btn-sm btn-info pull-left manage' id='show-add-modal' onclick='showAddModal(${data[i].record_id})'>Agregar</a>
-                        <a class='btn btn-sm btn-info pull-left manage' id='show-remove-modal' onclick='showRemoveModal(${data[i].record_id})'>Quitar</a> </td>
+                        <a class='btn btn-sm btn-info pull-left manage' id='show-add-modal-${data[i].record_id}' onclick='showTransactionModal(${data[i].record_id}, 0)'>Agregar</a>
+                        <a class='btn btn-sm btn-info pull-left manage' id='show-remove-modal-${data[i].record_id}' onclick='showTransactionModal(${data[i].record_id}, 1)'>Quitar</a> </td>
                     <td>
-                        <a class='btn btn-sm btn-info pull-left check' id='show-record' onclick='showRecord(${data[i].record_id})'>Consultar</a>
+                        <a class='btn btn-sm btn-info pull-left check' id='show-record-${data[i].record_id}' onclick='showRecord(${data[i].record_id})'>Consultar</a>
                     </td>
                 </tr>`;
     }
     $("#transactions-table-boddy").html(html);
 };
+
+function showTransactionModal(id, transaction) {
+
+    const parent = document.getElementById("show-record-"+id).parentElement.parentElement
+    let product = `${parent.childNodes[3].innerHTML} ${parent.childNodes[1].innerHTML} ${parent.childNodes[5].innerHTML}`
+
+    if (transaction == 0) {
+        $("#id-transaction-modal-header").html("Defina la cantidad que desea añadir al producto: " + product);
+
+        $("#submit-transaction").html("Agregar");
+    } else if (transaction == 1) {
+        $("#id-transaction-modal-header").html("Defina la cantidad que desea sustraer al producto: " + product);
+
+        $("#submit-transaction").html("Quitar");
+    }
+    $("#transaction-modal").fadeIn()
+}
+
+function closeTransaction() {
+    $("#transaction-modal").fadeOut()
+}
+
+function submitTransaction(referenciaTemporal) { //referenciaTemporal reemplaza temporalmente la respuesta del backend confirmando la respuesta al añadir
+
+    const transaction = $("#submit-transaction").html()
+    let amount = +$("#transaction-input").val()
+
+    if (referenciaTemporal == 0) {
+        if (Number.isInteger(amount) && amount > 0) {
+            if (transaction == "Agregar") {
+                $("#transaction-alert").html("¡Carga exitosa!")
+                $("#transaction-alert").fadeIn();
+                setTimeout(function () {
+                    $("#transaction-alert").hide()
+                }, 2500)
+                $("#transaction-input").val("");
+            } else if (transaction == "Quitar") {
+                $("#transaction-alert").html("¡Baja exitosa!")
+                $("#transaction-alert").fadeIn();
+                setTimeout(function () {
+                    $("#transaction-alert").hide()
+                }, 2500)
+                $("#transaction-input").val("");
+            }
+        } else {
+            $("#transaction-alert").html("Por favor, ingrese un número válido")
+            $("#transaction-alert").fadeIn();
+            setTimeout(function () {
+                $("#transaction-alert").hide()
+            }, 2500)
+            $("#transaction-input").val("");
+        }
+
+    } else {
+        if (transaction == "Agregar") {
+            $("#transaction-alert").html("Error en la carga del producto")
+            $("#transaction-alert").fadeIn();
+            setTimeout(function () {
+                $("#transaction-alert").hide()
+            }, 2500)
+        } else if (transaction == "Quitar") {
+            $("#transaction-alert").html("Error en la baja del producto")
+            $("#transaction-alert").fadeIn();
+            setTimeout(function () {
+                $("#transaction-alert").hide()
+            }, 2500)
+        }
+    }
+}
 
 function checkUser() {
     const user = document.getElementById("user-name").value
@@ -173,8 +240,11 @@ function checkUser() {
 
     if (user == "gaaleo" && password == "1234") {
         displayContent('new-product-container')
+        $("#user-name").val("");
+        $("#user-password").val("");
     } else {
         alert("Usuario y/o contraseña incorrecta")
+        $("#user-password").val("");
     }
 }
 
