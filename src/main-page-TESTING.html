@@ -25,6 +25,15 @@
                         class="icon" src="./resources/icons/plus-sign.png">Crear un Producto</button>
             </nav>
             <main class="display col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
+                <div class="content" id="home-container">
+                    <h1>Sistema de administración de Stock</h1>
+                    <h2>¡Bienvenido!</h2>
+
+                    <li>
+
+                    </li>
+
+                </div>
                 <div class="content" id="request-stock-container">
                     <h1>Consulta de Stock</h1>
 
@@ -71,10 +80,11 @@
                             </div>
                             <div class="modal-body">
                                 <div class="alert" id="transaction-alert"></div>
-                                <input type="number" id="transaction-input">
+                                    <input type="hidden" id="product-id">
+                                    <input type="number" id="transaction-input">
                             </div>
                             <div class="modal-footer">
-                                <button id="submit-transaction" onclick="submitTransaction(0)"></button>
+                                <button id="submit-transaction" onclick="submitTransaction()"></button>
                                 <button id="close-transaction-modal" onclick="closeTransaction()">Cerrar</button>
                             </div>
                         </div>
@@ -139,9 +149,9 @@
         </div>
     </div>
 
-<script>window.$ = window.jQuery = require('jquery');</script>
-<script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="./functions.js"></script>
+    <script>window.$ = window.jQuery = require('jquery');</script>
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="./functions.js"></script>
 </body>
 
 </html>

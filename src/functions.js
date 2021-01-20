@@ -8,6 +8,8 @@ function showRecord(data) {
 
 }
 
+
+
 function displayContent(content_name) {
     const names = [...document.querySelectorAll(".content")].map((node) => {
         return node.id;
@@ -54,7 +56,7 @@ function saveProduct() {
 function insert() {
     const brand = {
         id: 1,
-        name: 'tecno'
+        name: 'tersuave'
     };
 
     ipcRenderer.send('db-insert', { table: 'brand', data: brand, purpose: "none" });
@@ -67,6 +69,7 @@ function insert() {
     const product = {
         detail: "blanca 3L",
         id: 1,
+        quantity: 0,
         type
     }
     ipcRenderer.send('db-insert', { table: 'product', data: product, purpose: "none" });
@@ -86,7 +89,7 @@ function select() {
     ipcRenderer.send('db-select', { table: 'record', purpose: "select" });
 
     ipcRenderer.on('select', (event, status) => {
-        status.success;
+        status.success && console.log(status.data);
     })
 }
 
@@ -130,9 +133,9 @@ function printStockTable(data) {
 
     for (let i = 0; i < data.length; i++) {
         var html = '';
-        html += `<tr>\n\
-                    <td> ${firstLetterToUpperCase(data[i].brand_name)} </td>
-                    <td> ${firstLetterToUpperCase(data[i].type_name)} </td>
+        html += `<tr data-product-id="${data[i].fk_product}">\n\
+                    <td data-brand-id="${data[i].fk_brand}"> ${firstLetterToUpperCase(data[i].brand_name)} </td>
+                    <td data-type-id="${data[i].fk_type}"> ${firstLetterToUpperCase(data[i].type_name)} </td>
                     <td> ${firstLetterToUpperCase(data[i].details)} </td>
                     <td> ${data[i].transaction_type == 0 ? "Salida" : "Entrada"} </td>
                     <td> ${data[i].date} </td>
@@ -149,16 +152,16 @@ function printTransactionTable(data) {
 
     for (let i = 0; i < data.length; i++) {
         var html = '';
-        html += `<tr>\n\
-                    <td> ${firstLetterToUpperCase(data[i].brand_name)} </td>
-                    <td> ${firstLetterToUpperCase(data[i].type_name)}</td>
+        html += `<tr data-product-id="${data[i].fk_product}">\n\
+                    <td data-brand-id="${data[i].fk_brand}"> ${firstLetterToUpperCase(data[i].brand_name)} </td>
+                    <td data-type-id="${data[i].fk_type}"> ${firstLetterToUpperCase(data[i].type_name)}</td>
                     <td> ${firstLetterToUpperCase(data[i].details)} </td>
                     <td> ${data[i].total}</td>
                     <td>
-                        <a class='btn btn-sm btn-info pull-left manage' id='show-add-modal-${data[i].record_id}' onclick='showTransactionModal(${data[i].record_id}, 0)'>Agregar</a>
-                        <a class='btn btn-sm btn-info pull-left manage' id='show-remove-modal-${data[i].record_id}' onclick='showTransactionModal(${data[i].record_id}, 1)'>Quitar</a> </td>
+                        <a class='btn btn-sm btn-info pull-left manage' id='show-add-modal-${data[i].fk_product}' onclick='showTransactionModal(${data[i].fk_product}, 0)'>Agregar</a>
+                        <a class='btn btn-sm btn-info pull-left manage' id='show-remove-modal-${data[i].fk_product}' onclick='showTransactionModal(${data[i].fk_product}, 1)'>Quitar</a> </td>
                     <td>
-                        <a class='btn btn-sm btn-info pull-left check' id='show-record-${data[i].record_id}' onclick='showRecord(${data[i].record_id})'>Consultar</a>
+                        <a class='btn btn-sm btn-info pull-left check' id='show-record-${data[i].fk_product}' onclick='showRecord(${data[i].fk_product})'>Consultar</a>
                     </td>
                 </tr>`;
     }
@@ -167,7 +170,7 @@ function printTransactionTable(data) {
 
 function showTransactionModal(id, transaction) {
 
-    const parent = document.getElementById("show-record-"+id).parentElement.parentElement
+    const parent = document.getElementById("show-record-" + id).parentElement.parentElement
     let product = `${parent.childNodes[3].innerHTML} ${parent.childNodes[1].innerHTML} ${parent.childNodes[5].innerHTML}`
 
     if (transaction == 0) {
@@ -179,6 +182,7 @@ function showTransactionModal(id, transaction) {
 
         $("#submit-transaction").html("Quitar");
     }
+    $("#product-id").val(id);
     $("#transaction-modal").fadeIn()
 }
 
@@ -186,52 +190,61 @@ function closeTransaction() {
     $("#transaction-modal").fadeOut()
 }
 
-function submitTransaction(referenciaTemporal) { //referenciaTemporal reemplaza temporalmente la respuesta del backend confirmando la respuesta al añadir
 
+function submitTransaction() {
+    const amount = +$("#transaction-input").val()
     const transaction = $("#submit-transaction").html()
-    let amount = +$("#transaction-input").val()
 
-    if (referenciaTemporal == 0) {
-        if (Number.isInteger(amount) && amount > 0) {
-            if (transaction == "Agregar") {
-                $("#transaction-alert").html("¡Carga exitosa!")
-                $("#transaction-alert").fadeIn();
-                setTimeout(function () {
-                    $("#transaction-alert").hide()
-                }, 2500)
-                $("#transaction-input").val("");
-            } else if (transaction == "Quitar") {
-                $("#transaction-alert").html("¡Baja exitosa!")
-                $("#transaction-alert").fadeIn();
-                setTimeout(function () {
-                    $("#transaction-alert").hide()
-                }, 2500)
-                $("#transaction-input").val("");
-            }
-        } else {
-            $("#transaction-alert").html("Por favor, ingrese un número válido")
-            $("#transaction-alert").fadeIn();
-            setTimeout(function () {
-                $("#transaction-alert").hide()
-            }, 2500)
-            $("#transaction-input").val("");
+    if (Number.isInteger(amount) && amount > 0) {
+        const id = $("#product-id").val();
+        const columns = $(`tr[data-product-id="${id}"]`).children();
+        console.log(columns)
+        const brand = {
+            id: columns[0].dataset["brandId"],
+            name: columns[0].innerHTML
+        };
+        const type = {
+            name: columns[1].innerHTML,
+            id: columns[1].dataset["typeId"],
+            brand
+        }
+        const product = {
+            detail: columns[2].innerHTML,
+            id: id,
+            quantity: columns[3].innerHTML,
+            type
         }
 
-    } else {
         if (transaction == "Agregar") {
-            $("#transaction-alert").html("Error en la carga del producto")
-            $("#transaction-alert").fadeIn();
-            setTimeout(function () {
-                $("#transaction-alert").hide()
-            }, 2500)
-        } else if (transaction == "Quitar") {
-            $("#transaction-alert").html("Error en la baja del producto")
-            $("#transaction-alert").fadeIn();
-            setTimeout(function () {
-                $("#transaction-alert").hide()
-            }, 2500)
+            ipcRenderer.send("db-product-increase", { data: product, purpose: "add-quantity", amount })
+
         }
+    } else {
+
     }
+
+}
+
+ipcRenderer.on("add-quantity", (result) => {
+    if (result.success) {
+        fillAlert()
+    } else {
+        console.log(result.err);
+    }
+})
+
+
+function fillAlert() {
+    const transaction = $("#submit-transaction").html()
+    $("#transaction-alert").html(`¡${transaction == "Agregar" ? "Carga" : "Baja"} exitosa!`)
+    $("#transaction-input").val("");
+
+    //$("#transaction-alert").html(`Error en la ${transaction == "Agregar" ? "carga" : "baja"} del producto`)
+    $("#transaction-alert").fadeIn();
+    setTimeout(function () {
+        $("#transaction-alert").hide()
+    }, 2500)
+    //$("#transaction-alert").html("Por favor, ingrese un número válido");
 }
 
 function checkUser() {
