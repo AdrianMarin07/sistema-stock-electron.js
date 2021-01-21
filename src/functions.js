@@ -86,7 +86,7 @@ function select() {
     ipcRenderer.send('db-select', { table: 'brand', purpose: "select" });
     ipcRenderer.send('db-select', { table: 'type', purpose: "select" });
     ipcRenderer.send('db-select', { table: 'product', purpose: "select" });
-    ipcRenderer.send('db-select', { table: 'record', purpose: "select" });
+    ipcRenderer.send('db-select-record-by-product', { table: 'record', purpose: "select", product_id: 1});
 
     ipcRenderer.on('select', (event, status) => {
         status.success && console.log(status.data);
@@ -218,6 +218,9 @@ function submitTransaction() {
         if (transaction == "Agregar") {
             ipcRenderer.send("db-product-increase", { data: product, purpose: "add-quantity", amount })
 
+        } else if (transaction == "Quitar") {
+            ipcRenderer.send("db-product-decrease", { data: product, purpose: "decrease-quantity", amount })
+
         }
     } else {
 
@@ -225,9 +228,18 @@ function submitTransaction() {
 
 }
 
-ipcRenderer.on("add-quantity", (result) => {
+ipcRenderer.on("add-quantity", (event, result) => {
     if (result.success) {
-        fillAlert()
+        fillAlert();
+    } else {
+        console.log(result.err);
+    }
+})
+
+ipcRenderer.on("decrease-quantity", (event, result) => {
+    if (result.success) {
+        fillAlert();
+        ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-transaction-table' });
     } else {
         console.log(result.err);
     }

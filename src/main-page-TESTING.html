@@ -9,12 +9,12 @@
     <title>Página Principal</title>
 </head>
 
-<body>
+<body onload="displayContent('home-container')">
 
     <div class="group container-fluid min-vh-100">
         <div class="row min-vh-100">
             <nav class="menu col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                <figure><img class="img-fluid" src="./resources/images/logo.jpg"></figure>
+                <figure><img class="img-fluid" src="./resources/images/logo.jpg" onclick="displayContent('home-container')" title="Ir a la página principal"></figure>
                 <button class="menu-button" title="Revisa el stock de todos los productos" id="check"
                     onclick="displayContent('request-stock-container')"><img class="icon"
                         src="./resources/icons/25467.png">Consultar Stock</button>
@@ -28,11 +28,11 @@
                 <div class="content" id="home-container">
                     <h1>Sistema de administración de Stock</h1>
                     <h2>¡Bienvenido!</h2>
-
-                    <li>
-
-                    </li>
-
+                    <ul id="home-list">
+                        <li>En este sistema podrá consultar y alterar el stock actual de los productos, así como también dar de alta productos nuevos.</li>
+                        <li>Haga clic en uno de los botones del menú vertical de la izquierda para comenzar.</li>
+                        <li>Únicamente los usuarios registrados serán capaces de generar nuevos productos en el sistema.</li>
+                    </ul>
                 </div>
                 <div class="content" id="request-stock-container">
                     <h1>Consulta de Stock</h1>
@@ -80,8 +80,8 @@
                             </div>
                             <div class="modal-body">
                                 <div class="alert" id="transaction-alert"></div>
-                                    <input type="hidden" id="product-id">
-                                    <input type="number" id="transaction-input">
+                                <input type="hidden" id="product-id">
+                                <input type="number" id="transaction-input">
                             </div>
                             <div class="modal-footer">
                                 <button id="submit-transaction" onclick="submitTransaction()"></button>
