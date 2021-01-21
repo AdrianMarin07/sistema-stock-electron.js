@@ -198,7 +198,6 @@ function submitTransaction() {
     if (Number.isInteger(amount) && amount > 0) {
         const id = $("#product-id").val();
         const columns = $(`tr[data-product-id="${id}"]`).children();
-        console.log(columns)
         const brand = {
             id: columns[0].dataset["brandId"],
             name: columns[0].innerHTML
@@ -223,40 +222,43 @@ function submitTransaction() {
 
         }
     } else {
-
+        fillAlert("Por favor, ingrese un número válido");
     }
 
 }
 
 ipcRenderer.on("add-quantity", (event, result) => {
     if (result.success) {
-        fillAlert();
+        fillAlert(`¡Carga exitosa!`);
+        ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-transaction-table' });
     } else {
+        fillAlert(result.err)        
         console.log(result.err);
     }
 })
 
 ipcRenderer.on("decrease-quantity", (event, result) => {
     if (result.success) {
-        fillAlert();
+        fillAlert(`¡Baja exitosa!`);
         ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-transaction-table' });
     } else {
+        if(result.err.match(/^(Error product qua)/)){
+            fillAlert("Error en la baja. El monto ingresado supera el valor actual del stock")
+        } else {
+            fillAlert(result.err);
+        }
         console.log(result.err);
     }
 })
 
 
-function fillAlert() {
-    const transaction = $("#submit-transaction").html()
-    $("#transaction-alert").html(`¡${transaction == "Agregar" ? "Carga" : "Baja"} exitosa!`)
+function fillAlert(message) {
+    $("#transaction-alert").html(message)
     $("#transaction-input").val("");
-
-    //$("#transaction-alert").html(`Error en la ${transaction == "Agregar" ? "carga" : "baja"} del producto`)
     $("#transaction-alert").fadeIn();
     setTimeout(function () {
         $("#transaction-alert").hide()
     }, 2500)
-    //$("#transaction-alert").html("Por favor, ingrese un número válido");
 }
 
 function checkUser() {
