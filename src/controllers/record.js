@@ -34,7 +34,7 @@ exports.insert = (db, record) => {
           record._product._id,
         ],
         (err) => {
-          if (err) reject("Error in Database: " + err.message);
+          if (err) return reject("Error in Database: " + err.message);
         }
       );
 
@@ -42,7 +42,7 @@ exports.insert = (db, record) => {
         querys.selectLastAdded(TABLE, KEYS, INNER_JOINS),
         [],
         (err, row) => {
-          if (err) reject("Error in Database: " + err.message);
+          if (err) return reject("Error in Database: " + err.message);
           resolve(row);
         }
       );
@@ -53,7 +53,7 @@ exports.insert = (db, record) => {
 exports.select = (db, id_product) => {
   return new Promise((resolve, reject) => {
     db.all(querys.select(TABLE, KEYS, INNER_JOINS) + " WHERE fk_product=?", [id_product], (err, rows) => {
-      if (err) reject(err.message);
+      if (err) return reject(err.message);
 
       resolve(rows);
     });
@@ -63,7 +63,7 @@ exports.select = (db, id_product) => {
 exports.selectOne = (db, record) => {
   return new Promise((resolve, reject) => {
     db.get(querys.selectOne(TABLE, KEYS, INNER_JOINS), [record._id], (err, row) => {
-      if (err) reject(err.message);
+      if (err) return reject(err.message);
       resolve(row);
     });
   });
@@ -81,7 +81,7 @@ exports.update = (db, record) => {
         record._id,
       ],
       (err, row) => {
-        if (err) reject(err.message);
+        if (err) return reject(err.message);
         resolve(row);
       }
     );
@@ -91,7 +91,7 @@ exports.update = (db, record) => {
 exports.delete = (db, record) => {
   return new Promise((resolve, reject) => {
     db.get(querys.delete(TABLE), [record._id], (err, row) => {
-      if (err) reject(err.message);
+      if (err) return reject(err.message);
       resolve(row);
     });
   });

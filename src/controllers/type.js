@@ -19,11 +19,11 @@ exports.insert = (db, type) => {
   return new Promise((resolve, reject) => {
     db.serialize(() => {
         db.run(querys.insert(TABLE, KEYS), [type._name, type._brand._id], (err, row) => {
-            if (err) reject("Error in Database: " + err.message);
+            if (err) return reject("Error in Database: " + err.message);
           });
 
         db.get(querys.selectLastAdded(TABLE, KEYS, INNER_JOINS), [], (err, row) => {
-            if ( err ) reject("Error in Database: " + err.message);
+            if ( err ) return reject("Error in Database: " + err.message);
             resolve(row)
         })
     });
@@ -33,7 +33,7 @@ exports.insert = (db, type) => {
 exports.select = (db) => {
     return new Promise((resolve, reject) => {
         db.all(querys.select(TABLE, KEYS, INNER_JOINS), [], (err, rows) => {
-            if(err) reject(err.message)
+            if(err) return reject(err.message)
 
             resolve(rows)
         })
@@ -44,7 +44,7 @@ exports.select = (db) => {
 exports.selectOne = (db, type) => {
     return new Promise((resolve, reject) => {
         db.get(querys.selectOne(TABLE, KEYS, INNER_JOINS), [type._id], (err, row) => {
-            if(err) reject(err.message)
+            if(err) return reject(err.message)
             resolve(row)
         })
     })
@@ -53,7 +53,7 @@ exports.selectOne = (db, type) => {
 exports.update = (db, type) => {
     return new Promise((resolve, reject) => {
         db.get(querys.update(TABLE, KEYS), [type._name, type._brand._id, type._id], (err, row) => {
-            if(err) reject(err.message)
+            if(err) return reject(err.message)
             resolve(row)
         })
     })
@@ -62,10 +62,10 @@ exports.update = (db, type) => {
 exports.delete = (db, type) => {
     return new Promise((resolve, reject) => {    db.serialize(() => {
         db.get(querys.verifyExistence('product', 'fk_type'), [type._id], (err, row) => {
-            if (err)return reject(err.message);
+            if (err) return reject(err.message);
             if (row) return reject('There are products with this type as a foreign key');
             db.get(querys.delete(TABLE), [type._id], (err, row) => {
-              if (err) reject(err.message);
+              if (err) return reject(err.message);
               resolve(row);
             });
           }); 
