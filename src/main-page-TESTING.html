@@ -2,156 +2,176 @@
 <html lang="es">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="styles/style.css">
-    <title>Página Principal</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="styles/style.css">
+  <title>Página Principal</title>
 </head>
 
 <body onload="displayContent('home-container')">
 
-    <div class="group container-fluid min-vh-100">
-        <div class="row min-vh-100">
-            <nav class="menu col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
-                <figure><img class="img-fluid" src="./resources/images/logo.jpg" onclick="displayContent('home-container')" title="Ir a la página principal"></figure>
-                <button class="menu-button" title="Revisa el stock de todos los productos" id="check"
-                    onclick="displayContent('request-stock-container')"><img class="icon"
-                        src="./resources/icons/25467.png">Consultar Stock</button>
-                <button class="menu-button" title="Añada o sustraiga productos al stock" id="transactions"
-                    onclick="displayContent('manage-stock-container')"><img class="icon"
-                        src="./resources/icons/130898.png">Administrar Stock</button>
-                <button class="menu-button" id="new" onclick="displayContent('user-validation-container')"><img
-                        class="icon" src="./resources/icons/plus-sign.png">Crear un Producto</button>
-            </nav>
-            <main class="display col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
-                <div class="content" id="home-container">
-                    <h1>Sistema de administración de Stock</h1>
-                    <h2>¡Bienvenido!</h2>
-                    <ul id="home-list">
-                        <li>En este sistema podrá consultar y alterar el stock actual de los productos, así como también dar de alta productos nuevos.</li>
-                        <li>Haga clic en uno de los botones del menú vertical de la izquierda para comenzar.</li>
-                        <li>Únicamente los usuarios registrados serán capaces de generar nuevos productos en el sistema.</li>
-                    </ul>
-                </div>
-                <div class="content" id="request-stock-container">
-                    <h1>Consulta de Stock</h1>
-
-                    <table class="table table-bordered table-hover table-condensed" id="stock-table">
-                        <thead>
-                            <tr>
-                                <th>Marca</th>
-                                <th>Tipo</th>
-                                <th>Detalle</th>
-                                <th>Último Movimiento</th>
-                                <th>Fecha y Hora</th>
-                                <th>Cantidad Actual</th>
-                                <th>Ver Historial</th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="stock-table-boddy">
-                        </tbody>
-                    </table>
-                </div>
-                <div class="content" id="manage-stock-container">
-                    <h1>Administrador del Stock</h1>
-
-                    <table class="table table-bordered table-hover table-condensed" id="transactions-table">
-                        <thead>
-                            <tr>
-                                <th>Marca</th>
-                                <th>Tipo</th>
-                                <th>Detalle</th>
-                                <th>Cantidad Actual</th>
-                                <th>Movimiento</th>
-                                <th>Historial</th>
-                            </tr>
-                        </thead>
-
-                        <tbody id="transactions-table-boddy">
-                        </tbody>
-                    </table>
-
-                    <div id="transaction-modal" class="modal">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h2 id="id-transaction-modal-header"></h2>
-                            </div>
-                            <div class="modal-body">
-                                <div class="alert" id="transaction-alert"></div>
-                                <input type="hidden" id="product-id">
-                                <input type="number" id="transaction-input">
-                            </div>
-                            <div class="modal-footer">
-                                <button id="submit-transaction" onclick="submitTransaction()"></button>
-                                <button id="close-transaction-modal" onclick="closeTransaction()">Cerrar</button>
-                            </div>
-                        </div>
-                    </div>
-
-                </div>
-                <div class="content" id="user-validation-container">
-                    <h2>Por favor, ingrese sus datos para acceder al formulario.</h2>
-                    <form>
-                        <label for="user-name">Nombre de Usuario</label>
-                        <input type="text" id="user-name" placeholder="Usuario...">
-                        <label for="user-password">Contraseña</label>
-                        <input type="password" id="user-password" placeholder="Contraseña...">
-                        <button type="button" id="log-in" onclick="checkUser()">Ingresar</button>
-                    </form>
-                </div>
-                <div class="content" id="new-product-container">
-                    <form>
-                        <h3>Seleccione una marca existente o bien ingrese una nueva:</h3>
-
-                        <label>Marca del producto: </label><select id="existing-brand">
-                            <option hidden disabled selected value> -- Seleccione una opción -- </option>
-                        </select>
-                        <input type="text" id="new-brand" placeholder="Nueva marca...">
-                        <h3>Seleccione un tipo de producto existente o bien ingrese uno nuevo:</h3>
-                        <label>Tipo de producto: </label><select id="existing-type">
-                            <option hidden disabled selected value> -- Seleccione una opción -- </option>
-                        </select>
-                        <input type="text" id="new-product-type" placeholder="Nuevo producto...">
-                        <h3>Ingrese los detalles específicos del producto:</h3>
-                        <textarea name="product-details" id="product-details" cols="70" rows="10"
-                            placeholder="Detalles del producto..."></textarea>
-                        <button type="button" id="save-check" onclick="checkConfirmation()">Guardar</button>
-                    </form>
-                    <div id="confirmation-modal" class="modal">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h2>¿Realmente desea añadir este producto a la lista de Stock?</h2>
-                            </div>
-                            <div class="modal-body">
-                            </div>
-                            <div class="modal-footer">
-                                <button id="save-product" onclick="saveProduct()">Guardar</button>
-                                <button id="close-confirmation" onclick="closeConfirmation()">Cerrar</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="record-modal" class="modal">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h2 id="id-record-modal-header">Historial del producto: </h2>
-                        </div>
-                        <div class="modal-body">
-                        </div>
-                        <div class="modal-footer">
-                            <button id="close-record" onclick="closeRecord()">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </main>
+  <div class="group container-fluid min-vh-100">
+    <div class="row min-vh-100">
+      <nav class="menu col-12 col-sm-2 col-md-2 col-lg-2 col-xl-2">
+        <figure><img class="img-fluid" src="./resources/images/logo.jpg" onclick="displayContent('home-container')"
+            title="Ir a la página principal"></figure>
+        <button class="menu-button" title="Revisa el stock de todos los productos" id="check"
+          onclick="displayContent('request-stock-container')"><img class="icon"
+            src="./resources/icons/25467.png">Consultar Stock</button>
+        <button class="menu-button" title="Añada o sustraiga productos al stock" id="transactions"
+          onclick="displayContent('manage-stock-container')"><img class="icon"
+            src="./resources/icons/130898.png">Administrar Stock</button>
+        <button class="menu-button" id="new" onclick="displayContent('user-validation-container')"><img class="icon"
+            src="./resources/icons/plus-sign.png">Crear un Producto</button>
+      </nav>
+      <main class="display col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
+        <div class="content" id="home-container">
+          <h1>Sistema de administración de Stock</h1>
+          <h2>¡Bienvenido!</h2>
+          <ul id="home-list">
+            <li>En este sistema podrá consultar y alterar el stock actual de los productos, así como también dar de alta
+              productos nuevos.</li>
+            <li>Haga clic en uno de los botones del menú vertical de la izquierda para comenzar.</li>
+            <li>Únicamente los usuarios registrados serán capaces de generar nuevos productos en el sistema.</li>
+          </ul>
         </div>
-    </div>
+        <div class="content" id="request-stock-container">
+          <h1>Consulta de Stock</h1>
 
-    <script>window.$ = window.jQuery = require('jquery');</script>
-    <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="./functions.js"></script>
+          <table class="table table-bordered table-hover table-condensed" id="stock-table">
+            <thead>
+              <tr>
+                <th>Marca</th>
+                <th>Tipo</th>
+                <th>Detalle</th>
+                <th>Último Movimiento</th>
+                <th>Fecha y Hora</th>
+                <th>Cantidad Actual</th>
+                <th>Ver Historial</th>
+              </tr>
+            </thead>
+
+            <tbody id="stock-table-boddy">
+            </tbody>
+          </table>
+        </div>
+        <div class="content" id="manage-stock-container">
+          <h1>Administrador del Stock</h1>
+
+          <table class="table table-bordered table-hover table-condensed" id="transactions-table">
+            <thead>
+              <tr>
+                <th>Marca</th>
+                <th>Tipo</th>
+                <th>Detalle</th>
+                <th>Cantidad Actual</th>
+                <th>Movimiento</th>
+                <th>Historial</th>
+              </tr>
+            </thead>
+
+            <tbody id="transactions-table-boddy">
+            </tbody>
+          </table>
+          <div id="transaction-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="transactionModal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h2 id="id-transaction-modal-header"></h2>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <div class="alert" id="transaction-alert"></div>
+                  <input type="hidden" style="display: none;" id="product-id">
+                  <input class="form-control modal-input" type="number" id="transaction-input">
+                </div>
+                <div class="modal-footer">
+                  <button id="submit-transaction" class="btn btn-primary" onclick="submitTransaction()"></button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="content" id="user-validation-container">
+          <h2>Por favor, ingrese sus datos para acceder al formulario.</h2>
+          <form>
+            <label for="user-name">Nombre de Usuario</label>
+            <input type="text" id="user-name" placeholder="Usuario...">
+            <label for="user-password">Contraseña</label>
+            <input type="password" id="user-password" placeholder="Contraseña...">
+            <button type="button" id="log-in" onclick="checkUser()">Ingresar</button>
+          </form>
+        </div>
+        <div class="content" id="new-product-container">
+          <form>
+            <h3>Seleccione una marca existente o bien ingrese una nueva:</h3>
+
+            <label>Marca del producto: </label><select id="existing-brand">
+              <option hidden disabled selected value> -- Seleccione una opción -- </option>
+            </select>
+            <input type="text" id="new-brand" placeholder="Nueva marca...">
+            <h3>Seleccione un tipo de producto existente o bien ingrese uno nuevo:</h3>
+            <label>Tipo de producto: </label><select id="existing-type">
+              <option hidden disabled selected value> -- Seleccione una opción -- </option>
+            </select>
+            <input type="text" id="new-product-type" placeholder="Nuevo producto...">
+            <h3>Ingrese los detalles específicos del producto:</h3>
+            <textarea name="product-details" id="product-details" cols="70" rows="10"
+              placeholder="Detalles del producto..."></textarea>
+            <button type="button" id="save-check" onclick="checkConfirmation()">Guardar</button>
+          </form>
+          <div id="confirmation-modal" class="modal fade" tabindex="-1" role="dialog"
+            aria-labelledby="confirmationModal" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h2>¿Realmente desea añadir este producto a la lista de Stock?</h2>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                </div>
+                <div class="modal-footer">
+                  <button id="save-product" onclick="saveProduct()">Guardar</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal fade" id="history-modal" tabindex="-1" role="dialog" aria-labelledby="historyModal"
+          aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2 class="modal-title" id="exampleModalLabel">Historial del Producto</h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>window.$ = window.jQuery = require('jquery');</script>
+  <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="./generalFunctions.js"></script>
+  <script src="./manageTransactions.js"></script>
+  <script src="./testQuerys.js"></script>
 </body>
 
 </html>
