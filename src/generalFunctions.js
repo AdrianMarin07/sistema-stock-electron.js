@@ -41,7 +41,7 @@ function printStockTable(data) {
                     <td> ${data[i].date} </td>
                     <td> ${data[i].total} </td>
                     <td>
-                        <a class='btn btn-sm btn-info pull-left check' id='show-product-${data[i].record_id}' onclick='showRecord(${data[i].record_id})'>Consultar</a>
+                        <button class='btn btn-sm btn-info pull-left check' id='show-product-${data[i].fk_product}' onclick='showRecord(${data[i].fk_product})'>Consultar</button>
                     </td>
                 </tr>`;
     }
@@ -57,10 +57,10 @@ function printTransactionTable(data) {
                     <td> ${firstLetterToUpperCase(data[i].details)} </td>
                     <td> ${data[i].total}</td>
                     <td>
-                        <a class='btn btn-sm btn-info pull-left manage' id='show-add-modal-${data[i].fk_product}' onclick='showTransactionModal(${data[i].fk_product}, 0)'>Agregar</a>
-                        <a class='btn btn-sm btn-info pull-left manage' id='show-remove-modal-${data[i].fk_product}' onclick='showTransactionModal(${data[i].fk_product}, 1)'>Quitar</a> </td>
+                        <button class='btn btn-sm btn-info pull-left manage' id='show-add-modal-${data[i].fk_product}' onclick='showTransactionModal(${data[i].fk_product}, 0)'>Agregar</button>
+                        <button class='btn btn-sm btn-info pull-left manage' id='show-remove-modal-${data[i].fk_product}' onclick='showTransactionModal(${data[i].fk_product}, 1)'>Quitar</button> </td>
                     <td>
-                        <a class='btn btn-sm btn-info pull-left check' id='show-record-${data[i].fk_product}' onclick='showRecord(${data[i].fk_product})'>Consultar</a>
+                        <button class='btn btn-sm btn-info pull-left check' id='show-record-${data[i].fk_product}' onclick='showRecord(${data[i].fk_product})'>Consultar</button>
                     </td>
                 </tr>`;
     }
@@ -120,5 +120,31 @@ function firstLetterToUpperCase(string) {
     } else {
         return string.charAt(0).toUpperCase() + string.slice(1);
     }
+}
+
+function showRecord(id) {
+    ipcRenderer.send("db-select-record-by-product",{product_id: id, purpose: "fillRecordModal"});
+}
+
+ipcRenderer.on("fillRecordModal", (event, data)=>{
+    if (data.success) {
+        fillRecordModal(data.data);
+    } else {
+        console.log(data.err)
+    }
+})
+
+function fillRecordModal(data){
+    let html = "";
+    data.forEach((record)=> {
+        html += 
+        `<tr>
+         <td>${record.transaction_type == 0 ? "Alta" : "Baja"}</td>
+         <td>${record.date}</td>
+         <td>${record.quantity}</td>
+         </tr>`;
+    })
+    $("#historyTableBody").html(html);
+    $("#history-modal").modal("show");
 }
 
