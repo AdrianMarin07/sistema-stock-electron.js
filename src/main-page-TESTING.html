@@ -37,7 +37,19 @@
           </ul>
         </div>
         <div class="content" id="request-stock-container">
-          <h1>Consulta de Stock</h1>
+            <h1>Consulta de Stock</h1>
+            <div class="col-12">
+                <div class="row">
+                    <div class="brandBar col-6">
+                        <input type="text" id="checkBrandInput" class="searchInput" onkeyup="searchInTransaction('check','checkBrandInput')" placeholder="Buscar por marca..."
+                            title="Ingrese el nombre de una marca">
+                    </div>
+                    <div class="typeBar col-6">
+                        <input type="text" id="checkTypeInput" class="searchInput" onkeyup="searchInTransaction('check','checkTypeInput')" placeholder="Buscar por tipo..."
+                            title="Ingrese un tipo de producto">
+                    </div>
+                </div>
+            </div>
 
           <table class="table table-bordered table-hover table-condensed" id="stock-table">
             <thead>
@@ -57,7 +69,19 @@
           </table>
         </div>
         <div class="content" id="manage-stock-container">
-          <h1>Administrador del Stock</h1>
+            <h1>Administrador del Stock</h1>
+            <div class="col-12">
+                <div class="row">
+                    <div class="brandBar col-6">
+                        <input type="text" id="transactionBrandInput" class="searchInput" onkeyup="searchInTransaction('transaction','transactionBrandInput')" placeholder="Buscar por marca..."
+                            title="Ingrese el nombre de una marca">
+                    </div>
+                    <div class="typeBar col-6">
+                        <input type="text" id="transactionTypeInput" class="searchInput" onkeyup="searchInTransaction('transaction','transactionTypeInput')" placeholder="Buscar por tipo..."
+                            title="Ingrese un tipo de producto">
+                    </div>
+                </div>
+            </div>
 
           <table class="table table-bordered table-hover table-condensed" id="transactions-table">
             <thead>

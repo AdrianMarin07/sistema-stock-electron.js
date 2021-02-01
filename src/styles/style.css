@@ -104,3 +104,19 @@ background-color: #d1d1d1;
 .img-fluid {
   cursor: pointer;
 }
+
+.searchInput {
+  width: 100%;
+  font-size: 16px;
+  padding: 12px 20px;
+  border: 1px solid #ddd;
+  margin-bottom: 12px;
+}
+
+.brandBar{
+  padding: 0px 5px 0px 0px;
+}
+
+.typeBar{
+  padding: 0px 0px 0px 5px;
+}

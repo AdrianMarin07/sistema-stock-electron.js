@@ -85,3 +85,50 @@ function fillTransactionAlert(message) {
         $("#transaction-alert").hide()
     }, 2500)
 }
+
+function searchInTransaction(origin, id) {
+    let body, tr, i;
+    let inputOrigin, filterOrigin, tdOrigin, txtValueOrigin;
+    let inputPaired, filterPaired, tdPaired, txtValuePaired;
+    inputOrigin = document.getElementById(id);
+    filterOrigin = inputOrigin.value.toUpperCase();
+    switch (id) {
+        case "transactionTypeInput":
+            inputPaired = document.getElementById("transactionBrandInput");
+            break;
+        case "transactionBrandInput":
+            inputPaired = document.getElementById("transactionTypeInput");
+            break;
+        case "checkTypeInput":
+            inputPaired = document.getElementById("checkBrandInput");
+            break;
+        case "checkBrandInput":
+            inputPaired = document.getElementById("checkTypeInput");
+            break;
+        default: 
+        break;
+    }
+    filterPaired = inputPaired.value.toUpperCase();
+    if (origin == "check") {
+        body = document.getElementById("stock-table-boddy");
+    } else if (origin == "transaction") {
+        body = document.getElementById("transactions-table-boddy");
+    }
+    tr = body.getElementsByTagName("TR");
+    for (i = 0; i < tr.length; i++) {
+        tdOrigin = tr[i].getElementsByTagName("td")[id === "checkTypeInput" || id === "transactionTypeInput" ? 1 : 0];
+        tdPaired = tr[i].getElementsByTagName("td")[id === "checkBrandInput" || id === "transactionBrandInput" ? 1 : 0];
+        txtValueOrigin = tdOrigin.textContent || tdOrigin.innerText;
+        txtValuePaired = tdPaired.textContent || tdPaired.innerText;
+        //console.log(txtValueOrigin+ " " +  txtValuePaired);
+        //console.log(typeof filterOrigin+ " " + typeof filterPaired);
+        
+        if (
+        txtValueOrigin.trim().toUpperCase().match(filterOrigin === "" ? new RegExp(/^(\w+\S+)$/) : new RegExp(`^(${filterOrigin})`)) 
+        && txtValuePaired.trim().toUpperCase().match(filterPaired === "" ? new RegExp(/^(\w+\S+)$/) : new RegExp(`^(${filterPaired})`))) {
+            tr[i].style.display = "";
+        } else {
+            tr[i].style.display = "none";
+        }
+    }
+}
