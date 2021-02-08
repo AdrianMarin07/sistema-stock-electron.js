@@ -24,4 +24,13 @@ module.exports =
     quantity int(3),
     fk_product int(11) NOT NULL
   );
+
+  CREATE TABLE users (
+    id INTEGER PRIMARY KEY,
+    name varchar(20) NOT NULL,
+    last_name varchar(20) NOT NULL,
+    email varchar(20),
+    user varchar(30) NOT NULL,
+    password varchar(50) NOT NULL
+  );
   `;
