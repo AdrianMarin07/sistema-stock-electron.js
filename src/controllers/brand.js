@@ -61,11 +61,3 @@ exports.delete = (db, brand) => {
     }); 
   });
 };
-
-exports.search = (db, patterns) => {
-  db.all(querys.select(TABLE, KEYS, patterns), [], (err, rows) => {
-    if (err) return reject(err.message);
-
-    resolve(rows);
-  });
-}
