@@ -31,6 +31,7 @@ module.exports =
     last_name varchar(20) NOT NULL,
     email varchar(20),
     user varchar(30) NOT NULL,
-    password varchar(50) NOT NULL
+    password varchar(50) NOT NULL,
+    type varchar(20) NOT NULL
   );
   `;
