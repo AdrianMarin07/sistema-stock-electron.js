@@ -7,15 +7,18 @@ const KEYS = [
   { table: "product", key: "id", alias: "product_id" },
   { table: "product", key: "details" },
   { table: "product", key: "quantity", alias: "total"},
+  { table: "product", key: "price"},
+  { table: "product", key: "barcode"},
+  { table: "product", key: "min_quantity"},
   { table: "product", key: "fk_type" },
   { table: "type", key: "name", alias: "type_name" },
   { table: "type", key: "fk_brand" },
-  { table: "brand", key: "name", alias: "brand_name" },
+  { table: "brand", key: "name", alias: "brand_name" }
 ];
 
 const INNER_JOINS = [
   { t1: "product", k1: "fk_type", t2: "type", k2: "id" },
-  { t1: "type", k1: "fk_brand", t2: "brand", k2: "id" },
+  { t1: "type", k1: "fk_brand", t2: "brand", k2: "id" }
 ];
 
 exports.insert = (db, product) => {
