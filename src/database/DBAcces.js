@@ -1,5 +1,4 @@
 const fs = require("fs");
-const { debuglog } = require("util");
 const DBPath = "./testDB";
 const sqlite3 = require("sqlite3").verbose();
 
