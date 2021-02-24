@@ -1,15 +1,17 @@
 const querys = require("./querys");
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-const TABLE = "user";
+const TABLE = "users";
 
 const KEYS = [
-  { table: "user", key: "id", alias: "user_id" },
-  { table: "user", key: "name" },
-  { table: "user", key: "last_name" },
-  { table: "user", key: "email" },
-  { table: "user", key: "user" },
-  { table: "user", key: "password" },
-  { table: "user", key: "type" },
+  { table: "users", key: "id", alias: "user_id" },
+  { table: "users", key: "name" },
+  { table: "users", key: "last_name" },
+  { table: "users", key: "email" },
+  { table: "users", key: "user" },
+  { table: "users", key: "password" },
+  { table: "users", key: "type" },
 ];
 
 exports.insert = (db, user) => {
@@ -36,7 +38,14 @@ exports.insert = (db, user) => {
             }
           );
 
-          db.get(querys.selectLastAdded(TABLE, KEYS), [], (err, row) => {
+          db.get(querys.selectLastAdded(TABLE, [
+            KEYS[0],
+            KEYS[1],
+            KEYS[2],
+            KEYS[3],
+            KEYS[4],
+            KEYS[6],
+          ]), [], (err, row) => {
             if (err) return reject("Error in Database: " + err.message);
             resolve(row);
           });
@@ -111,4 +120,32 @@ exports.delete = (db, user) => {
   });
 };
 
+exports.login = (db, user, privateKey) => {
+  return new Promise((resolve, reject)=>{
+    db.get(querys.select(TABLE,KEYS) + " WHERE user=?",[user._user], (err, row)=> {
+      if(err) return reject(err.message)
+      if(!row) return reject("Invalid user or password")
+      bcrypt.compare(user._password, row.password,(err,result) => {
+        if(err) return reject(err.message+"apa")
+        if(result) {
+          row.password = "";
+          jwt.sign(row, privateKey, function(err, token) {
+            if(err) return reject(err.message)
+            resolve(token);
+          });
+        } else {
+          reject("Invalid user or password")
+        }
+    })
+    })
+  })
+}
 
+exports.validateJWT = (jsonwebtoken, privateKey) => {
+  return new Promise((resolve, reject) => {
+    jwt.verify(jsonwebtoken, privateKey, (err, decoded) => {
+      if (err) return reject(err.message)
+      resolve(decoded)
+    })
+  })
+}
