@@ -6,6 +6,9 @@ class Product {
         this.type = new Type(data.type);
         this.quantity = data.quantity;
         this.detail = data.detail;
+        this.price = data.price;
+        this.barcode = data.barcode;
+        this.minQuantity = data.minQuantity;
     }
 
     get _id() {
@@ -24,6 +27,17 @@ class Product {
         return this.quantity;
     }
 
+    get _price() {
+        return this.price;
+    }
+
+    get _barcode() {
+        return this.barcode;
+    }
+
+    get _minQuantity() {
+        return this.minQuantity;
+    }
 }
 
 module.exports = Product;
