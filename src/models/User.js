@@ -5,7 +5,7 @@ class User {
         this.lastName = data.lastName;
         if (data.eMail) this.eMail = data.eMail;
         this.user = data.user;
-        this.password = data.pasword;
+        this.password = data.password;
         this.type = data.type;
     }
 
