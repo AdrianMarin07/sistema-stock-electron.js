@@ -26,7 +26,7 @@ exports.insert = (db, product) => {
     db.serialize(() => {
       db.run(
         querys.insert(TABLE, KEYS),
-        [product._detail, product._quantity,product._type._id],
+        [product._detail, product._quantity, product._price, product._barcode, product._minQuantity, product._type._id],
         (err) => {
           if (err) return reject("Error in Database: " + err.message);
         }
@@ -63,7 +63,7 @@ exports.update = (db, product) => {
   return new Promise((resolve, reject) => {
     db.get(
       querys.update(TABLE, KEYS),
-      [product._detail, product._type._id, product._id],
+      [product._detail, product._quantity, product._price, product._barcode, product._minQuantity, product._type._id],
       (err, row) => {
         if (err) return reject(err.message);
         resolve(row);
