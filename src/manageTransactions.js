@@ -2,14 +2,12 @@ function showTransactionModal(id, transaction) {
 
     const parent = document.getElementById("show-record-" + id).parentElement.parentElement
     let product = `${parent.childNodes[3].innerHTML} ${parent.childNodes[1].innerHTML} ${parent.childNodes[5].innerHTML}`
-
+    $("#id-transaction-modal-header").html(product);
     if (transaction == 0) {
-        $("#id-transaction-modal-header").html("Defina la cantidad que desea añadir al producto: " + product);
-
+        $("#transaction-modal-label").html("Defina la cantidad que desea añadir al producto");
         $("#submit-transaction").html("Agregar");
     } else if (transaction == 1) {
-        $("#id-transaction-modal-header").html("Defina la cantidad que desea sustraer al producto: " + product);
-
+        $("#transaction-modal-label").html("Defina la cantidad que desea sustraer al producto");
         $("#submit-transaction").html("Quitar");
     }
     $("#product-id").val(id);
