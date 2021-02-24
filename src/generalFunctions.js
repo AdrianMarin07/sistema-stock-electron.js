@@ -25,6 +25,12 @@ function fillContent(content_name) {
         case "manage-stock-container":
             ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-transaction-table' });
             break;
+        case "manage-product-container":
+            ipcRenderer.send('db-select', { table: 'product', purpose: 'fill-user-table' });
+            break;
+        case "manage-user-container":
+            ipcRenderer.send('db-select', { table: 'users', purpose: 'fill-user-table' });
+            break;            
         default:
             break;
     }
@@ -37,6 +43,8 @@ function printStockTable(data) {
                     <td data-brand-id="${data[i].fk_brand}"> ${firstLetterToUpperCase(data[i].brand_name)} </td>
                     <td data-type-id="${data[i].fk_type}"> ${firstLetterToUpperCase(data[i].type_name)} </td>
                     <td> ${firstLetterToUpperCase(data[i].details)} </td>
+                    <td></td>
+                    <td></td>
                     <td> ${data[i].transaction_type == 0 ? "Salida" : "Entrada"} </td>
                     <td> ${data[i].date} </td>
                     <td> ${data[i].total} </td>
@@ -55,6 +63,8 @@ function printTransactionTable(data) {
                     <td data-brand-id="${data[i].fk_brand}"> ${firstLetterToUpperCase(data[i].brand_name)} </td>
                     <td data-type-id="${data[i].fk_type}"> ${firstLetterToUpperCase(data[i].type_name)}</td>
                     <td> ${firstLetterToUpperCase(data[i].details)} </td>
+                    <td></td>
+                    <td></td>
                     <td> ${data[i].total}</td>
                     <td>
                         <button class='btn btn-sm btn-info pull-left manage' id='show-add-modal-${data[i].fk_product}' onclick='showTransactionModal(${data[i].fk_product}, 0)'>Agregar</button>
@@ -67,6 +77,23 @@ function printTransactionTable(data) {
     $("#transactions-table-boddy").html(html);
 };
 
+function printUserTable(data) {
+    let html = '';
+    for (let i = 0; i < data.length; i++) {
+        html += `<tr>\n\
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                    <button class='btn btn-sm btn-info pull-left check'>Editar</button>    
+                    <button class='btn btn-sm btn-info pull-left check'>Eliminar</button>
+                    </td>
+                </tr>`;
+    }
+    $("#user-table-boddy").html(html);
+};
+
 function closeTransaction(){
     $("#transaction-modal").hide();
 }
@@ -76,7 +103,12 @@ function closeRecord() {
 }
 
 function checkConfirmation() {
-    document.getElementById("confirmation-modal").style.display = "block";
+    //document.getElementById("confirmation-modal").style.display = "block";
+    $("#confirmation-modal").modal("show");
+}
+
+function showProductModal(){
+    $("#product-modal").modal("show");
 }
 
 function closeConfirmation() {
@@ -99,13 +131,17 @@ ipcRenderer.on('fill-transaction-table', (event, status) => {
     }
 });
 
+ipcRenderer.on('fill-user-table', (event, status) => {
+    if (status.success) {
+        printUserTable(status.data);
+    }
+});
 
 function checkUser() {
     const user = document.getElementById("user-name").value
     const password = document.getElementById("user-password").value
 
     if (user == "gaaleo" && password == "1234") {
-        displayContent('new-product-container')
         $("#user-name").val("");
         $("#user-password").val("");
     } else {
