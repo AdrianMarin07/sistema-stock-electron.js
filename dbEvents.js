@@ -1,4 +1,6 @@
 const { firstToUpperCase } = require('./src/utilities/utilities');
+const bcrypt = require("bcrypt");
+const privateKey = bcrypt.genSaltSync();
 
 function addEvents (ipcMain, db) {
 
@@ -79,6 +81,27 @@ function addEvents (ipcMain, db) {
         const Product = require('./src/models/Product');
         const product = new Product(args.data);
         require('./src/controllers/product').substractFromQuantity(db, product, args.amount)
+        .then((data) => {
+          event.reply(args.purpose, {success: true, data});
+        }).catch((err) => {
+          event.reply(args.purpose, {success: false, err});
+        });
+      })
+
+      ipcMain.on('login', (event,args)=> {
+        const User = require('./src/models/User');
+        const user = new User(args.data);
+        require('./src/controllers/users').login(db, user, privateKey)
+        .then((data) => {
+          event.reply(args.purpose, {success: true, data});
+        }).catch((err) => {
+          event.reply(args.purpose, {success: false, err});
+        });
+      })
+
+      ipcMain.on('verify-user', (event,args)=> {
+
+        require('./src/controllers/users').validateJWT(args.jwt, privateKey)
         .then((data) => {
           event.reply(args.purpose, {success: true, data});
         }).catch((err) => {
