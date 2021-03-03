@@ -5,13 +5,6 @@ const KEYS =
 [
     {table: 'type', key: 'id', alias: 'type_id'},
     {table: 'type', key: 'name', alias: 'type_name'},
-    {table: 'type', key: 'fk_brand'},
-    {table: 'brand', key: 'name', alias: 'brand_name'}
-];
-
-const INNER_JOINS = 
-[
-    {t1: "type", k1: "fk_brand", t2: "brand", k2: "id"}
 ];
 
 
@@ -22,7 +15,7 @@ exports.insert = (db, type) => {
             if (err) return reject("Error in Database: " + err.message);
           });
 
-        db.get(querys.selectLastAdded(TABLE, KEYS, INNER_JOINS), [], (err, row) => {
+        db.get(querys.selectLastAdded(TABLE, KEYS), [], (err, row) => {
             if ( err ) return reject("Error in Database: " + err.message);
             resolve(row)
         })
@@ -32,7 +25,7 @@ exports.insert = (db, type) => {
 
 exports.select = (db) => {
     return new Promise((resolve, reject) => {
-        db.all(querys.select(TABLE, KEYS, INNER_JOINS), [], (err, rows) => {
+        db.all(querys.select(TABLE, KEYS), [], (err, rows) => {
             if(err) return reject(err.message)
 
             resolve(rows)
@@ -43,7 +36,7 @@ exports.select = (db) => {
 
 exports.selectOne = (db, type) => {
     return new Promise((resolve, reject) => {
-        db.get(querys.selectOne(TABLE, KEYS, INNER_JOINS), [type._id], (err, row) => {
+        db.get(querys.selectOne(TABLE, KEYS), [type._id], (err, row) => {
             if(err) return reject(err.message)
             resolve(row)
         })
@@ -52,7 +45,7 @@ exports.selectOne = (db, type) => {
 
 exports.update = (db, type) => {
     return new Promise((resolve, reject) => {
-        db.get(querys.update(TABLE, KEYS), [type._name, type._brand._id, type._id], (err, row) => {
+        db.get(querys.update(TABLE, KEYS), [type._name, type._id], (err, row) => {
             if(err) return reject(err.message)
             resolve(row)
         })
