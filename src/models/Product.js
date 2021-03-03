@@ -1,8 +1,10 @@
 const Type = require('./Type');
+const Brand = require('./Brand');
 
 class Product {
     constructor( data) {
         if(data.id) this.id = data.id;
+        this.brand = new Brand(data.brand);
         this.type = new Type(data.type);
         this.quantity = data.quantity;
         this.detail = data.detail;
@@ -13,6 +15,10 @@ class Product {
 
     get _id() {
         return this.id ? this.id : 0;
+    }
+
+    get _brand() {
+        return this.brand;
     }
 
     get _type() {

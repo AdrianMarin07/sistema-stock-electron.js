@@ -149,3 +149,22 @@ exports.validateJWT = (jsonwebtoken, privateKey) => {
     })
   })
 }
+
+exports.changePassword = (db, user, newPassword) => {
+  return new Promise((resolve, reject)=>{
+    db.get(querys.select(TABLE,KEYS) + " WHERE id=?",[user._id], (err, row)=> {
+      if(err) return reject(err.message)
+        bcrypt.compare(user._password, row.password,(err,result) => {
+          if(err) return reject(err.message)
+          if(result) {
+            db.run('UPDATE users SET=? WHERE id=?',  [newPassword, user._id],(err) => {
+              if(err) return reject(err.message)
+              resolve("Change succesfull")
+            })
+          } else {
+            reject("Invalid password")
+          }
+      })
+    })
+  })
+}

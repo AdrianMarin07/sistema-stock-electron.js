@@ -7,7 +7,6 @@ module.exports =
   CREATE TABLE type (
     id INTEGER PRIMARY KEY,
     name varchar(35) NOT NULL,
-    fk_brand int(11) NOT NULL
   );
   
   CREATE TABLE product (
@@ -17,6 +16,7 @@ module.exports =
     price INTEGER DEFAULT 0,
     barcode varchar(20),
     min_quantity INTEGER DEFAULT 0,
+    fk_brand int(11) NOT NULL,
     fk_type int(11) NOT NULL
   );
   

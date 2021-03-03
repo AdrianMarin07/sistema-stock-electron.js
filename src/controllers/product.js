@@ -11,14 +11,14 @@ const KEYS = [
   { table: "product", key: "barcode"},
   { table: "product", key: "min_quantity"},
   { table: "product", key: "fk_type" },
+  { table: "product", key: "fk_brand" },
   { table: "type", key: "name", alias: "type_name" },
-  { table: "type", key: "fk_brand" },
   { table: "brand", key: "name", alias: "brand_name" }
 ];
 
 const INNER_JOINS = [
   { t1: "product", k1: "fk_type", t2: "type", k2: "id" },
-  { t1: "type", k1: "fk_brand", t2: "brand", k2: "id" }
+  { t1: "product", k1: "fk_brand", t2: "brand", k2: "id" }
 ];
 
 exports.insert = (db, product) => {
@@ -26,7 +26,7 @@ exports.insert = (db, product) => {
     db.serialize(() => {
       db.run(
         querys.insert(TABLE, KEYS),
-        [product._detail, product._quantity, product._price, product._barcode, product._minQuantity, product._type._id],
+        [product._detail, product._quantity, product._price, product._barcode, product._minQuantity,product._brand._id, product._type._id],
         (err) => {
           if (err) return reject("Error in Database: " + err.message);
         }
