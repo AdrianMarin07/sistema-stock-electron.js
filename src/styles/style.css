@@ -97,12 +97,17 @@ margin: 10px;
 background-color: #0226B8;
 }
 
-.icon {
+.icon-nav {
 width: 25px;
 padding: 1px;
 margin-right: 10px;
 border: 1px solid black;
 background-color: #d1d1d1;
+}
+
+.icon{
+  width: 15px;
+  margin: 3px 0px;
 }
 
 #home-list {
@@ -161,4 +166,12 @@ background-color: #d1d1d1;
 
 .btn-circle.btn-xl:hover{
   background-color: #002bd8;
+}
+
+.form-control{
+  margin-bottom: 10px;
+}
+
+.control-label{
+  margin-top: 4px;
 }

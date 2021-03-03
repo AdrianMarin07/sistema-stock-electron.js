@@ -100,7 +100,6 @@ function addEvents (ipcMain, db) {
       })
 
       ipcMain.on('verify-user', (event,args)=> {
-
         require('./src/controllers/users').validateJWT(args.jwt, privateKey)
         .then((data) => {
           event.reply(args.purpose, {success: true, data});

@@ -17,22 +17,23 @@
         <figure><img class="img-fluid" src="./resources/images/logo.jpg" onclick="displayContent('home-container')"
             title="Ir a la página principal"></figure>
         <button class="menu-button" title="Revisa el stock de todos los productos" id="check"
-          onclick="displayContent('request-stock-container')"><img class="icon"
+          onclick="displayContent('request-stock-container')"><img class="icon-nav"
             src="./resources/icons/25467.png">Consultar Stock</button>
         <button class="menu-button" title="Añada o sustraiga productos al stock" id="transactions"
-          onclick="displayContent('manage-stock-container')"><img class="icon"
+          onclick="displayContent('manage-stock-container')"><img class="icon-nav"
             src="./resources/icons/130898.png">Administrar Stock</button>
-        <button class="menu-button" id="list" onclick="displayContent('shop-list-container')"><img class="icon"
+        <button class="menu-button" id="list" onclick="displayContent('shop-list-container')"><img class="icon-nav"
             src="./resources/icons/list.png">Lista de Compra</button>
-        <button class="menu-button" id="new-product" onclick="displayContent('manage-product-container')"><img class="icon"
-            src="./resources/icons/plus-sign.png">Gestor de Productos</button>
-        <button class="menu-button" id="new-user" onclick="displayContent('manage-user-container')"><img class="icon"
-            src="./resources/icons/new-user-icon.png">Crear un Usuario</button>
-        <button class="menu-button logIn" id="log-in" onclick="displayContent('user-validation-container')"><img class="icon" src="./resources/icons/login-icon.png">Iniciar Sesión</button>
+        <button class="menu-button" id="new-product" onclick="displayContent('manage-product-container')"><img
+            class="icon-nav" src="./resources/icons/plus-sign.png">Gestor de Productos</button>
+        <button class="menu-button" id="new-user" onclick="displayContent('manage-user-container')"><img
+            class="icon-nav" src="./resources/icons/new-user-icon.png">Crear un Usuario</button>
+        <button class="menu-button logIn" id="log-in" onclick="displayContent('user-validation-container')"><img
+            class="icon-nav" src="./resources/icons/login-icon.png">Iniciar Sesión</button>
       </nav>
       <main class="display col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
         <div class="content" id="home-container">
-          <h1 class="content-title" >Sistema de administración de Stock</h1>
+          <h1 class="content-title">Sistema de administración de Stock</h1>
           <h2>¡Bienvenido!</h2>
           <ul id="home-list">
             <li>En este sistema podrá consultar y alterar el stock actual de los productos, así como también dar de alta
@@ -42,17 +43,19 @@
           </ul>
         </div>
         <div class="content" id="request-stock-container">
-            <h1 class="content-title" >Consulta de Stock</h1>            
-                <div class="row">
-                    <div class="brandBar col-6">
-                        <input type="text" id="checkBrandInput" class="searchInput" onkeyup="filterTableContent('check','checkBrandInput')" placeholder="Buscar por marca..."
-                            title="Ingrese el nombre de una marca">
-                    </div>
-                    <div class="typeBar col-6">
-                        <input type="text" id="checkTypeInput" class="searchInput" onkeyup="filterTableContent('check','checkTypeInput')" placeholder="Buscar por tipo..."
-                            title="Ingrese un tipo de producto">
-                    </div>
-                </div>
+          <h1 class="content-title">Consulta de Stock</h1>
+          <div class="row">
+            <div class="brandBar col-6">
+              <input type="text" id="checkBrandInput" class="searchInput"
+                onkeyup="filterTableContent('check','checkBrandInput')" placeholder="Buscar por marca..."
+                title="Ingrese el nombre de una marca">
+            </div>
+            <div class="typeBar col-6">
+              <input type="text" id="checkTypeInput" class="searchInput"
+                onkeyup="filterTableContent('check','checkTypeInput')" placeholder="Buscar por tipo..."
+                title="Ingrese un tipo de producto">
+            </div>
+          </div>
           <table class="table table-bordered table-hover table-condensed" id="stock-table">
             <thead>
               <tr>
@@ -60,7 +63,7 @@
                 <th>Tipo</th>
                 <th>Detalle</th>
                 <th>Código de Barras</th>
-                <th>Precio</th>                
+                <th>Precio</th>
                 <th>Último Movimiento</th>
                 <th>Fecha y Hora</th>
                 <th>Cantidad Actual</th>
@@ -73,17 +76,19 @@
           </table>
         </div>
         <div class="content" id="manage-stock-container">
-            <h1 class="content-title" >Administrador del Stock</h1>
-                <div class="row">
-                    <div class="brandBar col-6">
-                        <input type="text" id="transactionBrandInput" class="searchInput" onkeyup="filterTableContent('transaction','transactionBrandInput')" placeholder="Buscar por marca..."
-                            title="Ingrese el nombre de una marca">
-                    </div>
-                    <div class="typeBar col-6">
-                        <input type="text" id="transactionTypeInput" class="searchInput" onkeyup="filterTableContent('transaction','transactionTypeInput')" placeholder="Buscar por tipo..."
-                            title="Ingrese un tipo de producto">
-                    </div>
-                </div>
+          <h1 class="content-title">Administrador del Stock</h1>
+          <div class="row">
+            <div class="brandBar col-6">
+              <input type="text" id="transactionBrandInput" class="searchInput"
+                onkeyup="filterTableContent('transaction','transactionBrandInput')" placeholder="Buscar por marca..."
+                title="Ingrese el nombre de una marca">
+            </div>
+            <div class="typeBar col-6">
+              <input type="text" id="transactionTypeInput" class="searchInput"
+                onkeyup="filterTableContent('transaction','transactionTypeInput')" placeholder="Buscar por tipo..."
+                title="Ingrese un tipo de producto">
+            </div>
+          </div>
           <table class="table table-bordered table-hover table-condensed" id="transactions-table">
             <thead>
               <tr>
@@ -136,63 +141,116 @@
           </form>
         </div>
 
-      <div class="modal fade" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="productModal"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h2 class="modal-title" id="productModalTittle"></h2>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              
-              <div class="col-sm-6">
-                <label id="brand">Marca: </label><br>
-                <label>Tipo: </label><br>
-                <label>Detalle:</label><br>
-                <label>Código de Barras: </label><br>
-                <label>Precio: </label><br>
-                <label id="quantityLabel"></label><br>
-                <label>Cantidad Mínima: </label>
+        <div class="modal fade" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="productModal"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2 class="modal-title" id="productModalTittle"></h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+
+                <form class="container-fluid">
+
+                  <div class="row">
+                    <label class="col-sm-4 control-label col-form-label">Marca: </label>
+                    <div id="brandList" class="col-sm-6">
+                      <select class="form-control">
+                        <option hidden disabled selected value> -- Seleccione una opción -- </option>
+                      </select>
+                    </div>
+                    <div id="edit-brand" class="col-sm-1">
+                      <button type="button" class="btn btn-secondary btn-sm" onclick="editElement('brand')"><img class="img-fluid icon"
+                          src="./resources/icons/edit.png"></button>
+                    </div>
+                    <div id="new-brand" class="col-sm-1">
+                      <button type="button" class="btn btn-primary btn-sm" onclick="newElement('brand')"><img class="img-fluid icon"
+                          src="./resources/icons/plus-sign.png"></button>
+                    </div>
+                    <div id="brand-input" class="col-sm-7">
+                      <input type="text" class="form-control">
+                    </div>
+                    <div id="confirm-brand" class="col-sm-1">
+                      <button type="button" class="btn btn-success btn-sm" onclick="saveElement('brand')"><img class="img-fluid icon"
+                          src="./resources/icons/check.png"></button>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <label class="col-sm-4 control-label">Tipo: </label>
+                    <div id="typeList" class="col-sm-6">
+                      <select id="typeList" class="form-control">
+                        <option hidden disabled selected value> -- Seleccione una opción -- </option>
+                      </select>
+                    </div>
+                    <div id="edit-type" class="col-sm-1">
+                      <button type="button" class="btn btn-secondary btn-sm" onclick="editElement('type')"><img class="img-fluid icon"
+                          src="./resources/icons/edit.png"></button>
+                    </div>
+                    <div id="new-type" class="col-sm-1">
+                      <button type="button" class="btn btn-primary btn-sm" onclick="newElement('type')"><img class="img-fluid icon"
+                          src="./resources/icons/plus-sign.png"></button>
+                    </div>
+                    <div id="type-input" class="col-sm-7">
+                      <input type="text" class="form-control">
+                    </div>
+                    <div id="confirm-type" class="col-sm-1">
+                      <button type="button" class="btn btn-success btn-sm" onclick="saveElement('type')"><img class="img-fluid icon"
+                          src="./resources/icons/check.png"></button>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <label class="col-sm-4 control-label">Detalle:</label>
+                    <div class="col-sm-8">
+                      <textarea name="product-details" id="product-details" rows="3" style="resize: none"
+                        class="form-control"></textarea>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <label class="col-sm-4 control-label">Código de Barras: </label>
+                    <div class="col-sm-8">
+                      <input type="text" id="bar-code" class="form-control">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <label class="col-sm-4 control-label">Precio: </label>
+                    <div class="col-sm-8">
+                      <input type="text" id="price" class="form-control">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <label id="quantityLabel" class="col-sm-4 control-label"></label>
+                    <div class="col-sm-8">
+                      <input type="text" id="quantity" class="form-control">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <label class="col-sm-4 control-label">Cantidad Mínima: </label>
+                    <div class="col-sm-8">
+                      <input type="text" id="min-quantity" class="form-control">
+                    </div>
+                  </div>
+
+                </form>
+
               </div>
 
-              <div class="col-sm-6">
-              <input type="text" id="new-brand">
-              <select id="brandList">
-                <option hidden disabled selected value> -- Seleccione una opción -- </option>
-              </select>
-
-              <input type="text" id="new-product-type">
-              <select id="typeList">
-                <option hidden disabled selected value> -- Seleccione una opción -- </option>
-              </select>
-
-              <textarea name="product-details" id="product-details" cols="60" rows="10"></textarea>
-
-              <input type="text" id="bar-code">
-              
-              <input type="text" id="price">
-              
-              <input type="text" id="quantity">
-              
-              <input type="text" id="min-quantity">
-              </div>  
-
-            </div>
-
-            <div class="modal-footer">
-              <button id="save-product" type="button" class="btn btn-primary" onclick="saveProduct()">Guardar</button>
-              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              <div class="modal-footer">
+                <button id="save-product" type="button" class="btn btn-primary" onclick="saveProduct()">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
         <div class="content" id="manage-user-container">
-            <h1 class="content-title" >Administrador de Usuarios</h1>
-            <button class="newUser">Nuevo Usuario</button>
+          <h1 class="content-title">Administrador de Usuarios</h1>
+          <button class="newUser">Nuevo Usuario</button>
           <table class="table table-bordered table-hover table-condensed" id="user-table">
             <thead>
               <tr>
@@ -209,18 +267,21 @@
           </table>
         </div>
         <div class="content" id="manage-product-container">
-            <button type="button" class="btn btn-success btn-circle btn-xl" title="Nuevo producto" onclick="showProductModal()">+</button>  
-            <h1 class="content-title" id="manageProductHeader">Administrador de Productos</h1>
-                <div class="row">
-                    <div class="brandBar col-6">
-                        <input type="text" id="transactionBrandInput" class="searchInput" onkeyup="filterTableContent('transaction','transactionBrandInput')" placeholder="Buscar por marca..."
-                            title="Ingrese el nombre de una marca">
-                    </div>
-                    <div class="typeBar col-6">
-                        <input type="text" id="transactionTypeInput" class="searchInput" onkeyup="filterTableContent('transaction','transactionTypeInput')" placeholder="Buscar por tipo..."
-                            title="Ingrese un tipo de producto">
-                    </div>
-                </div>
+          <button type="button" class="btn btn-primary btn-circle btn-xl" title="Nuevo producto"
+            onclick="showProductModal(0)">+</button>
+          <h1 class="content-title" id="manageProductHeader">Administrador de Productos</h1>
+          <div class="row">
+            <div class="brandBar col-6">
+              <input type="text" id="transactionBrandInput" class="searchInput"
+                onkeyup="filterTableContent('transaction','transactionBrandInput')" placeholder="Buscar por marca..."
+                title="Ingrese el nombre de una marca">
+            </div>
+            <div class="typeBar col-6">
+              <input type="text" id="transactionTypeInput" class="searchInput"
+                onkeyup="filterTableContent('transaction','transactionTypeInput')" placeholder="Buscar por tipo..."
+                title="Ingrese un tipo de producto">
+            </div>
+          </div>
           <table class="table table-bordered table-hover table-condensed" id="product-table">
             <thead>
               <tr>
@@ -234,7 +295,7 @@
 
             <tbody id="product-table-boddy">
             </tbody>
-        </table>
+          </table>
         </div>
         <div class="modal fade" id="history-modal" tabindex="-1" role="dialog" aria-labelledby="historyModal"
           aria-hidden="true">

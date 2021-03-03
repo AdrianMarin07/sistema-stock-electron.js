@@ -107,7 +107,22 @@ function checkConfirmation() {
     $("#confirmation-modal").modal("show");
 }
 
-function showProductModal(){
+function showProductModal(origin){
+    if(origin==0){
+        document.getElementById("brandList").style.display = "block";
+        document.getElementById("edit-brand").style.display = "block";
+        document.getElementById("new-brand").style.display = "block";
+
+        document.getElementById("typeList").style.display = "block";
+        document.getElementById("edit-type").style.display = "block";
+        document.getElementById("new-type").style.display = "block";
+
+        document.getElementById("brand-input").style.display = "none";
+        document.getElementById("confirm-brand").style.display = "none";
+        document.getElementById("type-input").style.display = "none";
+        console.log(document.getElementById("type-input"))
+        document.getElementById("confirm-type").style.display = "none";
+    }
     $("#product-modal").modal("show");
 }
 
@@ -229,3 +244,27 @@ function filterTableContent(origin, id) {
     }
 }
 
+function swapRow(element){
+    document.getElementById(element + "List").style.display = "none";
+    document.getElementById("edit-" + element).style.display = "none";
+    document.getElementById("new-" + element).style.display = "none";
+    document.getElementById(element + "-input").style.display = "block";
+    document.getElementById("confirm-" + element).style.display = "block";
+}
+
+function editElement(element){
+    swapRow(element);
+}
+
+function newElement(element){
+    swapRow(element);
+
+}
+
+function saveElement(element){
+    document.getElementById(element + "List").style.display = "block";
+    document.getElementById("edit-" + element).style.display = "block";
+    document.getElementById("new-" + element).style.display = "block";
+    document.getElementById(element + "-input").style.display = "none";
+    document.getElementById("confirm-" + element).style.display = "none";
+}
