@@ -8,18 +8,18 @@ function insert() {
     const type = {
         name: 'Pintura',
         id: 1,
-        brand
     }
     ipcRenderer.send('db-insert', { table: 'type', data: type, purpose: "none" });
     const product = {
         detail: "blanca 3L",
         id: 1,
-        quantity: 0,
-        type
+        quantity: 20,
+        type,
+        brand
     }
     ipcRenderer.send('db-insert', { table: 'product', data: product, purpose: "none" });
     const record = {
-        transaction: 1,
+        transaction: 0,
         date: '9-12-20 17:22:30',
         quantity: 20,
         product
@@ -33,10 +33,11 @@ function select() {
     ipcRenderer.send('db-select', { table: 'product', purpose: "select" });
     ipcRenderer.send('db-select-record-by-product', { table: 'record', purpose: "select", product_id: 1});
 
-    ipcRenderer.on('select', (event, status) => {
-        status.success && console.log(status.data);
-    })
 }
+
+ipcRenderer.on('select', (event, status) => {
+    status.success && console.log(status.data);
+})
 
 function remove() {
     const brand = {

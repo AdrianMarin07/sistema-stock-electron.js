@@ -11,7 +11,8 @@ exports.createDB = () => {
   const db = new sqlite3.Database(DBPath);
   const DBTablesCreationQuery = require("./DBTablesCreationQuery");
 
-  db.exec(DBTablesCreationQuery, (err) => {
+db.serialize(()=> {
+    db.exec(DBTablesCreationQuery, (err) => {
       if (err) console.log(err.message);
   });
 
@@ -20,6 +21,7 @@ exports.createDB = () => {
       if (err) console.log(err.message);
     });
   });
+})
 
-  db.close();
+db.close();
 };

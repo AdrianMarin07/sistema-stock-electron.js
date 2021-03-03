@@ -11,7 +11,7 @@ const KEYS =
 exports.insert = (db, type) => {
   return new Promise((resolve, reject) => {
     db.serialize(() => {
-        db.run(querys.insert(TABLE, KEYS), [type._name, type._brand._id], (err, row) => {
+        db.run(querys.insert(TABLE, KEYS), [type._name], (err, row) => {
             if (err) return reject("Error in Database: " + err.message);
           });
 

@@ -6,7 +6,7 @@ module.exports =
 
   CREATE TABLE type (
     id INTEGER PRIMARY KEY,
-    name varchar(35) NOT NULL,
+    name varchar(35) NOT NULL
   );
   
   CREATE TABLE product (

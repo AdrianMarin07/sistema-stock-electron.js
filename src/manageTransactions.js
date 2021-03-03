@@ -29,13 +29,13 @@ function submitTransaction() {
         const type = {
             name: columns[1].innerHTML,
             id: columns[1].dataset["typeId"],
-            brand
         }
         const product = {
             detail: columns[2].innerHTML,
             id: id,
             quantity: columns[3].innerHTML,
-            type
+            type,
+            brand
         }
 
         if (transaction == "Agregar") {
