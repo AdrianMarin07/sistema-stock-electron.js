@@ -107,6 +107,15 @@ function addEvents (ipcMain, db) {
           event.reply(args.purpose, {success: false, err});
         });
       })
+
+      ipcMain.on('db-select-purchase-list', (event,args)=> {
+        require('./src/controllers/stock').selectPurchaseList(db)
+        .then((data) => {
+          event.reply(args.purpose, {success: true, data});
+        }).catch((err) => {
+          event.reply(args.purpose, {success: false, err});
+        });
+      })
 }
 
 module.exports = addEvents;

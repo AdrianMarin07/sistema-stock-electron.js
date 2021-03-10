@@ -7,3 +7,13 @@ exports.select = (db) => {
       });
     });
   };
+
+  exports.selectPurchaseList = (db) => {
+    return new Promise((resolve, reject) => {
+      db.all(`SELECT product.details , product.quantity AS total, product.fk_type , type.name AS type_name, product.fk_brand , brand.name AS brand_name FROM product INNER JOIN type on product.fk_type = type.id INNER JOIN brand on product.fk_brand = brand.id WHERE product.quantity < product.min_quantity`,
+       [], (err, rows) => {
+        if (err) return reject(err.message);
+        resolve(rows);
+      });
+    });
+  };
