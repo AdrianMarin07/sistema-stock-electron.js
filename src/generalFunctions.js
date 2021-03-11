@@ -26,144 +26,58 @@ function fillContent(content_name) {
             ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-transaction-table' });
             break;
         case "manage-product-container":
-            ipcRenderer.send('db-select', { table: 'product', purpose: 'fill-user-table' });
+            ipcRenderer.send('db-select', { table: 'product', purpose: 'fill-product-table' });
             break;
         case "manage-user-container":
             ipcRenderer.send('db-select', { table: 'users', purpose: 'fill-user-table' });
-            break;            
+            break;
         default:
             break;
     }
 }
 
-function printStockTable(data) {
-    let html = '';
-    for (let i = 0; i < data.length; i++) {
-        html += `<tr data-product-id="${data[i].fk_product}">\n\
-                    <td data-brand-id="${data[i].fk_brand}"> ${firstLetterToUpperCase(data[i].brand_name)} </td>
-                    <td data-type-id="${data[i].fk_type}"> ${firstLetterToUpperCase(data[i].type_name)} </td>
-                    <td> ${firstLetterToUpperCase(data[i].details)} </td>
-                    <td></td>
-                    <td></td>
-                    <td> ${data[i].transaction_type == 0 ? "Salida" : "Entrada"} </td>
-                    <td> ${data[i].date} </td>
-                    <td> ${data[i].total} </td>
-                    <td>
-                        <button class='btn btn-sm btn-info pull-left check' id='show-product-${data[i].fk_product}' onclick='showRecord(${data[i].fk_product})'>Consultar</button>
-                    </td>
-                </tr>`;
-    }
-    $("#stock-table-boddy").html(html);
-};
 
-function printTransactionTable(data) {
-    let html = '';
-    for (let i = 0; i < data.length; i++) {
-        html += `<tr data-product-id="${data[i].fk_product}">\n\
-                    <td data-brand-id="${data[i].fk_brand}"> ${firstLetterToUpperCase(data[i].brand_name)} </td>
-                    <td data-type-id="${data[i].fk_type}"> ${firstLetterToUpperCase(data[i].type_name)}</td>
-                    <td> ${firstLetterToUpperCase(data[i].details)} </td>
-                    <td></td>
-                    <td></td>
-                    <td> ${data[i].total}</td>
-                    <td>
-                        <button class='btn btn-sm btn-info pull-left manage' id='show-add-modal-${data[i].fk_product}' onclick='showTransactionModal(${data[i].fk_product}, 0)'>Agregar</button>
-                        <button class='btn btn-sm btn-info pull-left manage' id='show-remove-modal-${data[i].fk_product}' onclick='showTransactionModal(${data[i].fk_product}, 1)'>Quitar</button> </td>
-                    <td>
-                        <button class='btn btn-sm btn-info pull-left check' id='show-record-${data[i].fk_product}' onclick='showRecord(${data[i].fk_product})'>Consultar</button>
-                    </td>
-                </tr>`;
-    }
-    $("#transactions-table-boddy").html(html);
-};
 
-function printUserTable(data) {
-    let html = '';
-    for (let i = 0; i < data.length; i++) {
-        html += `<tr>\n\
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                    <button class='btn btn-sm btn-info pull-left check'>Editar</button>    
-                    <button class='btn btn-sm btn-info pull-left check'>Eliminar</button>
-                    </td>
-                </tr>`;
-    }
-    $("#user-table-boddy").html(html);
-};
+function showModal(origin) {
 
-function closeTransaction(){
-    $("#transaction-modal").hide();
-}
+    switch (origin) {
 
-function closeRecord() {
-    document.getElementById("record-modal").style.display = "none";
-}
+        case "newProduct":
+            document.getElementById("brandList").style.display = "block";
+            document.getElementById("edit-brand").style.display = "block";
+            document.getElementById("new-brand").style.display = "block";
 
-function checkConfirmation() {
-    //document.getElementById("confirmation-modal").style.display = "block";
-    $("#confirmation-modal").modal("show");
-}
+            document.getElementById("typeList").style.display = "block";
+            document.getElementById("edit-type").style.display = "block";
+            document.getElementById("new-type").style.display = "block";
 
-function showProductModal(origin){
-    if(origin==0){
-        document.getElementById("brandList").style.display = "block";
-        document.getElementById("edit-brand").style.display = "block";
-        document.getElementById("new-brand").style.display = "block";
+            document.getElementById("brand-input").style.display = "none";
+            document.getElementById("confirm-brand").style.display = "none";
+            document.getElementById("type-input").style.display = "none";
+            document.getElementById("confirm-type").style.display = "none";
+            $("#product-modal").modal("show");
+            break;
+        
+        case "editProduct":
+            break;
 
-        document.getElementById("typeList").style.display = "block";
-        document.getElementById("edit-type").style.display = "block";
-        document.getElementById("new-type").style.display = "block";
+        case "newUser":
+            document.getElementById("userModalTittle").innerHTML = 'Nuevo Usuario';
+            $("#user-modal").modal("show");
+            break;
 
-        document.getElementById("brand-input").style.display = "none";
-        document.getElementById("confirm-brand").style.display = "none";
-        document.getElementById("type-input").style.display = "none";
-        console.log(document.getElementById("type-input"))
-        document.getElementById("confirm-type").style.display = "none";
-    }
-    $("#product-modal").modal("show");
-}
+        case "editUser":
+            document.getElementById("userModalTittle").innerHTML = 'Editar Usuario';
 
-function closeConfirmation() {
-    document.getElementById("confirmation-modal").style.display = "none";
-}
+            $("#user-modal").modal("show");
+            break;
 
-function saveProduct() {
-    document.getElementById("confirmation-modal").style.display = "none";
-}
-
-ipcRenderer.on('fill-stock-table', (event, status) => {
-    if (status.success) {
-        printStockTable(status.data);
-    }
-});
-
-ipcRenderer.on('fill-transaction-table', (event, status) => {
-    if (status.success) {
-        printTransactionTable(status.data);
-    }
-});
-
-ipcRenderer.on('fill-user-table', (event, status) => {
-    if (status.success) {
-        printUserTable(status.data);
-    }
-});
-
-function checkUser() {
-    const user = document.getElementById("user-name").value
-    const password = document.getElementById("user-password").value
-
-    if (user == "gaaleo" && password == "1234") {
-        $("#user-name").val("");
-        $("#user-password").val("");
-    } else {
-        alert("Usuario y/o contraseña incorrecta")
-        $("#user-password").val("");
+        default:
+        break;
     }
 }
+
+
 
 function firstLetterToUpperCase(string) {
     if (typeof string !== 'string') {
@@ -174,10 +88,10 @@ function firstLetterToUpperCase(string) {
 }
 
 function showRecord(id) {
-    ipcRenderer.send("db-select-record-by-product",{product_id: id, purpose: "fillRecordModal"});
+    ipcRenderer.send("db-select-record-by-product", { product_id: id, purpose: "fillRecordModal" });
 }
 
-ipcRenderer.on("fillRecordModal", (event, data)=>{
+ipcRenderer.on("fillRecordModal", (event, data) => {
     if (data.success) {
         fillRecordModal(data.data);
     } else {
@@ -185,11 +99,11 @@ ipcRenderer.on("fillRecordModal", (event, data)=>{
     }
 })
 
-function fillRecordModal(data){
+function fillRecordModal(data) {
     let html = "";
-    data.forEach((record)=> {
-        html += 
-        `<tr>
+    data.forEach((record) => {
+        html +=
+            `<tr>
          <td>${record.transaction_type == 0 ? "Alta" : "Baja"}</td>
          <td>${record.date}</td>
          <td>${record.quantity}</td>
@@ -218,14 +132,14 @@ function filterTableContent(origin, id) {
         case "checkBrandInput":
             inputPaired = document.getElementById("checkTypeInput");
             break;
-        default: 
-        break;
+        default:
+            break;
     }
     filterPaired = inputPaired.value.toUpperCase();
     if (origin == "check") {
-        body = document.getElementById("stock-table-boddy");
+        body = document.getElementById("stock-table-body");
     } else if (origin == "transaction") {
-        body = document.getElementById("transactions-table-boddy");
+        body = document.getElementById("transactions-table-body");
     }
     tr = body.getElementsByTagName("TR");
     for (i = 0; i < tr.length; i++) {
@@ -233,10 +147,10 @@ function filterTableContent(origin, id) {
         tdPaired = tr[i].getElementsByTagName("td")[id === "checkBrandInput" || id === "transactionBrandInput" ? 1 : 0];
         txtValueOrigin = tdOrigin.textContent || tdOrigin.innerText;
         txtValuePaired = tdPaired.textContent || tdPaired.innerText;
-        
+
         if (
-        txtValueOrigin.trim().toUpperCase().match(filterOrigin === "" ? new RegExp(/^(\w+\S+)$/) : new RegExp(`^(${filterOrigin})`)) 
-        && txtValuePaired.trim().toUpperCase().match(filterPaired === "" ? new RegExp(/^(\w+\S+)$/) : new RegExp(`^(${filterPaired})`))) {
+            txtValueOrigin.trim().toUpperCase().match(filterOrigin === "" ? new RegExp(/^(\w+\S+)$/) : new RegExp(`^(${filterOrigin})`))
+            && txtValuePaired.trim().toUpperCase().match(filterPaired === "" ? new RegExp(/^(\w+\S+)$/) : new RegExp(`^(${filterPaired})`))) {
             tr[i].style.display = "";
         } else {
             tr[i].style.display = "none";
@@ -244,27 +158,5 @@ function filterTableContent(origin, id) {
     }
 }
 
-function swapRow(element){
-    document.getElementById(element + "List").style.display = "none";
-    document.getElementById("edit-" + element).style.display = "none";
-    document.getElementById("new-" + element).style.display = "none";
-    document.getElementById(element + "-input").style.display = "block";
-    document.getElementById("confirm-" + element).style.display = "block";
-}
 
-function editElement(element){
-    swapRow(element);
-}
 
-function newElement(element){
-    swapRow(element);
-
-}
-
-function saveElement(element){
-    document.getElementById(element + "List").style.display = "block";
-    document.getElementById("edit-" + element).style.display = "block";
-    document.getElementById("new-" + element).style.display = "block";
-    document.getElementById(element + "-input").style.display = "none";
-    document.getElementById("confirm-" + element).style.display = "none";
-}

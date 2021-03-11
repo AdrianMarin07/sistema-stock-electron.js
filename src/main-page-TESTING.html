@@ -71,7 +71,7 @@
               </tr>
             </thead>
 
-            <tbody id="stock-table-boddy">
+            <tbody id="stock-table-body">
             </tbody>
           </table>
         </div>
@@ -103,7 +103,7 @@
               </tr>
             </thead>
 
-            <tbody id="transactions-table-boddy">
+            <tbody id="transactions-table-body">
             </tbody>
           </table>
           <div id="transaction-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="transactionModal"
@@ -141,134 +141,10 @@
           </form>
         </div>
 
-        <div class="modal fade" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="productModal"
-          aria-hidden="true">
-          <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h2 class="modal-title" id="productModalTittle"></h2>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                  <span aria-hidden="true">&times;</span>
-                </button>
-              </div>
-              <div class="modal-body">
 
-                <form class="container-fluid">
-
-                  <div class="row">
-                    <label class="col-sm-4 control-label col-form-label">Marca: </label>
-                    <div id="brandList" class="col-sm-6">
-                      <select class="form-control">
-                        <option hidden disabled selected value> -- Seleccione una opción -- </option>
-                      </select>
-                    </div>
-                    <div id="edit-brand" class="col-sm-1">
-                      <button type="button" class="btn btn-secondary btn-sm" onclick="editElement('brand')"><img class="img-fluid icon"
-                          src="./resources/icons/edit.png"></button>
-                    </div>
-                    <div id="new-brand" class="col-sm-1">
-                      <button type="button" class="btn btn-primary btn-sm" onclick="newElement('brand')"><img class="img-fluid icon"
-                          src="./resources/icons/plus-sign.png"></button>
-                    </div>
-                    <div id="brand-input" class="col-sm-7">
-                      <input type="text" class="form-control">
-                    </div>
-                    <div id="confirm-brand" class="col-sm-1">
-                      <button type="button" class="btn btn-success btn-sm" onclick="saveElement('brand')"><img class="img-fluid icon"
-                          src="./resources/icons/check.png"></button>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <label class="col-sm-4 control-label">Tipo: </label>
-                    <div id="typeList" class="col-sm-6">
-                      <select id="typeList" class="form-control">
-                        <option hidden disabled selected value> -- Seleccione una opción -- </option>
-                      </select>
-                    </div>
-                    <div id="edit-type" class="col-sm-1">
-                      <button type="button" class="btn btn-secondary btn-sm" onclick="editElement('type')"><img class="img-fluid icon"
-                          src="./resources/icons/edit.png"></button>
-                    </div>
-                    <div id="new-type" class="col-sm-1">
-                      <button type="button" class="btn btn-primary btn-sm" onclick="newElement('type')"><img class="img-fluid icon"
-                          src="./resources/icons/plus-sign.png"></button>
-                    </div>
-                    <div id="type-input" class="col-sm-7">
-                      <input type="text" class="form-control">
-                    </div>
-                    <div id="confirm-type" class="col-sm-1">
-                      <button type="button" class="btn btn-success btn-sm" onclick="saveElement('type')"><img class="img-fluid icon"
-                          src="./resources/icons/check.png"></button>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <label class="col-sm-4 control-label">Detalle:</label>
-                    <div class="col-sm-8">
-                      <textarea name="product-details" id="product-details" rows="3" style="resize: none"
-                        class="form-control"></textarea>
-                    </div>
-                  </div>
-
-                  <div class="row">
-                    <label class="col-sm-4 control-label">Código de Barras: </label>
-                    <div class="col-sm-8">
-                      <input type="text" id="bar-code" class="form-control">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <label class="col-sm-4 control-label">Precio: </label>
-                    <div class="col-sm-8">
-                      <input type="text" id="price" class="form-control">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <label id="quantityLabel" class="col-sm-4 control-label"></label>
-                    <div class="col-sm-8">
-                      <input type="text" id="quantity" class="form-control">
-                    </div>
-                  </div>
-                  <div class="row">
-                    <label class="col-sm-4 control-label">Cantidad Mínima: </label>
-                    <div class="col-sm-8">
-                      <input type="text" id="min-quantity" class="form-control">
-                    </div>
-                  </div>
-
-                </form>
-
-              </div>
-
-              <div class="modal-footer">
-                <button id="save-product" type="button" class="btn btn-primary" onclick="saveProduct()">Guardar</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="content" id="manage-user-container">
-          <h1 class="content-title">Administrador de Usuarios</h1>
-          <button class="newUser">Nuevo Usuario</button>
-          <table class="table table-bordered table-hover table-condensed" id="user-table">
-            <thead>
-              <tr>
-                <th>Usuario</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Correo electrónico</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-
-            <tbody id="user-table-boddy">
-            </tbody>
-          </table>
-        </div>
         <div class="content" id="manage-product-container">
           <button type="button" class="btn btn-primary btn-circle btn-xl" title="Nuevo producto"
-            onclick="showProductModal(0)">+</button>
+            onclick="showModal('newProduct')">+</button>
           <h1 class="content-title" id="manageProductHeader">Administrador de Productos</h1>
           <div class="row">
             <div class="brandBar col-6">
@@ -293,10 +169,201 @@
               </tr>
             </thead>
 
-            <tbody id="product-table-boddy">
+            <tbody id="product-table-body">
             </tbody>
           </table>
+
+          <div class="modal fade" id="product-modal" tabindex="-1" role="dialog" aria-labelledby="productModal"
+            aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h2 class="modal-title" id="productModalTittle"></h2>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+
+                  <form class="container-fluid">
+
+                    <div class="row">
+                      <label class="col-sm-4 control-label col-form-label">Marca: </label>
+                      <div id="brandList" class="col-sm-6">
+                        <select class="form-control">
+                          <option hidden disabled selected value> -- Seleccione una opción -- </option>
+                        </select>
+                      </div>
+                      <div id="edit-brand" class="col-sm-1">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="editElement('brand')"><img
+                            class="img-fluid icon" src="./resources/icons/edit.png"></button>
+                      </div>
+                      <div id="new-brand" class="col-sm-1">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="newElement('brand')"><img
+                            class="img-fluid icon" src="./resources/icons/plus-sign.png"></button>
+                      </div>
+                      <div id="brand-input" class="col-sm-7">
+                        <input type="text" class="form-control">
+                      </div>
+                      <div id="confirm-brand" class="col-sm-1">
+                        <button type="button" class="btn btn-success btn-sm" onclick="saveElement('brand')"><img
+                            class="img-fluid icon" src="./resources/icons/check.png"></button>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <label class="col-sm-4 control-label">Tipo: </label>
+                      <div id="typeList" class="col-sm-6">
+                        <select id="typeList" class="form-control">
+                          <option hidden disabled selected value> -- Seleccione una opción -- </option>
+                        </select>
+                      </div>
+                      <div id="edit-type" class="col-sm-1">
+                        <button type="button" class="btn btn-secondary btn-sm" onclick="editElement('type')"><img
+                            class="img-fluid icon" src="./resources/icons/edit.png"></button>
+                      </div>
+                      <div id="new-type" class="col-sm-1">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="newElement('type')"><img
+                            class="img-fluid icon" src="./resources/icons/plus-sign.png"></button>
+                      </div>
+                      <div id="type-input" class="col-sm-7">
+                        <input type="text" class="form-control">
+                      </div>
+                      <div id="confirm-type" class="col-sm-1">
+                        <button type="button" class="btn btn-success btn-sm" onclick="saveElement('type')"><img
+                            class="img-fluid icon" src="./resources/icons/check.png"></button>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <label class="col-sm-4 control-label">Detalle:</label>
+                      <div class="col-sm-8">
+                        <textarea name="product-details" id="product-details" rows="3" style="resize: none"
+                          class="form-control"></textarea>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <label class="col-sm-4 control-label">Código de Barras: </label>
+                      <div class="col-sm-8">
+                        <input type="text" id="bar-code" class="form-control">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-4 control-label">Precio: </label>
+                      <div class="col-sm-8">
+                        <input type="text" id="price" class="form-control">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label id="quantityLabel" class="col-sm-4 control-label"></label>
+                      <div class="col-sm-8">
+                        <input type="text" id="quantity" class="form-control">
+                      </div>
+                    </div>
+                    <div class="row">
+                      <label class="col-sm-4 control-label">Cantidad Mínima: </label>
+                      <div class="col-sm-8">
+                        <input type="text" id="min-quantity" class="form-control">
+                      </div>
+                    </div>
+
+                  </form>
+
+                </div>
+
+                <div class="modal-footer">
+                  <button id="save-product" type="button" class="btn btn-primary"
+                    onclick="saveProduct()">Guardar</button>
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
+
+        <div class="content" id="manage-user-container">
+          <button type="button" class="btn btn-primary btn-circle btn-xl" title="Nuevo usuario" onclick="showModal('newUser')">+</button>
+          <h1 class="content-title" id="manageUserHeader">Administrador de Usuarios</h1>
+          <table class="table table-bordered table-hover table-condensed" id="user-table">
+            <thead>
+              <tr>
+                <th>Usuario</th>
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Correo electrónico</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+
+            <tbody id="user-table-body">
+            </tbody>
+          </table>
+
+          <div class="modal fade" id="user-modal" tabindex="-1" role="dialog" aria-labelledby="userModal"
+          aria-hidden="true">
+          <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h2 class="modal-title" id="userModalTittle"></h2>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+
+                <form class="container-fluid">
+
+                  <div class="row">
+                    <label class="col-sm-4 control-label">Usuario: </label>
+                    <div class="col-sm-8">
+                      <input type="text" id="user" class="form-control">
+                    </div>                   
+                  </div>
+
+                  <div class="row">
+                    <label class="col-sm-4 control-label">Nombre: </label>
+                    <div class="col-sm-8">
+                      <input type="text" id="name" class="form-control">
+                    </div>                  
+                  </div>
+
+                  <div class="row">
+                    <label class="col-sm-4 control-label">Apellido: </label>
+                    <div class="col-sm-8">
+                      <input type="text" id="lastname" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <label class="col-sm-4 control-label">Correo electrónico: </label>
+                    <div class="col-sm-8">
+                      <input type="text" id="email" class="form-control">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <label class="col-sm-4 control-label">Contraseña: </label>
+                    <div class="col-sm-8">
+                      <input type="text" id="password" class="form-control">
+                    </div>
+                  </div>                  
+
+                </form>
+
+              </div>
+
+              <div class="modal-footer">
+                <button id="save-product" type="button" class="btn btn-primary" onclick="saveProduct()">Guardar</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </div>
+
         <div class="modal fade" id="history-modal" tabindex="-1" role="dialog" aria-labelledby="historyModal"
           aria-hidden="true">
           <div class="modal-dialog modal-dialog-scrollable" role="document">
@@ -332,7 +399,10 @@
   <script>window.$ = window.jQuery = require('jquery');</script>
   <script src="../node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="./generalFunctions.js"></script>
-  <script src="./manageTransactions.js"></script>
+  <script src="./productFunctions.js"></script>
+  <script src="./userFunctions.js"></script>
+  <script src="./stockFunctions.js"></script>
+  <script src="./transactionFunctions.js"></script>
   <script src="./testQuerys.js"></script>
 </body>
 
