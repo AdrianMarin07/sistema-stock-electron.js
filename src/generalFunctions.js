@@ -31,6 +31,8 @@ function fillContent(content_name) {
         case "manage-user-container":
             ipcRenderer.send('db-select', { table: 'users', purpose: 'fill-user-table' });
             break;
+        case "shop-list-container": 
+            ipcRenderer.send("db-select-purchase-list", { purpose: 'fill-shop-table' })
         default:
             break;
     }
