@@ -13,7 +13,7 @@ module.exports =
     id INTEGER PRIMARY KEY,
     details varchar(500) NOT NULL,
     quantity INTEGER DEFAULT 0,
-    price INTEGER DEFAULT 0,
+    price FLOAT DEFAULT 0,
     barcode varchar(20),
     min_quantity INTEGER DEFAULT 0,
     fk_brand int(11) NOT NULL,
