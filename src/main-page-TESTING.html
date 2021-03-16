@@ -32,7 +32,7 @@
             class="icon-nav" src="./resources/icons/login-icon.png">Iniciar Sesión</button>
       </nav>
       <main class="display col-12 col-sm-10 col-md-10 col-lg-10 col-xl-10">
-        <div class="content" id="home-container">
+        <div class="content row" id="home-container">
           <h1 class="content-title">Sistema de administración de Stock</h1>
           <h2>¡Bienvenido!</h2>
           <ul id="home-list">
@@ -42,7 +42,7 @@
             <li>Únicamente los usuarios registrados serán capaces de generar nuevos productos en el sistema.</li>
           </ul>
         </div>
-        <div class="content" id="request-stock-container">
+        <div class="content row" id="request-stock-container">
           <h1 class="content-title">Consulta de Stock</h1>
           <div class="row">
             <div class="brandBar col-6">
@@ -75,7 +75,7 @@
             </tbody>
           </table>
         </div>
-        <div class="content" id="manage-stock-container">
+        <div class="content row" id="manage-stock-container">
           <h1 class="content-title">Administrador del Stock</h1>
           <div class="row">
             <div class="brandBar col-6">
@@ -130,7 +130,37 @@
             </div>
           </div>
         </div>
-        <div class="content" id="user-validation-container">
+        
+        <div class="content row" id="shop-list-container">
+          <h1 class="content-title">Lista de Compras</h1>
+          <div class="alert alert-primary" id="shop-list-alert" role="alert">
+            Actualmente no hay productos en falta
+          </div>
+          <div class="row">
+            <div class="col-8"></div>
+            <div class="col-4">
+              <button class="btn btn-secondary" type="button" onclick="saveAsPdf()">
+                Guardar lista como PDF
+              </button>
+            </div>
+          </div>
+          <table class="table table-bordered table-hover table-condensed" id="shop-list-table">
+            <thead>
+              <tr>
+                <th>Marca</th>
+                <th>Tipo</th>
+                <th>Detalle</th>
+                <th>Código de Barras</th>
+                <th>Cantidad Minima</th>
+                <th>Cantidad Actual</th>
+              </tr>
+            </thead>
+            <tbody id="shop-list-table-body">
+            </tbody>
+          </table>
+        </div>
+
+        <div class="content row" id="user-validation-container">
           <h2>Por favor, ingrese sus datos para acceder al formulario.</h2>
           <form>
             <label for="user-name">Nombre de Usuario</label>
@@ -142,7 +172,7 @@
         </div>
 
 
-        <div class="content" id="manage-product-container">
+        <div class="content row" id="manage-product-container">
           <button type="button" class="btn btn-primary btn-circle btn-xl" title="Nuevo producto"
             onclick="showModal('newProduct')">+</button>
           <h1 class="content-title" id="manageProductHeader">Administrador de Productos</h1>
@@ -283,7 +313,7 @@
 
         </div>
 
-        <div class="content" id="manage-user-container">
+        <div class="content row" id="manage-user-container">
           <button type="button" class="btn btn-primary btn-circle btn-xl" title="Nuevo usuario" onclick="showModal('newUser')">+</button>
           <h1 class="content-title" id="manageUserHeader">Administrador de Usuarios</h1>
           <table class="table table-bordered table-hover table-condensed" id="user-table">
@@ -403,6 +433,7 @@
   <script src="./userFunctions.js"></script>
   <script src="./stockFunctions.js"></script>
   <script src="./transactionFunctions.js"></script>
+  <script src="./purchaseListFunctions.js"></script>
   <script src="./testQuerys.js"></script>
 </body>
 
