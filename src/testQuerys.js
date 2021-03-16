@@ -14,6 +14,9 @@ function insert() {
         detail: "blanca 3L",
         id: 1,
         quantity: 20,
+        price: 30,
+        barcode: "12345678958",
+        minQuantity: 30,
         type,
         brand
     }
