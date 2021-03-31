@@ -23,9 +23,17 @@ function printShopListTable(data) {
                       <td>${shopItem.total}</td>
                    </tr>`;
           });
+          $("#save-pdf-wrapper").show();
+          $("#shop-list-table").show();
           $("#shop-list-table-body").html(html);
     } else {
         $("#shop-list-alert").show();
+        $("#save-pdf-wrapper").hide();
         $("#shop-list-table").hide();
     }
 };
+
+function saveAsPdf() {
+    comst = `<table> ${$("#shop-list-table").html()} </table>`;
+    ipcRenderer.send('save-table-asPDF', {table: $("#shop-list-table").html()})
+}
