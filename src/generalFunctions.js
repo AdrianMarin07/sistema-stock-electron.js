@@ -45,18 +45,27 @@ function showModal(origin) {
     switch (origin) {
 
         case "newProduct":
-            document.getElementById("brandList").style.display = "block";
-            document.getElementById("edit-brand").style.display = "block";
-            document.getElementById("new-brand").style.display = "block";
 
-            document.getElementById("typeList").style.display = "block";
-            document.getElementById("edit-type").style.display = "block";
-            document.getElementById("new-type").style.display = "block";
+            $("#brandSelect option[value='0']").prop("selected", true);
+            $("#brandList").css("display", "block");
+            $("#edit-brand").css("display", "block");
+            $("#new-brand").css("display", "block");
 
-            document.getElementById("brand-input").style.display = "none";
-            document.getElementById("confirm-brand").style.display = "none";
-            document.getElementById("type-input").style.display = "none";
-            document.getElementById("confirm-type").style.display = "none";
+            $("#typeSelect option[value='0']").prop("selected", true);
+            $("#typeList").css("display", "block");
+            $("#edit-type").css("display", "block");
+            $("#new-type").css("display", "block");
+
+            $("#brand-input").css("display", "none");
+            $("#confirm-brand").css("display", "none");
+            $("#return-brand").css("display", "none");
+            $("#type-input").css("display", "none");
+            $("#confirm-type").css("display", "none");
+            $("#return-type").css("display", "none");
+
+            $("#brandInput").val('');
+            $("#typeInput").val('');
+
             $("#product-modal").modal("show");
             break;
         
