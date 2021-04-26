@@ -5,10 +5,10 @@ function printStockTable(data) {
                     <td data-brand-id="${data[i].fk_brand}"> ${firstLetterToUpperCase(data[i].brand_name)} </td>
                     <td data-type-id="${data[i].fk_type}"> ${firstLetterToUpperCase(data[i].type_name)} </td>
                     <td> ${firstLetterToUpperCase(data[i].details)} </td>
-                    <td></td>
-                    <td></td>
-                    <td> ${data[i].transaction_type == 0 ? "Salida" : "Entrada"} </td>
-                    <td> ${data[i].date} </td>
+                    <td> ${data[i].barcode} </td>
+                    <td> ${data[i].price} </td>
+                    <td> ${data[i].transaction_type == 0 ? "Salida" : data[i].transaction_type == 1 ? "Entrada" : "---" } </td>
+                    <td> ${data[i].date ? data[i].date : "---" } </td>
                     <td> ${data[i].total} </td>
                     <td>
                         <button class='btn btn-sm btn-info pull-left check' id='show-product-${data[i].id_product}' onclick='showRecord(${data[i].id_product})'>Consultar</button>

@@ -169,5 +169,18 @@ function filterTableContent(origin, id) {
     }
 }
 
-
+function fillAlert(message, infoType, content) {
+    $("#" + content + "-alert").html(message)
+    $("#" + content + "-alert").val("");
+    $("#" + content + "-alert").addClass("alert-" + infoType);
+    $("#" + content + "-alert").css("visibility", "visible");
+    $("#" + content + "-alert").fadeIn();
+    setTimeout(function () {
+        $("#" + content + "-alert").removeClass("alert-" + infoType);
+        $("#" + content + "-alert").fadeOut({done: (anim, bool)=> {
+            $("#" + content + "-alert").css("display", "block");
+            $("#" + content + "-alert").css("visibility", "hidden");
+        }})
+    }, 1500)
+}
 

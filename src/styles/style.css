@@ -147,7 +147,7 @@ background-color: #d1d1d1;
   text-align: center;
 }
 
-.btn-circle.btn-xl {
+.add-button {
   width: 60px;
   height: 60px;
   padding: 0px 0px 10px 0px;
@@ -156,12 +156,13 @@ background-color: #d1d1d1;
   font-size: 55px;
   line-height: 0;
   text-align: center;
-  position: fixed;
+  position: absolute;
   top: 0;
   right: 0;
   box-shadow:0px 0px 15px rgb(63, 63, 63);
   background-color: #0226B8;
   border-color: #010C38;
+  z-index: 40;
 }
 
 .btn-circle.btn-xl:hover{
@@ -174,4 +175,9 @@ background-color: #d1d1d1;
 
 .control-label{
   margin-top: 4px;
+}
+
+.alert {
+ display: block;
+ visibility: hidden;
 }

@@ -1,5 +1,3 @@
-const { stat } = require("fs");
-
 let productAttribute;
 let attributeOperation;
 
@@ -15,13 +13,13 @@ ipcRenderer.on('fill-product-table', (event, status) => {
 function printProductTable(data) {
     let html = '';
     for (let i = 0; i < data.length; i++) {
-        html += `<tr>\n\
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+        html += `<tr data-product-id=${data[i].product_id}>\n\
+                    <td>${firstLetterToUpperCase(data[i].brand_name)}</td>
+                    <td>${firstLetterToUpperCase(data[i].type_name)}</td>
+                    <td>${firstLetterToUpperCase(data[i].details)}</td>
+                    <td>${data[i].barcode}</td>
                     <td>
-                    <button class='btn btn-sm btn-info pull-left check'>Editar</button>
+                    <button class='btn btn-sm btn-info pull-left check' data-product-id="${data[i].product_id}">Editar</button>
                     </td>
                 </tr>`;
     }
@@ -34,11 +32,17 @@ function fillSelects() {
 }
 
 function fillSelectBrand() {
-    ipcRenderer.send('db-select', { table: 'brand', purpose: "fillSelectBrand" });
+    ipcRenderer.send('db-select', {
+        table: 'brand',
+        purpose: "fillSelectBrand"
+    });
 }
 
 function fillSelectType() {
-    ipcRenderer.send('db-select', { table: 'type', purpose: "fillSelectType" });
+    ipcRenderer.send('db-select', {
+        table: 'type',
+        purpose: "fillSelectType"
+    });
 }
 
 ipcRenderer.on('fillSelectBrand', (event, status) => {
@@ -73,55 +77,97 @@ function fillType(data) {
     }
 }
 
+function newElement(element, button) {
+    attributeOperation = button;
+    $("#" + element + "Input").val('');
+    swapToInput(element);
+}
+
+function editElement(element, button) {
+    if ($("#" + element + "Select").val() == null) {
+        fillAlert("No ha seleccionado una opcion", "warning", "product");
+    } else {
+        attributeOperation = button;
+        const text = $("#" + element + "Select> option:selected").html();
+        $("#" + element + "Input").val(text);
+        swapToInput(element);
+    }
+}
+
+function swapToInput(element) {
+    document.getElementById(element + "List").style.display = "none";
+    document.getElementById("edit-" + element).style.display = "none";
+    document.getElementById("new-" + element).style.display = "none";
+    document.getElementById(element + "-input").style.display = "block";
+    document.getElementById("confirm-" + element).style.display = "block";
+    document.getElementById("return-" + element).style.display = "block";
+}
+
 function saveElement(element) {
     if (attributeOperation == "new") {
         if (element == "brand") {
             productAttribute = "brand";
-            insertElement({ name: document.getElementById("brand-input").children.item(0).value }, "brand")
+            insertElement({
+                name: document.getElementById("brand-input").children.item(0).value
+            }, productAttribute)
         } else if (element == "type") {
             productAttribute = "type";
-            insertElement({ name: document.getElementById("type-input").children.item(0).value }, "type")
+            insertElement({
+                name: document.getElementById("type-input").children.item(0).value
+            }, productAttribute)
         }
     } else if (attributeOperation == "edit") {
         if (element == "brand") {
             productAttribute = "brand";
-            overrideElement({id: $("#" + element + "Select").val(), name: document.getElementById("brand-input").children.item(0).value }, "brand")
+            overrideElement({
+                id: $("#" + element + "Select").val(),
+                name: document.getElementById("brand-input").children.item(0).value
+            }, productAttribute)
         } else if (element == "type") {
             productAttribute = "type";
-            overrideElement({id: $("#" + element + "Select").val(), name: document.getElementById("type-input").children.item(0).value }, "type")
+            overrideElement({
+                id: $("#" + element + "Select").val(),
+                name: document.getElementById("type-input").children.item(0).value
+            }, productAttribute)
         }
     }
 }
 
 function insertElement(data, origin) {
-    ipcRenderer.send('db-insert', { table: origin, data: data, purpose: "newElement" });
-}
-
-function overrideElement(data, origin) {
-    ipcRenderer.send('db-update', { table: origin, data: data, purpose: "editElement" });
+    ipcRenderer.send('db-insert', {
+        table: origin,
+        data: data,
+        purpose: "newElement"
+    });
 }
 
 ipcRenderer.on('newElement', (event, status) => {
     if (status.success) {
         $("#" + productAttribute + "Select").append(`<option id="${status.data[productAttribute + "_id"]}" selected value="${status.data[productAttribute + "_id"]}">${firstLetterToUpperCase(status.data[productAttribute + "_name"])}</option>`);
         swapToSelect(productAttribute);
-
-        //ACA VA EL "ALERT!"
-
+        fillAlert("¡Carga exitosa!", "success", "product");
     } else {
+        fillAlert("Error en la carga", "danger", "product");
         console.log(status.err);
     }
 })
 
+function overrideElement(data, origin) {
+    ipcRenderer.send('db-update', {
+        table: origin,
+        data: data,
+        purpose: "editElement"
+    });
+}
+
 ipcRenderer.on('editElement', (event, status) => {
     if (status.success) {
-        $("#" + productAttribute + "Select>option:selected").html(document.getElementById(productAttribute + "-input").children.item(0).value);
+        $("#" + productAttribute + "Select> option:selected").html(document.getElementById(productAttribute + "-input").children.item(0).value);
         swapToSelect(productAttribute);
-
-        //ACA VA EL "ALERT!"
-
+        fillAlert("¡Edicion exitosa!", "success", "product");
     } else {
-        console.log(status.err);
+        fillAlert("Error en la edicion", "danger", "product");
+        console.log(status.err);        
     }
 })
 
@@ -133,49 +179,62 @@ function swapToSelect(element) {
     document.getElementById(productAttribute + "-input").style.display = "none";
     document.getElementById("confirm-" + productAttribute).style.display = "none";
     document.getElementById("return-" + productAttribute).style.display = "none";
-    $("#" + productAttribute + "Select>option[value='0']").prop("selected",true);
+    $("#" + productAttribute + "Select> option[value='0']").prop("selected", true);
 
-}
-
-function editElement(element, button) {
-    if ($("#" + element + "Select").val() == null) {
-        console.log("No ha seleccionado una opcion")
-        // Añadir "alert" para avisar que no ha seleccionado una opcion
-    } else {
-        attributeOperation = button;
-        const text = $("#" + element + "Select>option:selected").html();
-        $("#" + element + "Input").val(text);
-        swapToInput(element);
-    }
-}
-
-function newElement(element, button) {
-    attributeOperation = button;
-    $("#" + element + "Input").val('');
-    swapToInput(element);
 }
 
 function goBack(element) {
     swapToSelect(element);
 }
 
-function swapToInput(element) {
-    document.getElementById(element + "List").style.display = "none";
-    document.getElementById("edit-" + element).style.display = "none";
-    document.getElementById("new-" + element).style.display = "none";
-    document.getElementById(element + "-input").style.display = "block";
-    document.getElementById("confirm-" + element).style.display = "block";
-    document.getElementById("return-" + element).style.display = "block";
-    $("#" + productAttribute + "Select>option[value='0']").prop("selected",true);
+function saveProduct() {
+    const brandId = $("#brandSelect").val();
+    const brandName = $("#brandSelect option:selected").html();
+    const typeId = $("#typeSelect").val();
+    const typeName = $("#typeSelect option:selected").html();
+    const detail = $("#product-details").val();
+    const barcode = $("#bar-code").val();
+    const price = $("#price").val();
+    const minQuantity = $("#min-quantity").val();
+
+    ipcRenderer.send("db-insert", {
+        table: "product",
+        data: {
+            brand: { id: brandId, name: brandName },
+            type: { id: typeId, name: typeName },
+            detail,
+            barcode,
+            price,
+            minQuantity,
+            quantity: 0
+        },
+        purpose: "newProduct"
+    });
 }
 
-function saveProduct() {
-    $("#brandSelect>option[value='0']").prop("selected",true);
-    $("#typeSelect>option[value='0']").prop("selected",true);
+ipcRenderer.on("newProduct", (event, status) => {
+    if (status.success) {
+        $("#product-table-body").append(`<tr data-product-id=${status.data.product_id}>\n\
+        <td>${firstLetterToUpperCase(status.data.brand_name)}</td>
+        <td>${firstLetterToUpperCase(status.data.type_name)}</td>
+        <td>${firstLetterToUpperCase(status.data.details)}</td>
+        <td>${status.data.barcode}</td>
+        <td>
+        <button class='btn btn-sm btn-info pull-left check' data-product-id="${status.data.product_id}">Editar</button>
+        </td>
+    </tr>`)
+    
+    $("#brandSelect>option[value='0']").prop("selected", true);
+    $("#typeSelect>option[value='0']").prop("selected", true);
     $("#product-details").val('');
     $("#bar-code").val('');
     $("#price").val('');
     $("#min-quantity").val('');
+    
+    fillAlert("¡Carga  del producto exitosa!", "success", "product");
 
-    //ACA VA EL "ALERT!"
-}
+    } else {
+        fillAlert("Error en la carga del producto", "danger", "product");
+        console.log(status.err);
+    }
+})

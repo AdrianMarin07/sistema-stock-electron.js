@@ -26,7 +26,7 @@ exports.insert = (db, product) => {
     db.serialize(() => {
       db.run(
         querys.insert(TABLE, KEYS),
-        [product._detail, product._quantity, product._price, product._barcode, product._minQuantity,product._brand._id, product._type._id],
+        [product._detail, product._quantity, product._price, product._barcode, product._minQuantity, product._type._id, product._brand._id],
         (err) => {
           if (err) return reject("Error in Database: " + err.message);
         }
@@ -62,8 +62,8 @@ exports.selectOne = (db, product) => {
 exports.update = (db, product) => {
   return new Promise((resolve, reject) => {
     db.get(
-      querys.update(TABLE, KEYS),
-      [product._detail, product._quantity, product._price, product._barcode, product._minQuantity, product._type._id],
+      querys.update(TABLE, KEYS.filter(item => item.key != "quantity")),
+      [product._detail, product._price, product._barcode, product._minQuantity, product._type._id],
       (err, row) => {
         if (err) return reject(err.message);
         resolve(row);

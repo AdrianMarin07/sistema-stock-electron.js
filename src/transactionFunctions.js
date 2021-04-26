@@ -5,9 +5,9 @@ function printTransactionTable(data) {
                     <td data-brand-id="${data[i].fk_brand}"> ${firstLetterToUpperCase(data[i].brand_name)} </td>
                     <td data-type-id="${data[i].fk_type}"> ${firstLetterToUpperCase(data[i].type_name)}</td>
                     <td> ${firstLetterToUpperCase(data[i].details)} </td>
-                    <td></td>
-                    <td></td>
-                    <td> ${data[i].total}</td>
+                    <td> ${data[i].barcode} </td>
+                    <td> ${data[i].price} </td>
+                    <td> ${data[i].total} </td>
                     <td>
                         <button class='btn btn-sm btn-info pull-left manage' id='show-add-modal-${data[i].id_product}' onclick='showTransactionModal(${data[i].id_product}, 0)'>Agregar</button>
                         <button class='btn btn-sm btn-info pull-left manage' id='show-remove-modal-${data[i].id_product}' onclick='showTransactionModal(${data[i].id_product}, 1)'>Quitar</button> </td>
@@ -66,44 +66,34 @@ function submitTransaction() {
             ipcRenderer.send("db-product-decrease", { data: product, purpose: "decrease-quantity", amount })
         }
     } else {
-        fillTransactionAlert("Por favor, ingrese un número válido");
+        fillAlert("Por favor, ingrese un número válido", "warning", "transaction");
     }
 
 }
 
 ipcRenderer.on("add-quantity", (event, result) => {
     if (result.success) {
-        fillTransactionAlert(`¡Carga exitosa!`);
+        fillAlert("¡Carga exitosa!", "success", "transaction");
         ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-transaction-table' });
     } else {
-        fillTransactionAlert(result.err)        
+        fillAlert(result.err, "danger" , "transaction")
         console.log(result.err);
     }
 })
 
 ipcRenderer.on("decrease-quantity", (event, result) => {
     if (result.success) {
-        fillTransactionAlert(`¡Baja exitosa!`);
+        fillAlert(`¡Baja exitosa!`, "success" , "transaction");
         ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-transaction-table' });
     } else {
-        if(result.err.match(/^(Error product qua)/)){
-            fillTransactionAlert("Error en la baja. El monto ingresado supera el valor actual del stock")
+        if (result.err.match(/^(Error product qua)/)) {
+            fillAlert("Error en la baja. El monto ingresado supera el valor actual del stock", "danger", "transaction")
         } else {
-            fillTransactionAlert(result.err);
+            fillAlert(result.err, "danger", "transaction");
         }
         console.log(result.err);
     }
 })
-
-
-function fillTransactionAlert(message) {
-    $("#transaction-alert").html(message)
-    $("#transaction-input").val("");
-    $("#transaction-alert").fadeIn();
-    setTimeout(function () {
-        $("#transaction-alert").hide()
-    }, 2500)
-}
 
 ipcRenderer.on('fill-transaction-table', (event, status) => {
     if (status.success) {
