@@ -40,7 +40,7 @@ function fillContent(content_name) {
 
 
 
-function showModal(origin) {
+function showModal(origin,id) {
 
     switch (origin) {
 
@@ -65,11 +65,44 @@ function showModal(origin) {
 
             $("#brandInput").val('');
             $("#typeInput").val('');
+            $("#product-details").val('');
+            $("#bar-code").val('');
+            $("#price").val('');
+            $("#min-quantity").val('');
 
             $("#product-modal").modal("show");
             break;
         
         case "editProduct":
+
+            let productId = $(`tr[data-product-id=${id}]`).children();
+
+            $(`#brandSelect option[value='${productId[0].dataset.brandId}']`).prop("selected", true);
+            $(`#brandList`).css("display", "block");
+            $(`#edit-brand`).css("display", "block");
+            $(`#new-brand`).css("display", "block");
+
+            $(`#typeSelect option[value='${productId[1].dataset.typeId}']`).prop("selected", true);
+            $(`#typeList`).css("display", "block");
+            $(`#edit-type`).css("display", "block");
+            $(`#new-type`).css("display", "block");
+
+            $(`#brand-input`).css("display", "none");
+            $(`#confirm-brand`).css("display", "none");
+            $(`#return-brand`).css("display", "none");
+            $(`#type-input`).css("display", "none");
+            $(`#confirm-type`).css("display", "none");
+            $(`#return-type`).css("display", "none");
+
+            $(`#brandInput`).val('');
+            $(`#typeInput`).val('');
+            $(`#product-details`).val(productId[2].innerHTML);
+            $(`#bar-code`).val(productId[3].innerHTML);
+            $(`#price`).val(productId[4].innerHTML);
+            $(`#min-quantity`).val(productId[5].innerHTML);
+
+            $("#product-modal").modal("show");
+
             break;
 
         case "newUser":

@@ -63,7 +63,7 @@ exports.update = (db, product) => {
   return new Promise((resolve, reject) => {
     db.get(
       querys.update(TABLE, KEYS.filter(item => item.key != "quantity")),
-      [product._detail, product._price, product._barcode, product._minQuantity, product._type._id],
+      [product._detail, product._price, product._barcode, product._minQuantity, product._type._id, product._brand._id,product._id],
       (err, row) => {
         if (err) return reject(err.message);
         resolve(row);

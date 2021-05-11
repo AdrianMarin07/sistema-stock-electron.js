@@ -12,14 +12,17 @@ ipcRenderer.on('fill-product-table', (event, status) => {
 
 function printProductTable(data) {
     let html = '';
+    console.log(data);
     for (let i = 0; i < data.length; i++) {
         html += `<tr data-product-id=${data[i].product_id}>\n\
-                    <td>${firstLetterToUpperCase(data[i].brand_name)}</td>
-                    <td>${firstLetterToUpperCase(data[i].type_name)}</td>
+                    <td data-brand-id=${data[i].fk_brand}>${firstLetterToUpperCase(data[i].brand_name)}</td>
+                    <td data-type-id=${data[i].fk_type}>${firstLetterToUpperCase(data[i].type_name)}</td>
                     <td>${firstLetterToUpperCase(data[i].details)}</td>
                     <td>${data[i].barcode}</td>
+                    <td>${data[i].price}</td>
+                    <td>${data[i].min_quantity}</td>
                     <td>
-                    <button class='btn btn-sm btn-info pull-left check' data-product-id="${data[i].product_id}">Editar</button>
+                    <button class='btn btn-sm btn-info pull-left check' data-product-id="${data[i].product_id}" onclick="showModal('editProduct',${data[i].product_id})">Editar</button>
                     </td>
                 </tr>`;
     }
@@ -187,7 +190,7 @@ function goBack(element) {
     swapToSelect(element);
 }
 
-function saveProduct() {
+function saveProduct(operator) {
     const brandId = $("#brandSelect").val();
     const brandName = $("#brandSelect option:selected").html();
     const typeId = $("#typeSelect").val();
@@ -197,7 +200,7 @@ function saveProduct() {
     const price = $("#price").val();
     const minQuantity = $("#min-quantity").val();
 
-    ipcRenderer.send("db-insert", {
+    ipcRenderer.send("db-" + operator, {
         table: "product",
         data: {
             brand: { id: brandId, name: brandName },
@@ -208,11 +211,11 @@ function saveProduct() {
             minQuantity,
             quantity: 0
         },
-        purpose: "newProduct"
+        purpose: operator + "Product"
     });
 }
 
-ipcRenderer.on("newProduct", (event, status) => {
+ipcRenderer.on("insertProduct", (event, status) => {
     if (status.success) {
         $("#product-table-body").append(`<tr data-product-id=${status.data.product_id}>\n\
         <td>${firstLetterToUpperCase(status.data.brand_name)}</td>

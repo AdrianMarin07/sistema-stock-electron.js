@@ -174,7 +174,7 @@
 
         <div class="content" id="manage-product-container">
           <button type="button" class="btn btn-primary btn-circle btn-xl add-button" title="Nuevo producto"
-            onclick="showModal('newProduct')">+</button>
+            onclick="showModal('newProduct',0)">+</button>
           <h1 class="content-title" id="manageProductHeader">Administrador de Productos</h1>
           <div class="row">
             <div class="brandBar col-6">
@@ -195,6 +195,8 @@
                 <th>Tipo</th>
                 <th>Detalle</th>
                 <th>Código de Barras</th>
+                <th>Precio</th>
+                <th>Cantidad Minima</th>
                 <th>Editar</th>
               </tr>
             </thead>
@@ -313,7 +315,7 @@
         </div>
 
         <div class="content" id="manage-user-container">
-          <button type="button" class="btn btn-primary btn-circle btn-xl add-button" title="Nuevo usuario" onclick="showModal('newUser')">+</button>
+          <button type="button" class="btn btn-primary btn-circle btn-xl add-button" title="Nuevo usuario" onclick="showModal('newUser',0)">+</button>
           <h1 class="content-title" id="manageUserHeader">Administrador de Usuarios</h1>
           <table class="table table-bordered table-hover table-condensed" id="user-table">
             <thead>
