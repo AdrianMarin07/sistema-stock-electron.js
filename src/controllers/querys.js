@@ -36,7 +36,7 @@ exports.delete = (tableName) => {
 };
 
 exports.update = (tableName, keys) => {
-    return `UPDATE ${tableName} SET ${keys.map((key) => {if(key.table === tableName && key.key != 'id') return`${key.key} = ?`}).join(" ")} WHERE id = ?`;
+    return `UPDATE ${tableName} SET ${keys.filter(key => key.table === tableName && key.key !== 'id' ).map((key) => {return`${key.key} = ?`}).join(", ")} WHERE id = ?`;
 };
 
 exports.selectForSearch = (tableName, keys, searchPatterns, innerJoinns) => {

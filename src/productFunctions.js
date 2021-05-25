@@ -199,6 +199,7 @@ function saveProduct(operator) {
     const barcode = $("#bar-code").val();
     const price = $("#price").val();
     const minQuantity = $("#min-quantity").val();
+    const productId = $("#product-id").val();
 
     ipcRenderer.send("db-" + operator, {
         table: "product",
@@ -209,7 +210,8 @@ function saveProduct(operator) {
             barcode,
             price,
             minQuantity,
-            quantity: 0
+            quantity: 0,
+            id: productId
         },
         purpose: operator + "Product"
     });
@@ -222,8 +224,10 @@ ipcRenderer.on("insertProduct", (event, status) => {
         <td>${firstLetterToUpperCase(status.data.type_name)}</td>
         <td>${firstLetterToUpperCase(status.data.details)}</td>
         <td>${status.data.barcode}</td>
+        <td>${status.data.price}</td>
+        <td>${status.data.min_quantity}</td>
         <td>
-        <button class='btn btn-sm btn-info pull-left check' data-product-id="${status.data.product_id}">Editar</button>
+        <button class='btn btn-sm btn-info pull-left check' data-product-id="${status.data.product_id}" onclick="showModal('editProduct',${data[i].product_id})">Editar</button>
         </td>
     </tr>`)
     
@@ -238,6 +242,17 @@ ipcRenderer.on("insertProduct", (event, status) => {
 
     } else {
         fillAlert("Error en la carga del producto", "danger", "product");
+        console.log(status.err);
+    }
+})
+
+ipcRenderer.on("editProduct", (event, status) => {
+    if(status.success){
+        
+
+        fillAlert("¡Edición  del producto exitosa!", "success", "product");
+    } else {
+        fillAlert("Error en la edición del producto", "danger", "product");
         console.log(status.err);
     }
 })

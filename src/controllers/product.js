@@ -65,6 +65,7 @@ exports.update = (db, product) => {
       querys.update(TABLE, KEYS.filter(item => item.key != "quantity")),
       [product._detail, product._price, product._barcode, product._minQuantity, product._type._id, product._brand._id,product._id],
       (err, row) => {
+        console.log(KEYS.filter(item => item.key != "quantity"));
         if (err) return reject(err.message);
         resolve(row);
       }
