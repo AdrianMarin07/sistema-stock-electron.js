@@ -227,7 +227,7 @@ ipcRenderer.on("insertProduct", (event, status) => {
         <td>${status.data.price}</td>
         <td>${status.data.min_quantity}</td>
         <td>
-        <button class='btn btn-sm btn-info pull-left check' data-product-id="${status.data.product_id}" onclick="showModal('editProduct',${data[i].product_id})">Editar</button>
+        <button class='btn btn-sm btn-info pull-left check' data-product-id="${status.data.product_id}" onclick="showModal('editProduct',${status.data.product_id})">Editar</button>
         </td>
     </tr>`)
     
@@ -246,9 +246,19 @@ ipcRenderer.on("insertProduct", (event, status) => {
     }
 })
 
-ipcRenderer.on("editProduct", (event, status) => {
+ipcRenderer.on("updateProduct", (event, status) => {    
     if(status.success){
-        
+
+        const children = document.querySelector(`tr[data-product-id="${$("#product-id").val()}"]`).children
+
+        children.item(0).innerHTML = $("#brandSelect option:selected").html();
+        children.item(0).attributes["data-brand-id"].value = $("#brandSelect option:selected").val();
+        children.item(1).innerHTML = $("#typeSelect option:selected").html();
+        children.item(1).attributes["data-type-id"].value = $("#typeSelect option:selected").val();
+        children.item(2).innerHTML = $("#product-details").val();
+        children.item(3).innerHTML = $("#bar-code").val();
+        children.item(4).innerHTML = $("#price").val();
+        children.item(5).innerHTML = $("#min-quantity").val();
 
         fillAlert("¡Edición  del producto exitosa!", "success", "product");
     } else {

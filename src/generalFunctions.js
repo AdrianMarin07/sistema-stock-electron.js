@@ -107,7 +107,7 @@ function showModal(origin,id) {
             $("#product-id").val(id);
 
             $("#save-product").off('click');
-            $("#save-product").on('click', () => {saveProduct('update'); console.log("oh hi mark")});
+            $("#save-product").on('click', () => {saveProduct('update')});
 
             $("#product-modal").modal("show");
 
