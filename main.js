@@ -12,7 +12,6 @@ try{
   console.log(err);
 }
 
-addEvents(ipcMain, db);
 
 function createWindow () {
   const win = new BrowserWindow({
@@ -22,6 +21,8 @@ function createWindow () {
       nodeIntegration: true
     }
   })
+
+  addEvents(ipcMain, db, win);
 
   win.loadFile(path.join(__dirname + '/src/main-page-TESTING.html'))
   //win.webContents.openDevTools();
