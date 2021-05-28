@@ -49,3 +49,31 @@ function remove() {
     };
     ipcRenderer.send('db-delete', { table: 'brand', data: brand, purpose: "none" });
 }
+
+function update() {
+    const brand = {
+        id: 1,
+        name: 'tersuave'
+    };
+
+    const type = {
+        name: 'Pintura',
+        id: 1,
+    }
+    const product = {
+        detail: "blaj 3L",
+        id: 1,
+        quantity: 20,
+        price: 30,
+        barcode: "12345678958",
+        minQuantity: 30,
+        type,
+        brand,
+        id: 1
+    }
+    ipcRenderer.send('db-update', { table: 'product', data: product, purpose: "up" });
+}
+
+ipcRenderer.on("up", (event, status) => {
+    console.log(status)
+})

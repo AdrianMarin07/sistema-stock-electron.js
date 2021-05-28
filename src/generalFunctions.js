@@ -70,6 +70,9 @@ function showModal(origin,id) {
             $("#price").val('');
             $("#min-quantity").val('');
 
+            $("#save-product").off('click');
+            $("#save-product").on('click', () => {saveProduct('insert')});
+
             $("#product-modal").modal("show");
             break;
         
@@ -100,6 +103,11 @@ function showModal(origin,id) {
             $(`#bar-code`).val(productId[3].innerHTML);
             $(`#price`).val(productId[4].innerHTML);
             $(`#min-quantity`).val(productId[5].innerHTML);
+
+            $("#product-id").val(id);
+
+            $("#save-product").off('click');
+            $("#save-product").on('click', () => {saveProduct('update')});
 
             $("#product-modal").modal("show");
 

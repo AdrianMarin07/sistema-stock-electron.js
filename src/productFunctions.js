@@ -199,6 +199,7 @@ function saveProduct(operator) {
     const barcode = $("#bar-code").val();
     const price = $("#price").val();
     const minQuantity = $("#min-quantity").val();
+    const productId = $("#product-id").val();
 
     ipcRenderer.send("db-" + operator, {
         table: "product",
@@ -209,7 +210,8 @@ function saveProduct(operator) {
             barcode,
             price,
             minQuantity,
-            quantity: 0
+            quantity: 0,
+            id: productId
         },
         purpose: operator + "Product"
     });
@@ -222,8 +224,10 @@ ipcRenderer.on("insertProduct", (event, status) => {
         <td>${firstLetterToUpperCase(status.data.type_name)}</td>
         <td>${firstLetterToUpperCase(status.data.details)}</td>
         <td>${status.data.barcode}</td>
+        <td>${status.data.price}</td>
+        <td>${status.data.min_quantity}</td>
         <td>
-        <button class='btn btn-sm btn-info pull-left check' data-product-id="${status.data.product_id}">Editar</button>
+        <button class='btn btn-sm btn-info pull-left check' data-product-id="${status.data.product_id}" onclick="showModal('editProduct',${status.data.product_id})">Editar</button>
         </td>
     </tr>`)
     
@@ -238,6 +242,27 @@ ipcRenderer.on("insertProduct", (event, status) => {
 
     } else {
         fillAlert("Error en la carga del producto", "danger", "product");
+        console.log(status.err);
+    }
+})
+
+ipcRenderer.on("updateProduct", (event, status) => {    
+    if(status.success){
+
+        const children = document.querySelector(`tr[data-product-id="${$("#product-id").val()}"]`).children
+
+        children.item(0).innerHTML = $("#brandSelect option:selected").html();
+        children.item(0).attributes["data-brand-id"].value = $("#brandSelect option:selected").val();
+        children.item(1).innerHTML = $("#typeSelect option:selected").html();
+        children.item(1).attributes["data-type-id"].value = $("#typeSelect option:selected").val();
+        children.item(2).innerHTML = $("#product-details").val();
+        children.item(3).innerHTML = $("#bar-code").val();
+        children.item(4).innerHTML = $("#price").val();
+        children.item(5).innerHTML = $("#min-quantity").val();
+
+        fillAlert("¡Edición  del producto exitosa!", "success", "product");
+    } else {
+        fillAlert("Error en la edición del producto", "danger", "product");
         console.log(status.err);
     }
 })
