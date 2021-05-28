@@ -136,6 +136,19 @@ background-color: #d1d1d1;
   padding: 0px 0px 0px 5px;
 }*/
 
+.dark-mode{
+  position:absolute;
+  bottom: 41px;
+  right: 0;
+}
+.dark-mode-enabled{
+  background-color: #010C38;
+}
+
+.dark-mode-background{
+  background-color: rgb(31, 31, 31);
+}
+
 .logIn {
   position:absolute;
   bottom: 0;
