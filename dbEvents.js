@@ -93,7 +93,7 @@ function addEvents(ipcMain, db, win) {
   })
 
   ipcMain.on('login', (event, args) => {
-    const User = require('./src/models/User');
+    const User = require('./src/models/Users');
     const user = new User(args.data);
     require('./src/controllers/users').login(db, user, privateKey)
       .then((data) => {
