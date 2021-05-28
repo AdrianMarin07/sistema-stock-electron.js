@@ -28,6 +28,8 @@
             class="icon-nav" src="./resources/icons/plus-sign.png">Gestor de Productos</button>
         <button class="menu-button" id="new-user" onclick="displayContent('manage-user-container')"><img
             class="icon-nav" src="./resources/icons/new-user-icon.png">Crear un Usuario</button>
+        <button class="menu-button dark-mode" id="dark-mode" onclick="changeMode()"><img
+            class="icon-nav" src="./resources/icons/darkmode.png">Modo Oscuro</button>
         <button class="menu-button logIn" id="log-in" onclick="displayContent('user-validation-container')"><img
             class="icon-nav" src="./resources/icons/login-icon.png">Iniciar Sesión</button>
       </nav>
@@ -305,8 +307,7 @@
                 </div>
 
                 <div class="modal-footer">
-                  <button id="save-product" type="button" class="btn btn-primary"
-                    >Guardar</button>
+                  <button id="confirm-product" type="button" class="btn btn-primary">Guardar</button>
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                 </div>
               </div>
@@ -346,7 +347,7 @@
               <div class="modal-body">
                 <div class="alert" role="alert" id="user-alert">-</div>
                 <form class="container-fluid">
-
+                  <input type="hidden" id="user-id">
                   <div class="row">
                     <label class="col-sm-4 control-label">Usuario: </label>
                     <div class="col-sm-8">
@@ -387,7 +388,7 @@
               </div>
 
               <div class="modal-footer">
-                <button id="save-product" type="button" class="btn btn-primary" onclick="saveUser()">Guardar</button>
+                <button id="confirm-user" type="button" class="btn btn-primary">Guardar</button>
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
               </div>
             </div>
