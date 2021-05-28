@@ -31,7 +31,7 @@ function fillContent(content_name) {
         case "manage-user-container":
             ipcRenderer.send('db-select', { table: 'users', purpose: 'fill-user-table' });
             break;
-        case "shop-list-container": 
+        case "shop-list-container":
             ipcRenderer.send("db-select-purchase-list", { purpose: 'fill-shop-table' });
         default:
             break;
@@ -40,11 +40,13 @@ function fillContent(content_name) {
 
 
 
-function showModal(origin,id) {
+function showModal(origin, id) {
 
     switch (origin) {
 
         case "newProduct":
+
+            $('#productModalTittle').html('Nuevo producto:');
 
             $("#brandSelect option[value='0']").prop("selected", true);
             $("#brandList").css("display", "block");
@@ -70,13 +72,15 @@ function showModal(origin,id) {
             $("#price").val('');
             $("#min-quantity").val('');
 
-            $("#save-product").off('click');
-            $("#save-product").on('click', () => {saveProduct('insert')});
+            $("#confirm-product").off('click');
+            $("#confirm-product").on('click', () => { saveProduct('insert') });
 
             $("#product-modal").modal("show");
             break;
-        
+
         case "editProduct":
+            
+            $('#productModalTittle').html('Editando producto:');
 
             let productId = $(`tr[data-product-id=${id}]`).children();
 
@@ -106,26 +110,50 @@ function showModal(origin,id) {
 
             $("#product-id").val(id);
 
-            $("#save-product").off('click');
-            $("#save-product").on('click', () => {saveProduct('update')});
+            $("#confirm-product").off('click');
+            $("#confirm-product").on('click', () => { saveProduct('update') });
 
             $("#product-modal").modal("show");
 
             break;
 
         case "newUser":
-            document.getElementById("userModalTittle").innerHTML = 'Nuevo Usuario';
+
+            $('#userModalTittle').html('Nuevo usuario:');
+
+            $("#user").val('');
+            $("#name").val('');
+            $("#last-name").val('');
+            $("#email").val('');
+            $("#password").val('');
+            
+            $("#confirm-user").off('click');
+            $("#confirm-user").on('click', () => { saveUser('insert') });
+
             $("#user-modal").modal("show");
             break;
 
         case "editUser":
-            document.getElementById("userModalTittle").innerHTML = 'Editar Usuario';
+
+            $('#userModalTittle').html('Editando usuario:');
+
+            $("#confirm-user").off('click');
+            $("#confirm-user").on('click', () => { saveUser('update') });
 
             $("#user-modal").modal("show");
             break;
 
+        case "deleteUser":
+
+            $('#userModalTittle').html('¿Realmente desea eliminar este usuario?');
+
+            $("#confirm-user").off('click');
+            $("#confirm-user").on('click', () => { deleteUser() });
+
+            $("#user-modal").modal("show");
+
         default:
-        break;
+            break;
     }
 }
 
@@ -218,10 +246,33 @@ function fillAlert(message, infoType, content) {
     $("#" + content + "-alert").fadeIn();
     setTimeout(function () {
         $("#" + content + "-alert").removeClass("alert-" + infoType);
-        $("#" + content + "-alert").fadeOut({done: (anim, bool)=> {
-            $("#" + content + "-alert").css("display", "block");
-            $("#" + content + "-alert").css("visibility", "hidden");
-        }})
+        $("#" + content + "-alert").fadeOut({
+            done: (anim, bool) => {
+                $("#" + content + "-alert").css("display", "block");
+                $("#" + content + "-alert").css("visibility", "hidden");
+            }
+        })
     }, 1500)
 }
 
+function changeMode() {
+
+    //Agregar cambio de ícono al botón para resaltarlo
+
+    document.getElementById("dark-mode").classList.toggle("dark-mode-enabled"); // Cambia el color de fondo del botón
+
+    let container = [ // WIP!!! 
+        document.getElementsByClassName("display"),
+        document.getElementsByClassName("content"),
+        document.getElementsByClassName("form-control"),
+        document.getElementsByClassName("modal-content")
+    ]
+
+    for (let i = 0; i < container.length; i++) {
+        console.log('primer for')
+        for (let j = 0; j < container[i].length; j++) {
+            console.log('segundo for')
+            container[i][j].classList.toggle("dark-mode-background");
+        }
+    }
+}
