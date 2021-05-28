@@ -28,6 +28,8 @@
     "bootstrap": "^4.5.3",
     "jquery": "^3.4.1",
     "jsonwebtoken": "^8.5.1",
+    "jspdf": "^2.3.1",
+    "jspdf-autotable": "^3.5.14",
     "node-gyp": "^7.1.2",
     "popper.js": "^1.16.1",
     "sqlite3": "^5.0.0"
