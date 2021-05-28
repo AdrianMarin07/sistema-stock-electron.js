@@ -170,7 +170,7 @@ ipcRenderer.on('editElement', (event, status) => {
         fillAlert("¡Edicion exitosa!", "success", "product");
     } else {
         fillAlert("Error en la edicion", "danger", "product");
-        console.log(status.err);        
+        console.log(status.err);
     }
 })
 
@@ -230,15 +230,15 @@ ipcRenderer.on("insertProduct", (event, status) => {
         <button class='btn btn-sm btn-info pull-left check' data-product-id="${status.data.product_id}" onclick="showModal('editProduct',${status.data.product_id})">Editar</button>
         </td>
     </tr>`)
-    
-    $("#brandSelect>option[value='0']").prop("selected", true);
-    $("#typeSelect>option[value='0']").prop("selected", true);
-    $("#product-details").val('');
-    $("#bar-code").val('');
-    $("#price").val('');
-    $("#min-quantity").val('');
-    
-    fillAlert("¡Carga  del producto exitosa!", "success", "product");
+
+        $("#brandSelect>option[value='0']").prop("selected", true);
+        $("#typeSelect>option[value='0']").prop("selected", true);
+        $("#product-details").val('');
+        $("#bar-code").val('');
+        $("#price").val('');
+        $("#min-quantity").val('');
+
+        fillAlert("¡Carga  del producto exitosa!", "success", "product");
 
     } else {
         fillAlert("Error en la carga del producto", "danger", "product");
@@ -246,8 +246,8 @@ ipcRenderer.on("insertProduct", (event, status) => {
     }
 })
 
-ipcRenderer.on("updateProduct", (event, status) => {    
-    if(status.success){
+ipcRenderer.on("updateProduct", (event, status) => {
+    if (status.success) {
 
         const children = document.querySelector(`tr[data-product-id="${$("#product-id").val()}"]`).children
 
@@ -261,6 +261,9 @@ ipcRenderer.on("updateProduct", (event, status) => {
         children.item(5).innerHTML = $("#min-quantity").val();
 
         fillAlert("¡Edición  del producto exitosa!", "success", "product");
+
+        setTimeout(function () { $("#product-modal").modal("hide"); }, 1000);
+        
     } else {
         fillAlert("Error en la edición del producto", "danger", "product");
         console.log(status.err);
