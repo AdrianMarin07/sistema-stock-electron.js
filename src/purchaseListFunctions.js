@@ -34,6 +34,7 @@ function printShopListTable(data) {
 };
 
 function saveAsPdf() {
-    comst = `<table> ${$("#shop-list-table").html()} </table>`;
-    ipcRenderer.send('save-table-asPDF', {table: $("#shop-list-table").html()})
+    const tableRows = 
+    [...document.querySelectorAll("#shop-list-table > * > tr")].map((tr) => [...tr.children].map(td => td.innerHTML));
+    ipcRenderer.send('save-table-asPDF', {tableRows});
 }
