@@ -17,11 +17,9 @@ exports.createDB = () => {
         if (err) console.log(err.message);
       });
 
-      bcrypt.hash("1234", 10, function (err, hash) {
-        db.run("INSERT INTO users (name, last_name, user, password, type) VALUES (?,?,?,?,?)", ["nombre", "apellido", "admin", hash, "admin"], (err) => {
-          if (err) console.log(err.message);
-          resolve("");
-        });
+      db.run("INSERT INTO users (name, last_name, user, password, type) VALUES (?,?,?,?,?)", ["nombre", "apellido", "admin", "1234", "admin"], (err) => {
+        if (err) console.log(err.message);
+        resolve("");
       });
     })
   }).then(()=>{
