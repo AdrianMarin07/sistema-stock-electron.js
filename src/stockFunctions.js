@@ -1,3 +1,11 @@
+ipcRenderer.on('fill-stock-table', (event, status) => {
+    if (status.success) {
+        printStockTable(status.data);
+    } else {
+        console.log(status.err);
+    }
+});
+
 function printStockTable(data) {
     let html = '';
     for (let i = 0; i < data.length; i++) {
@@ -17,12 +25,3 @@ function printStockTable(data) {
     }
     $("#stock-table-body").html(html);
 };
-
-
-ipcRenderer.on('fill-stock-table', (event, status) => {
-    if (status.success) {
-        printStockTable(status.data);
-    } else {
-        console.log(status.err);
-    }
-});
