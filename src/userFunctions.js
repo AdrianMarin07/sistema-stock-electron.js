@@ -7,16 +7,17 @@ ipcRenderer.on('fill-user-table', (event, status) => {
 });
 
 function printUserTable(data) {
+    console.log(data);
     let html = '';
     for (let i = 0; i < data.length; i++) {
         html += `<tr data-user-id=${data[i].user_id}>\n\
                     <td>${data[i].user}</td>
-                    <td>${data[i].name}</td>
-                    <td>${data[i].lastname}</td>
+                    <td>${firstLetterToUpperCase(data[i].name)}</td>
+                    <td>${firstLetterToUpperCase(data[i].last_name)}</td>
                     <td>${data[i].email}</td>
                     <td>
-                    <button class='btn btn-sm btn-info pull-left check' data-user-id="${data[i].user_id}" onclick="showModal('editUser',${data[i].user_id})>Editar</button>    
-                    <button class='btn btn-sm btn-danger pull-left check' data-user-id="${data[i].user_id}" onclick="showModal('deleteUser',${data[i].user_id})>Eliminar</button>
+                    <button class='btn btn-sm btn-info pull-left check' data-user-id="${data[i].user_id}" onclick="showModal('editUser',${data[i].user_id})">Editar</button>    
+                    <button class='btn btn-sm btn-danger pull-left check' data-user-id="${data[i].user_id}" onclick="showModal('deleteUser',${data[i].user_id})">Eliminar</button>
                     </td>
                 </tr>`;
     }
@@ -27,8 +28,8 @@ function saveUser(operator) {
 
     const user = $("#user").val();
     const name = $("#name").val();
-    const lastname = $("#lastname").val();
-    const email = $("#email").val();
+    const lastName = $("#last-name").val();
+    const eMail = $("#email").val();
     const password = $("#password").val();
     const userId = $("#user-id").val();
 
@@ -37,9 +38,10 @@ function saveUser(operator) {
         data: {
             user,
             name,
-            lastname,
-            email,
+            lastName,
+            eMail,
             password,
+            type: 'user',
             id: userId
         },
         purpose: operator + "User"
@@ -52,7 +54,7 @@ ipcRenderer.on("insertUser", (event, status) => {
         $("#user-table-body").append(`<tr data-user-id=${status.data.user_id}>\n\
         <td>${(status.data.user)}</td>
         <td>${firstLetterToUpperCase(status.data.name)}</td>
-        <td>${firstLetterToUpperCase(status.data.lastname)}</td>
+        <td>${firstLetterToUpperCase(status.data.last_name)}</td>
         <td>${status.data.email}</td>
         <td>
         <button class='btn btn-sm btn-info pull-left check' data-user-id="${status.data.user_id}" onclick="showModal('editUser',${status.data.user_id})">Editar</button>
@@ -81,7 +83,7 @@ ipcRenderer.on("updateUser", (event, status) => {
     
         children.item(0).innerHTML = $("#user").val();
         children.item(1).innerHTML = $("#name").val();
-        children.item(2).innerHTML = $("#lastname").val();
+        children.item(2).innerHTML = $("#last-name").val();
         children.item(3).innerHTML = $("#email").val();
 
         fillAlert("¡Edición  del usuario exitosa!", "success", "user");
