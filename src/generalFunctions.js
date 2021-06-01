@@ -79,10 +79,10 @@ function showModal(origin, id) {
             break;
 
         case "editProduct":
-            
+
             $('#productModalTittle').html('Editando producto:');
 
-            let productId = $(`tr[data-product-id=${id}]`).children();
+            let productId = $(`#manage-product-container tr[data-product-id=${id}]`).children();
 
             $(`#brandSelect option[value='${productId[0].dataset.brandId}']`).prop("selected", true);
             $(`#brandList`).css("display", "block");
@@ -126,7 +126,9 @@ function showModal(origin, id) {
             $("#last-name").val('');
             $("#email").val('');
             $("#password").val('');
-            
+
+            $('#password').removeAttr('disabled');
+
             $("#confirm-user").off('click');
             $("#confirm-user").on('click', () => { saveUser('insert') });
 
@@ -136,6 +138,8 @@ function showModal(origin, id) {
         case "editUser":
 
             $('#userModalTittle').html('Editando usuario:');
+
+            $('#password').attr('disabled','disabled');
 
             $("#confirm-user").off('click');
             $("#confirm-user").on('click', () => { saveUser('update') });
@@ -269,9 +273,9 @@ function changeMode() {
     ]
 
     for (let i = 0; i < container.length; i++) {
-        console.log('primer for')
+        //console.log('primer for')
         for (let j = 0; j < container[i].length; j++) {
-            console.log('segundo for')
+            //console.log('segundo for')
             container[i][j].classList.toggle("dark-mode-background");
         }
     }
