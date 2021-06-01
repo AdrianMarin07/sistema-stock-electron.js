@@ -22,34 +22,37 @@ exports.insert = (db, user) => {
       (err, row) => {
         if (err) return reject(err.message);
         if (row.alreadyUsed == 1) return reject("User already exists");
-        db.serialize(() => {
-          db.run(
-            querys.insert(TABLE, KEYS),
-            [
-              user._name,
-              user._lastName,
-              user._eMail,
-              user._user,
-              user._password,
-              user._type,
-            ],
-            (err) => {
+        bcrypt.hash(user._password, 10, function(err, hash) {
+          if(err) return reject(err);
+          db.serialize(() => {
+            db.run(
+              querys.insert(TABLE, KEYS),
+              [
+                user._name,
+                user._lastName,
+                user._eMail,
+                user._user,
+                hash,
+                user._type,
+              ],
+              (err) => {
+                if (err) return reject("Error in Database: " + err.message);
+              }
+            );
+  
+            db.get(querys.selectLastAdded(TABLE, [
+              KEYS[0],
+              KEYS[1],
+              KEYS[2],
+              KEYS[3],
+              KEYS[4],
+              KEYS[6],
+            ]), [], (err, row) => {
               if (err) return reject("Error in Database: " + err.message);
-            }
-          );
-
-          db.get(querys.selectLastAdded(TABLE, [
-            KEYS[0],
-            KEYS[1],
-            KEYS[2],
-            KEYS[3],
-            KEYS[4],
-            KEYS[6],
-          ]), [], (err, row) => {
-            if (err) return reject("Error in Database: " + err.message);
-            resolve(row);
+              resolve(row);
+            });
           });
-        });
+        })
       }
     );
   });
@@ -94,14 +97,20 @@ exports.selectOne = (db, user) => {
 exports.update = (db, user) => {
   return new Promise((resolve, reject) => {
     db.get(
-      querys.update(TABLE, KEYS),
+      querys.update(TABLE, [
+        KEYS[1],
+        KEYS[2],
+        KEYS[3],
+        KEYS[4],
+        KEYS[6],
+      ]),
       [
         user._name,
         user._lastName,
         user._eMail,
         user._user,
-        user._password,
         user._type,
+        user._id
       ],
       (err, row) => {
         if (err) return reject(err.message);
