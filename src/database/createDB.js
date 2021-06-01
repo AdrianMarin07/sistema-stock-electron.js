@@ -11,17 +11,24 @@ exports.createDB = () => {
   const db = new sqlite3.Database(DBPath);
   const DBTablesCreationQuery = require("./DBTablesCreationQuery");
 
-db.serialize(()=> {
-    db.exec(DBTablesCreationQuery, (err) => {
-      if (err) console.log(err.message);
-  });
+  new Promise((resolve, reject) => {
+    db.serialize(() => {
+      db.exec(DBTablesCreationQuery, (err) => {
+        if (err) console.log(err.message);
+      });
 
-  bcrypt.hash("1234", 10, function(err, hash) {
-    db.run("INSERT INTO users (name, last_name, user, password, type) VALUES (?,?,?,?,?)",["nombre", "apellido", "admin", hash, "admin"], (err) => {
-      if (err) console.log(err.message);
-    });
-  });
-})
+      bcrypt.hash("1234", 10, function (err, hash) {
+        db.run("INSERT INTO users (name, last_name, user, password, type) VALUES (?,?,?,?,?)", ["nombre", "apellido", "admin", hash, "admin"], (err) => {
+          if (err) console.log(err.message);
+          resolve("");
+        });
+      });
+    })
+  }).then(()=>{
+    db.close();
+  }).catch((err)=>{
+    db.close();
+  })
 
-db.close();
+
 };
