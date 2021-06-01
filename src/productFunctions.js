@@ -12,7 +12,6 @@ ipcRenderer.on('fill-product-table', (event, status) => {
 
 function printProductTable(data) {
     let html = '';
-    console.log(data);
     for (let i = 0; i < data.length; i++) {
         html += `<tr data-product-id=${data[i].product_id}>\n\
                     <td data-brand-id=${data[i].fk_brand}>${firstLetterToUpperCase(data[i].brand_name)}</td>
@@ -249,7 +248,7 @@ ipcRenderer.on("insertProduct", (event, status) => {
 ipcRenderer.on("updateProduct", (event, status) => {
     if (status.success) {
 
-        const children = document.querySelector(`tr[data-product-id="${$("#product-id").val()}"]`).children
+        const children = document.querySelector(`#manage-product-container tr[data-product-id="${$("#product-id").val()}"]`).children
 
         children.item(0).innerHTML = $("#brandSelect option:selected").html();
         children.item(0).attributes["data-brand-id"].value = $("#brandSelect option:selected").val();
