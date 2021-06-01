@@ -1,3 +1,11 @@
+ipcRenderer.on('fill-transaction-table', (event, status) => {
+    if (status.success) {
+        printTransactionTable(status.data);
+    } else {
+        console.log(status.err);
+    }
+});
+
 function printTransactionTable(data) {
     let html = '';
     for (let i = 0; i < data.length; i++) {
@@ -21,6 +29,7 @@ function printTransactionTable(data) {
 
 function showTransactionModal(id, transaction) {
 
+    $("#transaction-input").val('');
     const parent = document.getElementById("show-record-" + id).parentElement.parentElement
     let product = `${parent.childNodes[3].innerHTML} ${parent.childNodes[1].innerHTML} ${parent.childNodes[5].innerHTML}`
     $("#id-transaction-modal-header").html(product);
@@ -68,37 +77,42 @@ function submitTransaction() {
     } else {
         fillAlert("Por favor, ingrese un número válido", "warning", "transaction");
     }
-
 }
 
 ipcRenderer.on("add-quantity", (event, result) => {
     if (result.success) {
+
+        const children = document.querySelector(`#manage-stock-container tr[data-product-id="${$("#product-id").val()}"]`).children.item(5);        
+        children.innerHTML = +children.innerHTML + +$("#transaction-input").val();
+
         fillAlert("¡Carga exitosa!", "success", "transaction");
-        ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-transaction-table' });
+
+        $("#transaction-input").val('');
     } else {
         fillAlert(result.err, "danger" , "transaction")
         console.log(result.err);
+        $("#transaction-input").val('');
     }
 })
 
 ipcRenderer.on("decrease-quantity", (event, result) => {
     if (result.success) {
+        
+        const children = document.querySelector(`#manage-stock-container tr[data-product-id="${$("#product-id").val()}"]`).children.item(5);
+        children.innerHTML = +children.innerHTML - +$("#transaction-input").val();
+
         fillAlert(`¡Baja exitosa!`, "success" , "transaction");
-        ipcRenderer.send('db-select', { table: 'stock', purpose: 'fill-transaction-table' });
+        
+        $("#transaction-input").val('');
     } else {
         if (result.err.match(/^(Error product qua)/)) {
             fillAlert("Error en la baja. El monto ingresado supera el valor actual del stock", "danger", "transaction")
+            $("#transaction-input").val('');
         } else {
             fillAlert(result.err, "danger", "transaction");
+            $("#transaction-input").val('');
         }
         console.log(result.err);
     }
 })
 
-ipcRenderer.on('fill-transaction-table', (event, status) => {
-    if (status.success) {
-        printTransactionTable(status.data);
-    } else {
-        console.log(status.err);
-    }
-});
