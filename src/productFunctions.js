@@ -1,6 +1,3 @@
-let productAttribute;
-let attributeOperation;
-
 ipcRenderer.on('fill-product-table', (event, status) => {
     if (status.success) {
         printProductTable(status.data);
@@ -79,17 +76,15 @@ function fillType(data) {
     }
 }
 
-function newElement(element, button) {
-    attributeOperation = button;
+function newElement(element) {
     $("#" + element + "Input").val('');
     swapToInput(element);
 }
 
-function editElement(element, button) {
+function editElement(element) {
     if ($("#" + element + "Select").val() == null) {
         fillAlert("No ha seleccionado una opcion", "warning", "product");
     } else {
-        attributeOperation = button;
         const text = $("#" + element + "Select> option:selected").html();
         $("#" + element + "Input").val(text);
         swapToInput(element);
@@ -106,47 +101,43 @@ function swapToInput(element) {
 }
 
 function saveElement(element) {
-    if (attributeOperation == "new") {
+    if ($('#productModalTittle').data("attribute-operator") == "new") {
         if (element == "brand") {
-            productAttribute = "brand";
-            insertElement({
+            insertBrand({
                 name: document.getElementById("brand-input").children.item(0).value
-            }, productAttribute)
+            })
         } else if (element == "type") {
-            productAttribute = "type";
-            insertElement({
+            insertType({
                 name: document.getElementById("type-input").children.item(0).value
-            }, productAttribute)
+            })
         }
-    } else if (attributeOperation == "edit") {
+    } else if ($('#productModalTittle').data("attribute-operator") == "edit") {
         if (element == "brand") {
-            productAttribute = "brand";
-            overrideElement({
+            overrideBrand({
                 id: $("#" + element + "Select").val(),
                 name: document.getElementById("brand-input").children.item(0).value
-            }, productAttribute)
+            })
         } else if (element == "type") {
-            productAttribute = "type";
-            overrideElement({
+            overrideType({
                 id: $("#" + element + "Select").val(),
                 name: document.getElementById("type-input").children.item(0).value
-            }, productAttribute)
+            })
         }
     }
 }
 
-function insertElement(data, origin) {
+function insertBrand(data) {
     ipcRenderer.send('db-insert', {
-        table: origin,
+        table: "brand",
         data: data,
-        purpose: "newElement"
+        purpose: "newBrand"
     });
 }
 
-ipcRenderer.on('newElement', (event, status) => {
+ipcRenderer.on('newBrand', (event, status) => {
     if (status.success) {
-        $("#" + productAttribute + "Select").append(`<option id="${status.data[productAttribute + "_id"]}" selected value="${status.data[productAttribute + "_id"]}">${firstLetterToUpperCase(status.data[productAttribute + "_name"])}</option>`);
-        swapToSelect(productAttribute);
+        $("#brandSelect").append(`<option id="${status.data["brand_id"]}" selected value="${status.data["brand_id"]}">${firstLetterToUpperCase(status.data["brand_name"])}</option>`);
+        swapToSelect("brand");
         fillAlert("¡Carga exitosa!", "success", "product");
     } else {
         fillAlert("Error en la carga", "danger", "product");
@@ -154,18 +145,56 @@ ipcRenderer.on('newElement', (event, status) => {
     }
 })
 
-function overrideElement(data, origin) {
-    ipcRenderer.send('db-update', {
-        table: origin,
+function insertType(data) {
+    ipcRenderer.send('db-insert', {
+        table: "type",
         data: data,
-        purpose: "editElement"
+        purpose: "newType"
     });
 }
 
-ipcRenderer.on('editElement', (event, status) => {
+ipcRenderer.on('newType', (event, status) => {
     if (status.success) {
-        $("#" + productAttribute + "Select> option:selected").html(document.getElementById(productAttribute + "-input").children.item(0).value);
-        swapToSelect(productAttribute);
+        $("#typeSelect").append(`<option id="${status.data["type_id"]}" selected value="${status.data["type_id"]}">${firstLetterToUpperCase(status.data["type_name"])}</option>`);
+        swapToSelect("type");
+        fillAlert("¡Carga exitosa!", "success", "product");
+    } else {
+        fillAlert("Error en la carga", "danger", "product");
+        console.log(status.err);
+    }
+})
+
+function overrideBrand(data) {
+    ipcRenderer.send('db-update', {
+        table: "brand",
+        data: data,
+        purpose: "editBrand"
+    });
+}
+
+ipcRenderer.on('editBrand', (event, status) => {
+    if (status.success) {
+        $("#brandSelect> option:selected").html(document.getElementById("brand-input").children.item(0).value);
+        swapToSelect("brand");
+        fillAlert("¡Edicion exitosa!", "success", "product");
+    } else {
+        fillAlert("Error en la edicion", "danger", "product");
+        console.log(status.err);
+    }
+})
+
+function overrideType(data) {
+    ipcRenderer.send('db-update', {
+        table: "type",
+        data: data,
+        purpose: "editType"
+    });
+}
+
+ipcRenderer.on('editType', (event, status) => {
+    if (status.success) {
+        $("#typeSelect> option:selected").html(document.getElementById("type-input").children.item(0).value);
+        swapToSelect("type");
         fillAlert("¡Edicion exitosa!", "success", "product");
     } else {
         fillAlert("Error en la edicion", "danger", "product");
@@ -174,14 +203,13 @@ ipcRenderer.on('editElement', (event, status) => {
 })
 
 function swapToSelect(element) {
-    productAttribute = element;
-    document.getElementById(productAttribute + "List").style.display = "block";
-    document.getElementById("edit-" + productAttribute).style.display = "block";
-    document.getElementById("new-" + productAttribute).style.display = "block";
-    document.getElementById(productAttribute + "-input").style.display = "none";
-    document.getElementById("confirm-" + productAttribute).style.display = "none";
-    document.getElementById("return-" + productAttribute).style.display = "none";
-    $("#" + productAttribute + "Select> option[value='0']").prop("selected", true);
+    document.getElementById(element + "List").style.display = "block";
+    document.getElementById("edit-" + element).style.display = "block";
+    document.getElementById("new-" + element).style.display = "block";
+    document.getElementById(element + "-input").style.display = "none";
+    document.getElementById("confirm-" + element).style.display = "none";
+    document.getElementById("return-" + element).style.display = "none";
+    $("#" + element + "Select> option[value='0']").prop("selected", true);
 
 }
 

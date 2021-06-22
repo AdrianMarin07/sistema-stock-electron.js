@@ -46,7 +46,8 @@ function showModal(origin, id) {
 
         case "newProduct":
 
-            $('#productModalTittle').html('Nuevo producto:');
+            $('#productModalTittle').html('Creando nuevo producto:');
+            $('#productModalTittle').data('attribute-operator', 'new');
 
             $("#brandSelect option[value='0']").prop("selected", true);
             $("#brandList").css("display", "block");
@@ -80,7 +81,8 @@ function showModal(origin, id) {
 
         case "editProduct":
 
-            $('#productModalTittle').html('Editando producto:');
+            $('#productModalTittle').html('Editando producto:');            
+            $('#productModalTittle').data('attribute-operator', 'edit');
 
             let productId = $(`#manage-product-container tr[data-product-id=${id}]`).children();
 
@@ -119,7 +121,7 @@ function showModal(origin, id) {
 
         case "newUser":
 
-            $('#userModalTittle').html('Nuevo usuario:');
+            $('#userModalTittle').html('Creando nuevo usuario:');
 
             $("#user").val('');
             $("#name").val('');
