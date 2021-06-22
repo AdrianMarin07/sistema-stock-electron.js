@@ -31,23 +31,28 @@ function saveUser(operator) {
     const lastName = $("#last-name").val();
     const eMail = $("#email").val();
     const password = $("#password").val();
+    const confirmPassword = $("#confirm-password").val();
     const userId = $("#user-id").val();
-
+  
+    if (operator == "insert" && password !== confirmPassword) {
+      return fillAlert("Las contraseñas no coinciden", "warning", "user")
+    }
+  
     ipcRenderer.send("db-" + operator, {
-        table: "users",
-        data: {
-            user,
-            name,
-            lastName,
-            eMail,
-            password,
-            type: 'user',
-            id: userId
-        },
-        purpose: operator + "User"
+      table: "users",
+      data: {
+        user,
+        name,
+        lastName,
+        eMail,
+        password,
+        type: 'user',
+        id: userId
+      },
+      purpose: operator + "User"
     });
-
-};
+  
+  };
 
 ipcRenderer.on("insertUser", (event, status) => {
     if (status.success) {
@@ -67,6 +72,7 @@ ipcRenderer.on("insertUser", (event, status) => {
         $("#last-name").val('');
         $("#email").val('');
         $("#password").val('');
+        $("#confirm-password").val('');
 
         fillAlert("¡Carga  del usuario exitosa!", "success", "user");
 
@@ -79,8 +85,10 @@ ipcRenderer.on("insertUser", (event, status) => {
 ipcRenderer.on("updateUser", (event, status) => {
     if (status.success) {
 
-        const children = document.querySelector(`tr[data-user-id="${$("#user-id").val()}"]`).children
-    
+        console.log(document.querySelector(`#manage-user-container tr[data-user-id="${$("#user-id").val()}"]`))
+
+        const children = document.querySelector(`#manage-user-container tr[data-user-id="${$("#user-id").val()}"]`).children
+
         children.item(0).innerHTML = $("#user").val();
         children.item(1).innerHTML = $("#name").val();
         children.item(2).innerHTML = $("#last-name").val();
@@ -89,7 +97,7 @@ ipcRenderer.on("updateUser", (event, status) => {
         fillAlert("¡Edición  del usuario exitosa!", "success", "user");
 
         setTimeout(function () { $("#user-modal").modal("hide"); }, 1000);
-        
+
     } else {
         fillAlert("Error en la edición del usuario", "danger", "user");
         console.log(status.err);

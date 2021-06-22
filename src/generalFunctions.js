@@ -44,7 +44,7 @@ function showModal(origin, id) {
 
     switch (origin) {
 
-        case "newProduct":
+        case "newProduct": {
 
             $('#productModalTittle').html('Creando nuevo producto:');
             $('#productModalTittle').data('attribute-operator', 'new');
@@ -78,20 +78,20 @@ function showModal(origin, id) {
 
             $("#product-modal").modal("show");
             break;
+        }
+        case "editProduct": {
 
-        case "editProduct":
-
-            $('#productModalTittle').html('Editando producto:');            
+            $('#productModalTittle').html('Editando producto:');
             $('#productModalTittle').data('attribute-operator', 'edit');
 
-            let productId = $(`#manage-product-container tr[data-product-id=${id}]`).children();
+            let product = $(`#manage-product-container tr[data-product-id=${id}]`).children();
 
-            $(`#brandSelect option[value='${productId[0].dataset.brandId}']`).prop("selected", true);
+            $(`#brandSelect option[value='${product[0].dataset.brandId}']`).prop("selected", true);
             $(`#brandList`).css("display", "block");
             $(`#edit-brand`).css("display", "block");
             $(`#new-brand`).css("display", "block");
 
-            $(`#typeSelect option[value='${productId[1].dataset.typeId}']`).prop("selected", true);
+            $(`#typeSelect option[value='${product[1].dataset.typeId}']`).prop("selected", true);
             $(`#typeList`).css("display", "block");
             $(`#edit-type`).css("display", "block");
             $(`#new-type`).css("display", "block");
@@ -105,10 +105,10 @@ function showModal(origin, id) {
 
             $(`#brandInput`).val('');
             $(`#typeInput`).val('');
-            $(`#product-details`).val(productId[2].innerHTML);
-            $(`#bar-code`).val(productId[3].innerHTML);
-            $(`#price`).val(productId[4].innerHTML);
-            $(`#min-quantity`).val(productId[5].innerHTML);
+            $(`#product-details`).val(product[2].innerHTML);
+            $(`#bar-code`).val(product[3].innerHTML);
+            $(`#price`).val(product[4].innerHTML);
+            $(`#min-quantity`).val(product[5].innerHTML);
 
             $("#product-id").val(id);
 
@@ -118,48 +118,104 @@ function showModal(origin, id) {
             $("#product-modal").modal("show");
 
             break;
-
-        case "newUser":
+        }
+        case "newUser": {
 
             $('#userModalTittle').html('Creando nuevo usuario:');
 
-            $("#user").val('');
-            $("#name").val('');
-            $("#last-name").val('');
-            $("#email").val('');
-            $("#password").val('');
+            $('#user').removeAttr('disabled');
+            $('#user').val('');
+            $('#name').removeAttr('disabled');
+            $('#name').val('');
+            $('#last-name').removeAttr('disabled');
+            $('#last-name').val('');
+            $('#email').removeAttr('disabled');
+            $('#email').val('');
+            $('.password').css("display", "block");
+            $('#password').css("display", "block");
+            $('#password').val('');
+            $('.confirm-password').css("display", "block");
+            $('#confirm-password').css("display", "block");
+
 
             $('#password').removeAttr('disabled');
+
+            $("#confirm-user").html("Guardar");
+            $("#confirm-user").removeClass("btn-danger");
+            $("#confirm-user").addClass("btn-primary");            
 
             $("#confirm-user").off('click');
             $("#confirm-user").on('click', () => { saveUser('insert') });
 
             $("#user-modal").modal("show");
             break;
+        }
+        case "editUser": {
 
-        case "editUser":
+            let user = $(`#manage-user-container tr[data-user-id=${id}]`).children();
 
             $('#userModalTittle').html('Editando usuario:');
 
-            $('#password').attr('disabled','disabled');
+            $(`#user`).removeAttr('disabled');
+            $(`#user`).val(user[0].innerHTML);
+            $(`#name`).removeAttr('disabled');
+            $(`#name`).val(user[1].innerHTML);
+            $(`#last-name`).removeAttr('disabled');
+            $(`#last-name`).val(user[2].innerHTML);
+            $(`#email`).removeAttr('disabled');
+            $(`#email`).val(user[3].innerHTML);
+            $(`#password`).val("********");
+            $('#password').attr('disabled', 'disabled');
+            $('.confirm-password').css("display", "none");
+            $('#confirm-password').css("display", "none");
+
+            $("#user-id").val(id);
+            
+            $("#confirm-user").html("Guardar");
+            $("#confirm-user").removeClass("btn-danger");
+            $("#confirm-user").addClass("btn-primary");
 
             $("#confirm-user").off('click');
             $("#confirm-user").on('click', () => { saveUser('update') });
 
             $("#user-modal").modal("show");
             break;
+        }
 
-        case "deleteUser":
+        case "deleteUser": {
+
+            let user = $(`#manage-user-container tr[data-user-id=${id}]`).children();
 
             $('#userModalTittle').html('¿Realmente desea eliminar este usuario?');
 
+            $(`#user`).val(user[0].innerHTML);
+            $(`#user`).attr('disabled', 'disabled');
+            $(`#name`).val(user[1].innerHTML);
+            $(`#name`).attr('disabled', 'disabled');
+            $(`#last-name`).val(user[2].innerHTML);
+            $(`#last-name`).attr('disabled', 'disabled');
+            $(`#email`).val(user[3].innerHTML);
+            $(`#email`).attr('disabled', 'disabled');
+            $('.password').css("display", "none");
+            $('#password').css("display", "none");
+            $('.confirm-password').css("display", "none");
+            $('#confirm-password').css("display", "none");
+
+            $("#user-id").val(id);
+
+            $("#confirm-user").html("Eliminar");
+            $("#confirm-user").removeClass("btn-primary");
+            $("#confirm-user").addClass("btn-danger");
+
             $("#confirm-user").off('click');
-            $("#confirm-user").on('click', () => { deleteUser() });
+            $("#confirm-user").on('click', () => { deleteUser('delete') });
 
             $("#user-modal").modal("show");
-
+            break;
+        }
         default:
             break;
+
     }
 }
 
@@ -275,10 +331,30 @@ function changeMode() {
     ]
 
     for (let i = 0; i < container.length; i++) {
-        //console.log('primer for')
         for (let j = 0; j < container[i].length; j++) {
-            //console.log('segundo for')
+            console.log(container[i]);
+            console.log(container[i][j]);
             container[i][j].classList.toggle("dark-mode-background");
         }
     }
+
+    let body = document.getElementsByClassName("body");
+    console.log(body);
+    //body.classList.toggle("dark-mode-body");
+
+    let table = [
+        document.getElementById("stock-table"),
+        document.getElementById("transactions-table"),
+        document.getElementById("shop-list-table"),
+        document.getElementById("product-table"),
+        document.getElementById("user-table")
+    ]
+
+    for (let i = 0; i < table.length; i++) {
+        console.log(table[i]);
+        table[i].classList.toggle("dark-mode-table");
+    }
+
+    //document.getElementsByClassName("table").classList.toggle("dark-mode-table");
+
 }
