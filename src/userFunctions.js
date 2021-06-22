@@ -14,7 +14,7 @@ function printUserTable(data) {
                     <td>${data[i].user}</td>
                     <td>${firstLetterToUpperCase(data[i].name)}</td>
                     <td>${firstLetterToUpperCase(data[i].last_name)}</td>
-                    <td>${data[i].email}</td>
+                    <td>${data[i].email ? data[i].email : "-"}</td>
                     <td>
                     <button class='btn btn-sm btn-info pull-left check' data-user-id="${data[i].user_id}" onclick="showModal('editUser',${data[i].user_id})">Editar</button>    
                     <button class='btn btn-sm btn-danger pull-left check' data-user-id="${data[i].user_id}" onclick="showModal('deleteUser',${data[i].user_id})">Eliminar</button>
